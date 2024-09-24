@@ -5,10 +5,11 @@ export const authMiddleware = async (req, res, next) => {
   try {
     // Get the token from the cookies
     const token = req.cookies.token;
+    
 
     if (!token) {
       return res.status(401).json({
-        message: "Access denied. No token provided.",
+        message: "Access denied. No token provided Here.",
         success: false,
       });
     }

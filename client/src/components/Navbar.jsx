@@ -34,10 +34,24 @@ const Navbar = () => {
 
   // Handle navigation to dashboard or login
   const handleDashboardClick = () => {
+    // console.log("I am user in Navbar -->", user);
+    
     if (!user) {
-      localStorage.setItem("redirectPath", "/userdash");
+      const redirectPaths = {
+        userDash: "/userdash",
+        adminDash: "/admindash",
+        carOwnerDash: "/carownerdash"
+      };
+    
+      localStorage.setItem("redirectPath", JSON.stringify(redirectPaths));
       handleLogin();
-    } else {
+    }
+
+    if(user.role == "admin"){
+      navigate("/admindash");
+    }else if(user.role == "carOwner"){
+      navigate("/carownerdash");
+    }else{
       navigate("/userdash");
     }
   };

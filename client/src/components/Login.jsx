@@ -37,7 +37,9 @@ export const Login = () => {
       : { fullname, email, password, role: selectedRole, mobileNo };
 
     const url = `${API_END_POINT}/${isLogin ? "login" : "register"}`;
-    const successMessage = isLogin ? "Login successful!" : "Registration successful!";
+    const successMessage = isLogin
+      ? "Login successful!"
+      : "Registration successful!";
 
     try {
       const res = await axios.post(url, user, {
@@ -48,26 +50,43 @@ export const Login = () => {
       if (res.data.success) {
         toast.success(successMessage);
         if (isLogin) {
-          // console.log(">>>>",res.data.user);
-          
-          // localStorage.setItem("token", res.data.user.token);
           localStorage.setItem("user", JSON.stringify(res.data.user));
-          // localStorage.setItem("tokenExpiry", res.data.user.tokenExpiry);
           dispatch(setUser(res.data.user));
-          const redirectPath = localStorage.getItem("redirectPath");
+          // console.log(">>>", res.data.user.role);
+        
+          const userRole = res.data.user.role;
+        
+          // Safely get redirectPath from localStorage
+          const redirectPaths = JSON.parse(localStorage.getItem("redirectPath")) || {};
+        
+          let redirectPath;
+          if (userRole === "user") {
+            redirectPath = redirectPaths.userDash;
+          } else if (userRole === "admin") {
+            redirectPath = redirectPaths.adminDash;
+          } else {
+            redirectPath = redirectPaths.carOwnerDash || "/"; 
+          }
+      
           navigate(redirectPath || "/");
+          localStorage.removeItem("redirectPath");
+        
         } else {
-          setIsLogin(true); 
+          setIsLogin(true);
         }
+        
         setFullname("");
         setEmail("");
         setPassword("");
         if (mobileNoRef.current) {
-          mobileNoRef.current.value = ""; 
+          mobileNoRef.current.value = "";
         }
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || `${isLogin ? "Login" : "Registration"} failed`);
+      toast.error(
+        error.response?.data?.message ||
+          `${isLogin ? "Login" : "Registration"} failed`
+      );
     }
   };
 
@@ -82,7 +101,10 @@ export const Login = () => {
           <form onSubmit={handleSubmit}>
             {!isLogin && (
               <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="fullname">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="fullname"
+                >
                   Fullname
                 </label>
                 <input
@@ -96,7 +118,10 @@ export const Login = () => {
               </div>
             )}
             <div className="mb-4">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="email"
+              >
                 Email Address
               </label>
               <input
@@ -109,7 +134,10 @@ export const Login = () => {
               />
             </div>
             <div className="mb-6">
-              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="password"
+              >
                 Password
               </label>
               <input
@@ -124,7 +152,10 @@ export const Login = () => {
 
             {!isLogin && (
               <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="mobile-no">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="mobile-no"
+                >
                   Mobile No.
                 </label>
                 <input
@@ -140,7 +171,9 @@ export const Login = () => {
 
             {!isLogin && (
               <div className="mb-6">
-                <label className="block text-gray-700 text-sm font-bold mb-2">Role</label>
+                <label className="block text-gray-700 text-sm font-bold mb-2">
+                  Role
+                </label>
                 <div className="flex items-center">
                   <label className="inline-flex items-center">
                     <input
@@ -180,7 +213,10 @@ export const Login = () => {
               >
                 {isLogin ? "Sign Up" : "Sign In"}
               </span>
-              <a href="#" className="text-sm text-indigo-500 hover:text-indigo-700">
+              <a
+                href="#"
+                className="text-sm text-indigo-500 hover:text-indigo-700"
+              >
                 Forgot your password?
               </a>
             </div>

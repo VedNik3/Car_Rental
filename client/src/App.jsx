@@ -9,6 +9,8 @@ import UserProfile from "./components/UserProfile";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "./redux/userSlice"; // Adjust path as needed
+import AdminDash from "./components/AdminDash";
+import CarOwnerDash from "./components/carOwnerDash";
 
 function App() {
   const dispatch = useDispatch();
@@ -17,13 +19,13 @@ function App() {
   useEffect(() => {
     const userString = localStorage.getItem("user");
     if (userString) {
-      const user = JSON.parse(userString); 
-      const token = user.token; 
-      const tokenExpiry = user.tokenExpiry; 
+      const user = JSON.parse(userString);
+      const token = user.token;
+      const tokenExpiry = user.tokenExpiry;
       const currentTime = Date.now() / 1000;
 
       if (token && tokenExpiry > currentTime) {
-        dispatch(setUser(user)); 
+        dispatch(setUser(user));
       } else {
         localStorage.removeItem("user"); // Remove user if token has expired
       }
@@ -38,6 +40,14 @@ function App() {
     {
       path: "/userdash",
       element: <UserDash />,
+    },
+    {
+      path: "/admindash",
+      element: <AdminDash />,
+    },
+    {
+      path: "/carownerdash",
+      element: <CarOwnerDash/>,
     },
     {
       path: "/login",
