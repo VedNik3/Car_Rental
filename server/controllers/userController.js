@@ -1,4 +1,6 @@
 import { User } from "../models/UserModel.js";
+import { Car } from "../models/carModel.js";
+import { Booking } from "../models/bookingModel.js";
 import bcrypt from "bcrypt";
 
 //GET THE USER PROFILE :
@@ -21,39 +23,117 @@ export const getUserProfile = async (req, res) => {
 
 
 //UPDATE USER PROFILE
+// export const updateUserProfile = async (req, res) => {
+//   try {
+//     const user = await User.findById(req.user.id);
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+//     const { fullname } = req.body;
+
+//     // if (email && email !== user.email) {
+//     //   const isExist = await User.findOne({ email });
+//     //   if (isExist) {
+//     //     res.status(400).json({ message: "email already in Use" });
+//     //   }
+//     //   user.email = email;
+//     // }
+
+//     //what else to change
+//     if (fullname) {
+//       user.fullname = fullname;
+//     }
+
+//     const updatedUser = await user.save(); //saving updated info to DB
+//     res.json({
+//       //sending new updated data as response
+//       id: updatedUser._id,
+//       fullname: updatedUser.fullname,
+//       // email: updatedUser.email,
+//       // role: updatedUser.role,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Server Error" });
+//   }
+// };
+
+
 export const updateUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const { fullname, email } = req.body;
+    const ownerId = req.user.id; // Get the logged-in user's ID
+    const { fullname } = req.body;
 
-    if (email && email !== user.email) {
-      const isExist = await User.findOne({ email });
-      if (isExist) {
-        res.status(400).json({ message: "email already in Use" });
-      }
-      user.email = email;
+    // Validate the new name
+    if (!fullname || fullname.trim() === '') {
+      return res.status(400).json({ message: "Name is required." });
     }
 
-    //what else to change
-    if (fullname) {
-      user.fullname = fullname;
+    // Find the user and update the name
+    const updatedUser = await User.findByIdAndUpdate(
+      ownerId,
+      { fullname },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found." });
     }
 
-    const updatedUser = await user.save(); //saving updated info to DB
-    res.json({
-      //sending new updated data as response
-      id: updatedUser._id,
-      fullname: updatedUser.fullname,
-      email: updatedUser.email,
-      role: updatedUser.role,
-    });
+    return res.status(200).json(updatedUser);
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    console.error(error);
+    return res.status(500).json({ message: "Error updating profile." });
   }
 };
+
+export const UserBookingDetails = async (req, res) => {
+  try {
+    const user = req.user.id; // Extract user ID from the authenticated user
+
+    // Find bookings for the logged-in user
+    const bookings = await Booking.find({ user }).populate('car'); // Populate with car details
+
+    // If no bookings are found
+    if (!bookings || bookings.length === 0) {
+      return res.status(404).json({ message: 'No bookings found for this user' });
+    }
+
+    // Return the bookings
+    // res.status(200).json(bookings);
+    return res.status(200).json({
+      message: 'Bookings retrieved successfully',
+      bookings
+    });
+    
+  } catch (error) {
+    console.error('Error fetching bookings:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+export const deleteuserbooking = async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+
+    // Find the booking by ID
+    const deletedBooking = await Booking.findByIdAndDelete(bookingId);
+
+    if (!deletedBooking) {
+      return res.status(404).json({ message: "Booking not found." });
+    }
+
+    // After deleting the booking, update the car's status to 'available'
+    const carId = deletedBooking.car; // Assuming 'car' is a reference to the car's ID in the Booking schema
+    console.log(carId);
+    await Car.findByIdAndUpdate(carId, { status: "available" });
+
+    res.status(200).json({ message: "Booking deleted and car marked as available." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error. Unable to delete booking." });
+  }
+};
+
 
 //UPDATE USER PASSWORD
 export const updatePassword = async (req, res) => {
@@ -80,19 +160,25 @@ export const updatePassword = async (req, res) => {
 // DELETE USER ACCOUNT
 export const deleteUserAccount = async (req, res) => {
   try {
+    // Find the user by their ID
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Delete all bookings associated with the user
+    await Booking.deleteMany({ user: req.user.id });
+
+    // Delete the user account
     await User.findByIdAndDelete(req.user.id);
 
-    res.json({ message: "User account deleted successfully" });
+    res.json({ message: "User account and associated bookings deleted successfully" });
   } catch (error) {
     console.error("Error deleting user account:", error);
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+
 
 //View Booking History (GET /api/users/:id/bookings)
 
@@ -106,4 +192,3 @@ export const deleteUserAccount = async (req, res) => {
   // Enables the consumer to reset their password using the token sent to their email after the "forgot password" request.
 
 //Leave a Review (POST /api/cars/:carId/reviews)
-

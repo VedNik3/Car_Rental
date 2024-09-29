@@ -1,7 +1,7 @@
-import Sidebar from './Sidebar';
+import Sidebar from '../Sidebar';
 import { useSelector } from 'react-redux';
 
-import GetAllCars from './GetAllCars';
+import GetAllCars from '../GetAllCars';
 
 const AdminDash = () => {
   const clickedOption = useSelector(state => state.admin.clickedOption); // Fetch from correct state slice

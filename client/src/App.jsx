@@ -2,15 +2,15 @@ import "./App.css";
 import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomeForm from "./components/HomeForm";
-import UserDash from "./components/UserDash";
 import { Login } from "./components/Login";
 import DisplayCars from "./components/DisplayCars";
 import UserProfile from "./components/UserProfile";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "./redux/userSlice"; // Adjust path as needed
-import AdminDash from "./components/AdminDash";
-import CarOwnerDash from "./components/carOwnerDash";
+import AdminDash from "./components/Admin Dash/AdminDash";
+import CarOwnerDash from "./components/Owner Dash/CarOwnerDash";
+import UserDash from "./components/User Dash/UserDash";
 
 function App() {
   const dispatch = useDispatch();

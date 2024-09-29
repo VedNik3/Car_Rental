@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import mainLogo from "../assets/mainLogo.png";
 import { useNavigate } from "react-router";
-import Dropdown from "./DropDown";
+import Dropdown from "./Admin Dash/DropDown";
 
-const Sidebar = () => {
+const Sidebar = ({ setcliCkedOwnerOption }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.app.user);
   const userRole = user?.role;
@@ -15,12 +15,12 @@ const Sidebar = () => {
   // Dropdown data for different sections based on user role
   const carsDropdownItems = [
     { label: "Add New Car" },
-    { label: "View All Cars"},
-    { label: "Update/Delete Cars"},
+    { label: "View All Cars" },
+    { label: "Update/Delete Cars" },
   ];
 
   const usersDropdownItems = [
-    { label: "View All Users"},
+    { label: "View All Users" },
     { label: "Change User Role" },
     { label: "View Car Owners" },
   ];
@@ -36,7 +36,7 @@ const Sidebar = () => {
   ];
 
   const revenueDropdownItems = [
-    { label: "View Admin Revenue"},
+    { label: "View Admin Revenue" },
     { label: "View Car Owners' Revenue" },
   ];
 
@@ -58,9 +58,11 @@ const Sidebar = () => {
               <span className="text-base">
                 {userRole === "admin"
                   ? "Dashboard (Admin)"
-                  : userRole === "carOwner"
-                  ? "Dashboard (Car Owner)"
-                  : "Dashboard (User)"}
+                  : userRole === "carOwner" ? (
+                    <span onClick={() => setcliCkedOwnerOption("dashboard")}>
+                      Dashboard (Owner)
+                    </span>
+                  ) : "Dashboard (User)"}
               </span>
             </div>
           </li>
@@ -68,10 +70,12 @@ const Sidebar = () => {
           {/* Cars Management (for Admin only) */}
           {userRole === "admin" ? (
             <Dropdown title="Cars Management" items={carsDropdownItems} />
-          ): userRole === "carOwner" ? (
+          ) : userRole === "carOwner" ? (
             <li>
               <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-base">Home (Car Owner)</span>
+                <span className="text-base" onClick={() => setcliCkedOwnerOption("addcar")}>
+                  Add Car
+                </span>
               </div>
             </li>
           ) : (
@@ -85,10 +89,12 @@ const Sidebar = () => {
           {/* Users Management (for Admin only) */}
           {userRole === "admin" ? (
             <Dropdown title="Users Management" items={usersDropdownItems} />
-          ): userRole === "carOwner" ? (
+          ) : userRole === "carOwner" ? (
             <li>
               <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-base">Home (Car Owner)</span>
+                <span className="text-base" onClick={() => setcliCkedOwnerOption("ownedcars")}>
+                  Owned Cars
+                </span>
               </div>
             </li>
           ) : (
@@ -102,10 +108,31 @@ const Sidebar = () => {
           {/* Bookings Management (for Admin only) */}
           {userRole === "admin" ? (
             <Dropdown title="Bookings Management" items={bookingsDropdownItems} />
-          ): userRole === "carOwner" ? (
+          ) : userRole === "carOwner" ? (
             <li>
               <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-base">Home (Car Owner)</span>
+                <span className="text-base" onClick={() => setcliCkedOwnerOption("OwnerBookingDetails")}>
+                  Bookings
+                </span>
+              </div>
+            </li>
+          ) : (
+            <li>
+              <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
+                <span className="text-base">Home</span>
+              </div>
+            </li>
+          )}
+
+          {/* Settings (for Admin only) */}
+          {userRole === "admin" ? (
+            <Dropdown title="Settings" items={bookingsDropdownItems} />
+          ) : userRole === "carOwner" ? (
+            <li>
+              <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
+                <span className="text-base" onClick={() => setcliCkedOwnerOption("Deletecarowner")}>
+                  Settings
+                </span>
               </div>
             </li>
           ) : (
@@ -122,7 +149,7 @@ const Sidebar = () => {
           {/* Revenue Analytics (for Admin only) */}
           {userRole === "admin" ? (
             <Dropdown title="Revenue Analytics" items={revenueDropdownItems} />
-          ): userRole === "carOwner" ? (
+          ) : userRole === "carOwner" ? (
             <li>
               <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
                 <span className="text-base">Home (Car Owner)</span>

@@ -1,6 +1,6 @@
-import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
-import UserProfile from "./UserProfile";
+
+import Sidebar from "../Sidebar";
+import UserProfile from "../UserProfile";
 // import UserInfo from "./UserInfo";
 
 const UserDash = () => {

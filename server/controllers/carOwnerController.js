@@ -1,4 +1,6 @@
 import { Car } from "../models/carModel.js";
+import { Booking } from "../models/bookingModel.js";
+import { User } from "../models/UserModel.js"
 
 
 // Manage Owned Cars:
@@ -33,11 +35,14 @@ export const getAllOwnedCars = async (req, res) => {
 
     const cars = await Car.find({ownerId}); 
 
-    if (cars.length === 0) {
+    if (!cars) {   
       return res.status(200).json({ message: "No cars have been added yet." });
     }
 
-    res.status(200).json(cars);
+    return res.status(200).json({
+      message: 'Cars retrieved successfully',
+      cars
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error. Unable to fetch cars." });
@@ -48,7 +53,6 @@ export const getAllOwnedCars = async (req, res) => {
 // addCar(carDetails): Allow the owner to add new cars to the platform.
 export const addCar = async (req, res) => {
   try {
-    console.log("Request body:", req.body);
 
     const {
       brand,
@@ -100,7 +104,6 @@ export const addCar = async (req, res) => {
 
 
     await newCar.save();
-    console.log("Car saved successfully");
 
     return res.status(201).json({
       message: 'Car added successfully',
@@ -117,6 +120,51 @@ export const addCar = async (req, res) => {
   }
 };
 
+// export const addCar = async (req, res) => {
+//   try {
+//     const newCar = new Car(req.body);
+//     await newCar.save();
+//     res.status(201).json({ success: true, message: 'Car added successfully' });
+//   } catch (error) {
+//     if (error.code === 11000) {
+//       res.status(400).json({ success: false, message: 'Car with this registration number already exists' });
+//     } else {
+//       res.status(500).json({ success: false, message: 'Server error' });
+//     }
+//   }
+// };
+
+export const CarOwnerBookingDetails = async (req, res) => {
+  try {
+    
+    const CarOwnerId = req.user.id;
+
+    const cars = await Car.find({ ownerId: CarOwnerId });
+
+    if (cars.length === 0) {
+      return res.status(404).json({ message: "No cars found for this owner." });
+  }
+
+  const carIds = cars.map(car => car._id);
+
+  const bookings = await Booking.find({ car: { $in: carIds } })
+            .populate('user', 'fullname email') 
+            .populate('car', 'brand model regNumber')
+
+ if (bookings.length === 0) {
+            return res.status(404).json({ message: "No bookings found for these cars." });
+        } 
+        
+        return res.status(200).json({
+          message: 'Bookings retrieved successfully',
+          bookings
+      });    
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error. Unable to fetch booking details." });
+  }
+}
 
 
 // removeCar(regNumber): Allow the owner to remove cars from the platform.
@@ -134,7 +182,11 @@ export const deleteCar = async (req, res) => {
       return res.status(404).json({ message: "Car not found." });
     }
 
-    res.status(200).json({ message: "Car has been deleted successfully." });
+    const deletedBookings = await Booking.deleteMany({ carRegNumber: regNumber });
+
+    res.status(200).json({
+      message: `Car and ${deletedBookings.deletedCount} associated bookings have been deleted successfully.`,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error. Unable to delete the car." });
@@ -166,6 +218,65 @@ export const updateCarDetails = async (req, res) => {
   }
 };
 
+
+export const deletecarownerbooking = async (req, res) => {
+  try {
+      const { bookingId } = req.params;
+
+      const deletedBooking = await Booking.findByIdAndDelete(bookingId);
+
+      if (!deletedBooking) {
+          return res.status(404).json({ message: "Booking not found." });
+      }
+
+      const carId = deletedBooking.car; // Assuming 'car' is a reference to the car's ID in the Booking schema
+    console.log(carId);
+    await Car.findByIdAndUpdate(carId, { status: "available" });
+
+      res.status(200).json({ message: "Booking deleted successfully." });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error. Unable to delete booking." });
+  }
+};
+
+
+export const deletecarowner = async (req, res) => {
+  try {
+    const ownerId = req.user.id;
+
+    // Find the user by ID
+    const user = await User.findById(ownerId);
+
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    // Find all cars associated with the car owner
+    const cars = await Car.find({ owner: ownerId });
+
+    if (cars.length > 0) {
+      // Extract car IDs
+      const carIds = cars.map(car => car._id);
+
+      // Delete all bookings related to the owner's cars
+      await Booking.deleteMany({ car: { $in: carIds } });
+
+      // Delete all cars owned by the user
+      await Car.deleteMany({ owner: ownerId });
+    }
+
+    // Delete the user from the database
+    await User.findByIdAndDelete(ownerId);
+
+    // Clear cookie and send response
+    res.clearCookie('token');
+    return res.status(200).json({ message: "Car owner, cars, and related bookings deleted successfully." });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send(`Error deleting user: ${err.message}`);
+  }
+};
 
 // Handle Bookings for Owned Cars:
 // getBookingsForCars(ownerId): Fetch bookings made for the cars owned by the owner.

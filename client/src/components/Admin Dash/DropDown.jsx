@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setClickedOption } from "../redux/adminSlice";
+import { setClickedOption } from "../../redux/adminSlice";
 
 const Dropdown = ({ title, items }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +9,6 @@ const Dropdown = ({ title, items }) => {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   const handleClickedOption = (item) => {
-    // console.log(item.label);
     dispatch(setClickedOption(item.label))
     
   }

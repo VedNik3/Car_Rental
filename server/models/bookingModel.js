@@ -12,6 +12,11 @@ const bookingSchema = new mongoose.Schema({
     ref: "Car",
     required: true,
   },
+  regNumber: {
+    type: String,
+    required: true,
+    // unique: true,
+  },
   rentalStartDate: {
     type: Date,
     required: true,
@@ -26,7 +31,7 @@ const bookingSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["booked", "ongoing", "completed", "cancelled"],
+    enum: ["booked", "ongoing", "cancelled"],
     default: "booked", // Default status is "booked"
   },
   paymentStatus: {
@@ -57,4 +62,4 @@ const bookingSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-module.exports = mongoose.model("Booking", bookingSchema);
+export const Booking = mongoose.model("Booking", bookingSchema);
