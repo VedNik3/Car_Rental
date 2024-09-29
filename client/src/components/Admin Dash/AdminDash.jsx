@@ -2,6 +2,7 @@ import Sidebar from '../Sidebar';
 import { useSelector } from 'react-redux';
 
 import GetAllCars from '../GetAllCars';
+import AddCar from '../Owner Dash/AddCar';
 
 const AdminDash = () => {
   const clickedOption = useSelector(state => state.admin.clickedOption); // Fetch from correct state slice
@@ -11,7 +12,7 @@ const AdminDash = () => {
       case 'View All Cars':
         return <GetAllCars/>;
       case 'Add New Car':
-        return <div>Adding a New Car</div>;
+        return <AddCar/>;
       case 'Update/Delete Cars':
         return <div>Updating/Deleting Cars</div>;
       // Add more cases for other options
@@ -23,7 +24,7 @@ const AdminDash = () => {
   return (
     <div className="admin-dash">
       <Sidebar />
-      <div className="content-area ml-[15%]">
+      <div className="content-area ml-[40%] mt-12">
         {renderContent()}
       </div>
     </div>

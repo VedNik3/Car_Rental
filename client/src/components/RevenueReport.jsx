@@ -32,7 +32,7 @@ const RevenueReport = () => {
             withCredentials: true,
           }
         );
-
+        
         setCars(res.data.cars);
       } catch (error) {
         console.error("Error fetching cars:", error.message);
