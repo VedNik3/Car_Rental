@@ -1,15 +1,33 @@
-import { useSelector } from "react-redux";
-// import carSlice from "../redux/carSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react"; // Import useState to manage local state
+import { setLocation } from "../redux/carSlice";
 
 const SearchBar = () => {
   const location = useSelector((state) => state.car.location);
   const startDate = useSelector((state) => state.car.startDate);
   const dropDate = useSelector((state) => state.car.dropDate);
+  const dispatch = useDispatch();
+  
+  const [selectedLocation, setSelectedLocation] = useState(location);
+
+  const handleLocationChange = (event) => {
+    setSelectedLocation(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    dispatch(setLocation(selectedLocation));
+  };
+
   return (
-    <form className="max-w-[50%] mx-auto mt-24 border border-black p-2 rounded bg-yellow-100">
+    <form onSubmit={handleSubmit} className="max-w-[50%] mx-auto mt-24 border border-black p-2 rounded bg-yellow-100">
       <div className="grid grid-cols-4 gap-4">
-        <select className="p-2 border rounded" aria-label={location}>
-          <option value="">{location}</option>
+        <select
+          className="p-2 border rounded"
+          value={selectedLocation}
+          onChange={handleLocationChange}
+        >
+          <option value="" disabled>Select a location</option>
           <option value="Mumbai">Mumbai</option>
           <option value="Delhi">Delhi</option>
           <option value="Bangalore">Bangalore</option>
@@ -18,6 +36,8 @@ const SearchBar = () => {
           <option value="Hyderabad">Hyderabad</option>
           <option value="Pune">Pune</option>
           <option value="Ahmedabad">Ahmedabad</option>
+          <option value="Amravati">Amravati</option>
+          <option value="Dhule">Dhule</option>
         </select>
 
         <input

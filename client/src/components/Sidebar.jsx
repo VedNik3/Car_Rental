@@ -3,7 +3,7 @@ import mainLogo from "../assets/mainLogo.png";
 import { useNavigate } from "react-router";
 import Dropdown from "./Admin Dash/DropDown";
 
-const Sidebar = ({ setcliCkedOwnerOption }) => {
+const Sidebar = ({ setcliCkedOwnerOption, setClickedUserOption }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.app.user);
   const userRole = user?.role;
@@ -23,6 +23,8 @@ const Sidebar = ({ setcliCkedOwnerOption }) => {
     { label: "View All Users" },
     { label: "Change User Role" },
     { label: "View Car Owners" },
+    { label: "Get User" },
+    { label: "Delete User" },
   ];
 
   const bookingsDropdownItems = [
@@ -54,15 +56,20 @@ const Sidebar = ({ setcliCkedOwnerOption }) => {
         <ul className="flex flex-col space-y-2">
           {/* Dashboard */}
           <li>
-            <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors">
+            <div
+              className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+              onClick={() =>
+                userRole === "carOwner"
+                  ? setcliCkedOwnerOption("dashboard")
+                  : setClickedUserOption("dashboard")
+              }
+            >
               <span className="text-base">
                 {userRole === "admin"
                   ? "Dashboard (Admin)"
-                  : userRole === "carOwner" ? (
-                    <span onClick={() => setcliCkedOwnerOption("dashboard")}>
-                      Dashboard (Owner)
-                    </span>
-                  ) : "Dashboard (User)"}
+                  : userRole === "carOwner"
+                  ? "Dashboard (Owner)"
+                  : "Dashboard (User)"}
               </span>
             </div>
           </li>
@@ -72,16 +79,20 @@ const Sidebar = ({ setcliCkedOwnerOption }) => {
             <Dropdown title="Cars Management" items={carsDropdownItems} />
           ) : userRole === "carOwner" ? (
             <li>
-              <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-base" onClick={() => setcliCkedOwnerOption("addcar")}>
-                  Add Car
-                </span>
+              <div
+                className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+                onClick={() => setcliCkedOwnerOption("addcar")}
+              >
+                <span className="text-base">Add Car</span>
               </div>
             </li>
           ) : (
             <li>
-              <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-base">Home</span>
+              <div
+                className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+                onClick={() => setClickedUserOption("profile")}
+              >
+                <span className="text-base">Profile</span>
               </div>
             </li>
           )}
@@ -91,16 +102,20 @@ const Sidebar = ({ setcliCkedOwnerOption }) => {
             <Dropdown title="Users Management" items={usersDropdownItems} />
           ) : userRole === "carOwner" ? (
             <li>
-              <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-base" onClick={() => setcliCkedOwnerOption("ownedcars")}>
-                  Owned Cars
-                </span>
+              <div
+                className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+                onClick={() => setcliCkedOwnerOption("ownedcars")}
+              >
+                <span className="text-base">Owned Cars</span>
               </div>
             </li>
           ) : (
             <li>
-              <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-base">Home</span>
+              <div
+                className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+                onClick={() => setClickedUserOption("booking")}
+              >
+                <span className="text-base">User Bookings</span>
               </div>
             </li>
           )}
@@ -110,10 +125,11 @@ const Sidebar = ({ setcliCkedOwnerOption }) => {
             <Dropdown title="Bookings Management" items={bookingsDropdownItems} />
           ) : userRole === "carOwner" ? (
             <li>
-              <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-base" onClick={() => setcliCkedOwnerOption("OwnerBookingDetails")}>
-                  Bookings
-                </span>
+              <div
+                className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+                onClick={() => setcliCkedOwnerOption("OwnerBookingDetails")}
+              >
+                <span className="text-base">Bookings</span>
               </div>
             </li>
           ) : (
@@ -129,10 +145,11 @@ const Sidebar = ({ setcliCkedOwnerOption }) => {
             <Dropdown title="Settings" items={bookingsDropdownItems} />
           ) : userRole === "carOwner" ? (
             <li>
-              <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-base" onClick={() => setcliCkedOwnerOption("Deletecarowner")}>
-                  Settings
-                </span>
+              <div
+                className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+                onClick={() => setcliCkedOwnerOption("Deletecarowner")}
+              >
+                <span className="text-base">Settings</span>
               </div>
             </li>
           ) : (

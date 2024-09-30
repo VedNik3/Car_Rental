@@ -1,6 +1,6 @@
 import express from "express"
 import { Login, Logout, Register } from "../controllers/authController.js";
-import { deleteUserAccount, getUserProfile, updatePassword, updateUserProfile, UserBookingDetails, deleteuserbooking } from "../controllers/userController.js";
+import { deleteUserAccount, getUserProfile, updatePassword, updateUserProfile, UserBookingDetails, deleteuserbooking, getAllCars } from "../controllers/userController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
@@ -17,5 +17,6 @@ router.put("/update", authMiddleware, updateUserProfile);
 router.delete("/deleteuserbooking/:bookingId", authMiddleware,deleteuserbooking);
 router.put("/updatePassword", authMiddleware, updatePassword);
 router.delete("/deleteAccount", authMiddleware, deleteUserAccount);
+router.get("/allcars", authMiddleware, getAllCars);
 
 export default router;

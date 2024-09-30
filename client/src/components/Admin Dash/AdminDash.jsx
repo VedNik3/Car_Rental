@@ -3,6 +3,10 @@ import { useSelector } from 'react-redux';
 
 import GetAllCars from '../GetAllCars';
 import AddCar from '../Owner Dash/AddCar';
+import GetAllUsers from './GetAllUsers';
+import ChangeRole from './ChangeRole';
+import DeleteUser from './DeleteUser';
+import GetUser from './GetUser';
 
 const AdminDash = () => {
   const clickedOption = useSelector(state => state.admin.clickedOption); // Fetch from correct state slice
@@ -15,7 +19,14 @@ const AdminDash = () => {
         return <AddCar/>;
       case 'Update/Delete Cars':
         return <div>Updating/Deleting Cars</div>;
-      // Add more cases for other options
+      case 'View All Users':
+        return <GetAllUsers/>;
+      case 'Get User':
+        return <GetUser/>;
+      case 'Change User Role':
+        return <ChangeRole/>;
+      case 'Delete User':
+        return <DeleteUser/>;
       default:
         return <div>Please select an option from the sidebar</div>;
     }

@@ -101,6 +101,7 @@ const HomeForm = () => {
                   "Hyderabad",
                   "Pune",
                   "Ahmedabad",
+                  "Amravati"
                 ].map((city) => (
                   <option key={city} value={city}>
                     {city}
