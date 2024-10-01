@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios'; // Import Axios
+import { useSelector } from 'react-redux';
+import { API_END_POINT_booking } from '../utils/constants';
 
 const BookingForm = () => {
   const location = useLocation();
-  const { car } = location.state || {}; // Retrieve the car details from state
+  const { car } = location.state || {};
+
+  const StartDate = useSelector(state => state.car.startDate);
+  const DropDate = useSelector(state => state.car.dropDate);
 
   const [formData, setFormData] = useState({
     regNumber: car?.regNumber || '',
-    rentalStartDate: '',
-    rentalEndDate: '',
+    rentalStartDate: StartDate || '', 
+    rentalEndDate: DropDate || '',     
     totalPrice: car?.rentalPricePerDay || 0,
-    paymentStatus: 'pending', // Changed to pending to match your API structure
+    paymentStatus: 'pending',
     paymentMethod: 'credit_card',
     transactionId: '',
     rentalLocation: {
@@ -32,21 +37,21 @@ const BookingForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'http://localhost:8000/api/booking/booked',
+        `${API_END_POINT_booking}/booked`,
         {
-            ...formData,
-            rentalLocation: {
-                pickupLocation: formData.rentalLocation.pickupLocation,
-                dropoffLocation: formData.rentalLocation.dropoffLocation,
-            },
+          ...formData,
+          rentalLocation: {
+            pickupLocation: formData.rentalLocation.pickupLocation,
+            dropoffLocation: formData.rentalLocation.dropoffLocation,
+          },
         },
         {
-            headers: {
-                'Content-Type': 'application/json', // Set Content-Type to application/json
-            },
-            withCredentials: true, // Include credentials in the request
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
         }
-    );
+      );
       console.log('Booking Response:', response.data);
       alert('Booking Successful!');
     } catch (error) {

@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react"; // Import useState to manage local state
-import { setLocation } from "../redux/carSlice";
+import { useState } from "react";
+import { setLocation } from "../../redux/carSlice";
 
-const SearchBar = () => {
+const Modify = () => {
   const location = useSelector((state) => state.car.location);
   const startDate = useSelector((state) => state.car.startDate);
   const dropDate = useSelector((state) => state.car.dropDate);
@@ -20,7 +20,7 @@ const SearchBar = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-[50%] mx-auto mt-24 border border-black p-2 rounded bg-yellow-100">
+    <form onSubmit={handleSubmit} className="max-w-[50%] mx-auto mt-24 border border-black p-2 rounded ">
       <div className="grid grid-cols-4 gap-4">
         <select
           className="p-2 border rounded"
@@ -65,4 +65,4 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar;
+export default Modify;

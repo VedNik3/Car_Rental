@@ -25,7 +25,7 @@ const Navbar = () => {
       }
       dispatch(setUser(null));
       localStorage.removeItem("user"); // Remove user on logout
-      
+
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -34,23 +34,22 @@ const Navbar = () => {
 
   // Handle navigation to dashboard or login
   const handleDashboardClick = () => {
-  
     if (!user) {
       const redirectPaths = {
         userDash: "/userdash",
         adminDash: "/admindash",
-        carOwnerDash: "/carownerdash"
+        carOwnerDash: "/carownerdash",
       };
-    
+
       localStorage.setItem("redirectPath", JSON.stringify(redirectPaths));
       handleLogin();
     }
 
-    if(user.role == "admin"){
+    if (user.role == "admin") {
       navigate("/admindash");
-    }else if(user.role == "carOwner"){
+    } else if (user.role == "carOwner") {
       navigate("/carownerdash");
-    }else{
+    } else {
       navigate("/userdash");
     }
   };
@@ -71,33 +70,15 @@ const Navbar = () => {
           className="h-10 cursor-pointer"
         />
 
-        {/* Navigation Links */}
-        <div className="hidden md:flex space-x-4 w-[70%] justify-evenly ">
+        <div className="flex items-center gap-5">
+        
           <div
             onClick={handleDashboardClick}
             className="text-white hover:text-gray-300 cursor-pointer"
           >
             Dashboard
           </div>
-          <div
-            onClick={() => navigate("/userprofile")}
-            className="text-gray-300 hover:text-white cursor-pointer"
-          >
-            Team
-          </div>
-          <div
-            onClick={() => navigate("/projects")}
-            className="text-gray-300 hover:text-white cursor-pointer"
-          >
-            Projects
-          </div>
-          <div
-            onClick={() => navigate("/availablecars")}
-            className="text-gray-300 hover:text-white cursor-pointer"
-          >
-            Available Cars
-          </div>
-        </div>
+      
 
         <div className="flex items-center gap-10">
           <div className="flex gap-2">
@@ -112,6 +93,7 @@ const Navbar = () => {
           >
             {user ? "Signout" : "Signin"}
           </button>
+        </div>
         </div>
       </div>
     </nav>

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Card from './Card';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { API_END_POINT } from '../utils/constants';
+import { API_END_POINT } from '../../utils/constants';
 
 const CardContainer = () => {
   const [cars, setCars] = useState([]); 
@@ -28,7 +28,7 @@ const CardContainer = () => {
   }, [location]);
 
   return (
-    <div className='flex flex-wrap mt-5 ml-[18%]'>
+    <div className='flex flex-wrap  '>
       {error ? <p>{error}</p> : null}
 
       {cars.filter(car => car.currentLocation === location && car.status === "available").map(filteredCar => (

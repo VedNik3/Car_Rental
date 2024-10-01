@@ -3,7 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomeForm from "./components/HomeForm";
 import { Login } from "./components/Login";
-import DisplayCars from "./components/DisplayCars";
+import DisplayCars from "./components/DisplayCars/DisplayCars";
 import UserProfile from "./components/UserProfile";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
