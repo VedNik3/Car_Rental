@@ -34,8 +34,7 @@ const Navbar = () => {
 
   // Handle navigation to dashboard or login
   const handleDashboardClick = () => {
-    // console.log("I am user in Navbar -->", user);
-    
+  
     if (!user) {
       const redirectPaths = {
         userDash: "/userdash",
@@ -93,10 +92,10 @@ const Navbar = () => {
             Projects
           </div>
           <div
-            onClick={() => navigate("/calendar")}
+            onClick={() => navigate("/availablecars")}
             className="text-gray-300 hover:text-white cursor-pointer"
           >
-            Calendar
+            Available Cars
           </div>
         </div>
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Card from './Card';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { API_END_POINT } from '../utils/constants';
 
 const CardContainer = () => {
   const [cars, setCars] = useState([]); 
@@ -11,7 +12,7 @@ const CardContainer = () => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/user/allcars", {
+        const res = await axios.get(`${API_END_POINT}/allcars`, {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         });

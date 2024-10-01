@@ -11,6 +11,8 @@ import { setUser } from "./redux/userSlice"; // Adjust path as needed
 import AdminDash from "./components/Admin Dash/AdminDash";
 import CarOwnerDash from "./components/Owner Dash/CarOwnerDash";
 import UserDash from "./components/User Dash/UserDash";
+import AvailableCars from "./components/AvailableCars";
+import BookingForm from "./components/BookingForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -60,6 +62,14 @@ function App() {
     {
       path: "/userprofile",
       element: <UserProfile />,
+    },
+    {
+      path: "/availablecars",
+      element: <AvailableCars />,
+    },
+    {
+      path: "/bookingpage",
+      element: <BookingForm />,
     },
   ]);
 

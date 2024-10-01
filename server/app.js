@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userRoute from "./routes/userRoute.js";
 import adminRoute from "./routes/adminRoute.js" 
 import carOwnerRoute from "./routes/carOwnerRoute.js"
+import bookingRoute from "./routes/bookingRoute.js"
 import cors from "cors";
 import cookieParser from "cookie-parser"; 
 
@@ -26,6 +27,7 @@ app.use(cors(corsOptions));
 app.use("/api/user", userRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/carOwner", carOwnerRoute);
+app.use("/api/booking", bookingRoute);
 
 // Database connection
 const connectToDatabase = async () => {

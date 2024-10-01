@@ -6,7 +6,7 @@ import { booked, getAvailableCars } from "../controllers/bookingController.js";
 const router = express.Router();
 
 router.post("/booked", authMiddleware, booked);
-router.get("/availablecars",authMiddleware, getAvailableCars);
+router.get("/availablecars", getAvailableCars);
 
 
 
