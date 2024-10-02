@@ -27,6 +27,7 @@ export const Login = () => {
     const mobileNo = mobileNoRef.current?.value;
     const selectedRole = roleRef.current;
 
+    //Mobile Number Validation
     if (!isLogin && (!mobileNo || !/^\d{10}$/.test(mobileNo))) {
       toast.error("Please enter a valid 10-digit mobile number.");
       return;
@@ -37,26 +38,26 @@ export const Login = () => {
       : { fullname, email, password, role: selectedRole, mobileNo };
 
     const url = `${API_END_POINT}/${isLogin ? "login" : "register"}`;
+
     const successMessage = isLogin
       ? "Login successful!"
       : "Registration successful!";
 
     try {
-      const res = await axios.post(url, user, {
+      const res = await axios.post(url, user, {  //passing user(data) to server side
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
 
       if (res.data.success) {
         toast.success(successMessage);
+
         if (isLogin) {
-          localStorage.setItem("user", JSON.stringify(res.data.user));
-          dispatch(setUser(res.data.user));
-          // console.log(">>>", res.data.user.role);
+          localStorage.setItem("user", JSON.stringify(res.data.user)); //send to localStorage
+          dispatch(setUser(res.data.user)); //send user to redux store
         
           const userRole = res.data.user.role;
         
-          // Safely get redirectPath from localStorage
           const redirectPaths = JSON.parse(localStorage.getItem("redirectPath")) || {};
         
           let redirectPath;

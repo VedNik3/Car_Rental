@@ -20,7 +20,7 @@ const Modify = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-[50%] mx-auto mt-24 border border-black p-2 rounded ">
+    <form onSubmit={handleSubmit} className="max-w-2xl ml-48 mt-24  border border-black p-2 rounded ">
       <div className="grid grid-cols-4 gap-4">
         <select
           className="p-2 border rounded"

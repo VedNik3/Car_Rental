@@ -34,6 +34,7 @@ const carSchema = new mongoose.Schema(
     },
     fuelType: {
       type: String,
+      enum: ["petrol", "diesel"],
       required: true,
     },
     transmission: {

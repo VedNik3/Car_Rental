@@ -6,6 +6,7 @@ import { combineReducers } from 'redux';
 import userReducer from './userSlice';
 import carReducer from './carSlice';
 import adminReducer from './adminSlice';
+import filterReducer from './filterSlice';
 
 // Persist configuration - how and what parts of your Redux state should be persisted (saved) in storage
 const persistConfig = {
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   app: userReducer,
   car: carReducer,
   admin: adminReducer,
+  filter: filterReducer
 });
 
 // Create persisted reducer

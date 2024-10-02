@@ -2,16 +2,15 @@ import { useNavigate } from "react-router-dom";
 import carImg from "../../assets/carImg.jpeg";
 
 const Card = ({ car }) => {
-
   const navigate = useNavigate();
 
-  const handleBookButton = (car) =>{
+  const handleBookButton = (car) => {
     navigate("/bookingpage", { state: { car } });
-  }
+  };
 
   return (
     <div>
-      <div className="w-64 h-85 bg-white border border-gray-200 rounded-lg shadow m-2">
+      <div className="w-64 h-auto bg-white border border-gray-200 rounded-lg shadow m-2">
         <a href="#">
           <img
             className="w-full h-40 object-cover rounded-t-lg"
@@ -71,7 +70,6 @@ const Card = ({ car }) => {
           <div className="flex items-center justify-between">
             <span className="text-gray-900">Rs. {car.rentalPricePerDay}</span>
             <div
-           
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer"
               onClick={() => handleBookButton(car)}
             >

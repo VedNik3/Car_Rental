@@ -167,14 +167,17 @@ const AddCar = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700">Fuel Type:</label>
-          <input
+          <select
             type="text"
             name="fuelType"
             value={formData.fuelType}
             onChange={handleChange}
             required
             className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
+          >
+            <option value="petrol">petrol</option>
+            <option value="diesel">diesel</option>
+          </select>
         </div>
 
         <div>

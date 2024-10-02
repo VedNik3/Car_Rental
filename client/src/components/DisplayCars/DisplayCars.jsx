@@ -10,7 +10,7 @@ const DisplayCars = () => {
       <Navbar/>
       <div className='flex'>
       <FilterCar/>
-      <div>
+      <div className="ml-80">
       <Modify/>
       <CardContainer/>
       </div>

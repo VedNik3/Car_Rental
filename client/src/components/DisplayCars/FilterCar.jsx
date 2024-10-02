@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
 import '../../App.css'; // For basic styling
+import { useDispatch } from 'react-redux';
+import { setFilter } from '../../redux/filterSlice';
 
 const FilterCar = () => {
-  // State to manage selected filters
+  const dispatch = useDispatch();
   const [filters, setFilters] = useState({
     brand: [],
-    model: [],
+    type: [],
+    transmission: [],
+    fuelType: [],
     price: '',
     mileage: ''
   });
 
-  // Handle checkbox changes for brand/model
+  // Handle checkbox changes for brand/type
   const handleCheckboxChange = (filterType, value) => {
     setFilters((prevFilters) => {
-      const updatedFilter = prevFilters[filterType].includes(value)
+      
+      const updatedFilter = prevFilters[filterType].includes(value)   //if value is in prevFilter, remove it : else add it.
         ? prevFilters[filterType].filter((item) => item !== value)
         : [...prevFilters[filterType], value];
+
+    
 
       return { ...prevFilters, [filterType]: updatedFilter };
     });
@@ -27,11 +34,16 @@ const FilterCar = () => {
       ...prevFilters,
       [filterType]: value
     }));
+    console.log("neww filter", filters);
+    
   };
 
+  // console.log("neww", filters);
+  dispatch(setFilter(filters));
+
   return (
-    <div className="filter-sidebar w-[100%]">
-      <h3>Filter Cars</h3>
+    <div className="fixed filter-sidebar w-[100%] mt-16 ">
+      <h3 className='bg-black text-white w-[100%]'>Filter Cars</h3>
 
       {/* Filter by Brand */}
       <div className="filter-section">
@@ -40,7 +52,7 @@ const FilterCar = () => {
           <input
             type="checkbox"
             value="Toyota"
-            checked={filters.brand.includes('Toyota')}
+            checked={filters.brand.includes('Toyota')}  //if toyota in not in filters rhen check, otherwise uncheck
             onChange={() => handleCheckboxChange('brand', 'Toyota')}
           />
           Toyota
@@ -48,54 +60,99 @@ const FilterCar = () => {
         <label>
           <input
             type="checkbox"
-            value="Honda"
-            checked={filters.brand.includes('Honda')}
-            onChange={() => handleCheckboxChange('brand', 'Honda')}
+            value="Mahindra"
+            checked={filters.brand.includes('Mahindra')}
+            onChange={() => handleCheckboxChange('brand', 'Mahindra')}
           />
-          Honda
+          Mahindra
         </label>
         <label>
           <input
             type="checkbox"
-            value="BMW"
-            checked={filters.brand.includes('BMW')}
-            onChange={() => handleCheckboxChange('brand', 'BMW')}
+            value="Lamborghini"
+            checked={filters.brand.includes('Lamborghini')}
+            onChange={() => handleCheckboxChange('brand', 'Lamborghini')}
           />
-          BMW
+          Lamborghini
         </label>
       </div>
 
       {/* Filter by Model */}
       <div className="filter-section">
-        <h4>Model</h4>
+        <h4>Segment</h4>
         <label>
           <input
             type="checkbox"
-            value="Sedan"
-            checked={filters.model.includes('Sedan')}
-            onChange={() => handleCheckboxChange('model', 'Sedan')}
+            value="sedan"
+            checked={filters.type.includes('sedan')}
+            onChange={() => handleCheckboxChange('type', 'sedan')}
           />
           Sedan
         </label>
         <label>
           <input
             type="checkbox"
-            value="SUV"
-            checked={filters.model.includes('SUV')}
-            onChange={() => handleCheckboxChange('model', 'SUV')}
+            value="suv"
+            checked={filters.type.includes('suv')}
+            onChange={() => handleCheckboxChange('type', 'suv')}
           />
           SUV
         </label>
         <label>
           <input
             type="checkbox"
-            value="Hatchback"
-            checked={filters.model.includes('Hatchback')}
-            onChange={() => handleCheckboxChange('model', 'Hatchback')}
+            value="hatchback"
+            checked={filters.type.includes('hatchback')}
+            onChange={() => handleCheckboxChange('type', 'hatchback')}
           />
           Hatchback
         </label>
       </div>
+
+
+      <div className="filter-section">
+        <h4>Transmission Type</h4>
+        <label>
+          <input
+            type="checkbox"
+            value="manual"
+            checked={filters.transmission.includes('manual')}
+            onChange={() => handleCheckboxChange('transmission', 'manual')}
+          />
+          Manual
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            value="automatic"
+            checked={filters.transmission.includes('automatic')}
+            onChange={() => handleCheckboxChange('transmission', 'automatic')}
+          />
+          Automatic
+        </label>
+        </div>
+
+      <div className="filter-section">
+        <h4>Fuel</h4>
+        <label>
+          <input
+            type="checkbox"
+            value="petrol"
+            checked={filters.fuelType.includes('petrol')}
+            onChange={() => handleCheckboxChange('fuelType', 'petrol')}
+          />
+          Petrol
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            value="diesel"
+            checked={filters.fuelType.includes('diesel')}
+            onChange={() => handleCheckboxChange('fuelType', 'diesel')}
+          />
+          Diesel
+        </label>
+        </div>
 
       {/* Filter by Price */}
       <div className="filter-section">
