@@ -7,11 +7,13 @@ import {
   setStartDateInStore,
   setDropDateInStore,
 } from "../redux/carSlice";
+import { MdOutlineCancel } from "react-icons/md";
 
 const HomeForm = () => {
   const [duration, setDuration] = useState("");
   const [startDate, setStartDate] = useState("");
   const [dropDate, setDropDate] = useState("");
+  const [toggle, setToggle] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -61,11 +63,16 @@ const HomeForm = () => {
   const handleLocationChange = (e) => {
     dispatch(setLocation(e.target.value));
   };
+  const handleToggle = (e) => {
+    setToggle(!toggle);
+  };
 
   return (
     <>
-      <Navbar />
-      <div className="relative w-full h-screen bg-[url('https://images.unsplash.com/photo-1598084991519-c90900bc9df0?q=80&w=1771&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')] bg-cover bg-center flex items-center">
+      <Navbar toggle={toggle} setToggle={setToggle} />
+
+      {/* <div className="relative w-full h-screen bg-[url('https://wallpaperaccess.com/full/1846083.jpg')] bg-cover bg-center flex items-center"> */}
+      <div className="relative w-full h-screen bg-[url('https://wallpaperaccess.com/full/1838837.jpg')] bg-cover bg-center flex items-center">
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
         <h1 className="text-white text-4xl md:text-5xl font-bold relative ml-[10%] mb-[25%]">
@@ -74,86 +81,103 @@ const HomeForm = () => {
         </h1>
 
         {/* Form */}
-        <div className="relative z-10 border-2 border-white p-8 rounded-lg shadow-lg max-w-md w-full mt-11 ml-[25%] bg-transparent text-white">
-          <h2 className="text-2xl font-bold text-center mb-6">
-            Car Rental Form
-          </h2>
-          <form onSubmit={handleBookNow}>
-            {/* Pickup Address */}
-            <div className="mb-4">
-              <label className="block font-bold mb-2" htmlFor="pickup-address">
-                Pickup Address
-              </label>
-              <select
-                className="w-full p-1 border bg-transparent text-white border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                id="pickup-address"
-                defaultValue=""
-                onChange={handleLocationChange}
-                required
-              >
-                <option value="" disabled className="">
-                  Select Pickup City
-                </option>
-                {[
-                  "Mumbai",
-                  "Delhi",
-                  "Bangalore",
-                  "Chennai",
-                  "Kolkata",
-                  "Hyderabad",
-                  "Pune",
-                  "Ahmedabad",
-                  "Amravati",
-                ].map((city) => (
-                  <option key={city} value={city} className="text-black">
-                    {city}
+        {toggle && (
+          <div className="relative z-10 border-2 border-white p-8 rounded-lg shadow-lg max-w-md w-full mt-11 ml-[25%] bg-transparent text-white">
+            <h2 className="text-2xl font-bold text-center mb-6">
+              Car Rental Form
+            </h2>
+            <form onSubmit={handleBookNow}>
+              {/* Pickup Address */}
+              <div className="mb-4">
+                <label
+                  className="block font-bold mb-2"
+                  htmlFor="pickup-address"
+                >
+                  Pickup Address
+                </label>
+                <select
+                  className="w-full p-1 border bg-transparent text-white border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  id="pickup-address"
+                  defaultValue=""
+                  onChange={handleLocationChange}
+                  required
+                >
+                  <option value="" disabled className="">
+                    Select Pickup City
                   </option>
-                ))}
-              </select>
-            </div>
+                  {[
+                    "Mumbai",
+                    "Delhi",
+                    "Bangalore",
+                    "Chennai",
+                    "Kolkata",
+                    "Hyderabad",
+                    "Pune",
+                    "Ahmedabad",
+                    "Amravati",
+                  ].map((city) => (
+                    <option key={city} value={city} className="text-black">
+                      {city}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-            {/* Start Date and Time */}
-            <div className="mb-4">
-              <label className="block font-bold mb-2" htmlFor="start-date-time">
-                Start Date & Time
-              </label>
-              <input
-                className="w-full p-1 border bg-transparent border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 "
-                type="datetime-local"
-                id="start-date-time"
-                value={startDate}
-                onChange={(e) => handleDateChange("start", e.target.value)}
-                required
-              />
-            </div>
+              {/* Start Date and Time */}
+              <div className="mb-4">
+                <label
+                  className="block font-bold mb-2"
+                  htmlFor="start-date-time"
+                >
+                  Start Date & Time
+                </label>
+                <input
+                  className="w-full p-1 border bg-transparent border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 "
+                  type="datetime-local"
+                  id="start-date-time"
+                  value={startDate}
+                  onChange={(e) => handleDateChange("start", e.target.value)}
+                  required
+                />
+              </div>
 
-            {/* Drop-off Date and Time */}
-            <div className="mb-4">
-              <label className="block font-bold mb-2" htmlFor="drop-date-time">
-                Drop-off Date & Time
-              </label>
-              <input
-                className="w-full p-1 border bg-transparent border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 "
-                type="datetime-local"
-                id="drop-date-time"
-                value={dropDate}
-                onChange={(e) => handleDateChange("drop", e.target.value)}
-                required
-              />
-            </div>
+              {/* Drop-off Date and Time */}
+              <div className="mb-4">
+                <label
+                  className="block font-bold mb-2"
+                  htmlFor="drop-date-time"
+                >
+                  Drop-off Date & Time
+                </label>
+                <input
+                  className="w-full p-1 border bg-transparent border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 "
+                  type="datetime-local"
+                  id="drop-date-time"
+                  value={dropDate}
+                  onChange={(e) => handleDateChange("drop", e.target.value)}
+                  required
+                />
+              </div>
 
-            {/* Duration */}
-            <div className="mb-4">
-              <label className="block font-bold mb-2">Duration:</label>
-              <div>{duration || "Select start and drop-off times"}</div>
-            </div>
+              {/* Duration */}
+              <div className="mb-4">
+                <label className="block font-bold mb-2">Duration:</label>
+                <div>{duration || "Select start and drop-off times"}</div>
+              </div>
 
-            {/* Submit Button */}
-            <button className="w-full bg-blue-500 text-white p-1.5 rounded hover:bg-blue-600 transition duration-300">
-              Book Now
-            </button>
-          </form>
-        </div>
+              {/* Submit Button */}
+              <button className="w-full bg-blue-500 text-white p-1.5 rounded hover:bg-blue-600 transition duration-300">
+                Book Now
+              </button>
+              <button
+                className="absolute top-2 right-2 text-2xl "
+                onClick={handleToggle}
+              >
+                <MdOutlineCancel />
+              </button>
+            </form>
+          </div>
+        )}
       </div>
     </>
   );

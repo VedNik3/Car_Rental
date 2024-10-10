@@ -2,6 +2,9 @@ import { Car } from "../models/carModel.js";
 import { Booking } from "../models/bookingModel.js";
 import { User } from "../models/UserModel.js"
 
+const regNumberValidation = /^(AP|AR|AS|BR|CH|DL|GA|GJ|HR|HP|JK|KA|KL|MH|MP|OD|PB|RJ|TN|UP|WB)\d{2}[A-Z]{2}\d{4}$/
+
+
 
 // Manage Owned Cars:
 // getOwnedCar(ownerId): Fetch car with reg. No. .
@@ -76,6 +79,11 @@ export const addCar = async (req, res) => {
 
     if (!regNumber) {
       return res.status(400).json({ message: 'Registration number is required' });
+    }
+
+    if(!regNumberValidation.test(regNumber)){
+      return res.status(400).json({message:"Enter valid registration number",success: false})
+      
     }
 
     const isCarExist = await Car.findOne({ regNumber });

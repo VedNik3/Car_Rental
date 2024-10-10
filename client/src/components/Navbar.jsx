@@ -8,7 +8,7 @@ import { setUser } from "../redux/userSlice";
 import axios from "axios";
 import mainLogo from "../assets/mainLogo.png";
 
-const Navbar = () => {
+const Navbar = ({toggle,setToggle}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.app.user);
@@ -59,8 +59,15 @@ const Navbar = () => {
     navigate("/");
   };
 
+  const handleToggle = () => {
+    setToggle(!toggle)
+  };
+
+  console.log("toggle", toggle);
+  
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-10 bg-slate-900 p-4 w-[100vw]">
+    <nav className="fixed top-0 left-0 right-0 z-10 bg-custom-gray bg-opacity-50 p-2 w-[100vw]">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <img
@@ -71,29 +78,33 @@ const Navbar = () => {
         />
 
         <div className="flex items-center gap-5">
-        
-          <div
-            onClick={handleDashboardClick}
-            className="text-white hover:text-gray-300 cursor-pointer"
-          >
-            Dashboard
-          </div>
-      
+          {user && (
+            <div
+              onClick={handleDashboardClick}
+              className="text-white hover:text-gray-300 cursor-pointer"
+            >
+              Dashboard
+            </div>
+          )}
 
-        <div className="flex items-center gap-10">
-          <div className="flex gap-2">
-            {user && <IoIosArrowDropdown size="24px" color="white" />}
-            <span className="text-white">{user?.fullname}</span>
-          </div>
+          <div className="flex items-center gap-10">
+            <div className="flex gap-2">
+              {user && <IoIosArrowDropdown size="24px" color="white" />}
+              <span className="text-white">{user?.fullname}</span>
+            </div>
 
-          <button
-            type="button"
-            onClick={user ? logoutHandler : handleLogin}
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            {user ? "Signout" : "Signin"}
-          </button>
-        </div>
+            <button className="bg-blue-500 text-white px-4 py-1 rounded" onClick={handleToggle}>
+              Search
+            </button>
+
+            <button
+              type="button"
+              onClick={user ? logoutHandler : handleLogin}
+              className="bg-blue-500 text-white px-4 py-1 rounded"
+            >
+              {user ? "Signout" : "Signin"}
+            </button>
+          </div>
         </div>
       </div>
     </nav>
