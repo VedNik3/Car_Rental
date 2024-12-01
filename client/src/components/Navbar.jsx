@@ -67,7 +67,7 @@ const Navbar = ({toggle,setToggle}) => {
   
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-10 bg-custom-gray bg-opacity-50 p-2 w-[100vw]">
+    <nav className="fixed top-0 left-0 right-0 z-10 bg-custom-gray  p-2 w-[100vw]">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <img

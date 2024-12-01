@@ -49,6 +49,9 @@ export const Login = () => {
         withCredentials: true,
       });
 
+      console.log("check-->",res);
+      
+
       if (res.data.success) {
         toast.success(successMessage);
 
@@ -57,9 +60,10 @@ export const Login = () => {
           dispatch(setUser(res.data.user)); //send user to redux store
         
           const userRole = res.data.user.role;
-        
+          
           const redirectPaths = JSON.parse(localStorage.getItem("redirectPath")) || {};
-        
+          console.log(redirectPaths);
+          
           let redirectPath;
           if (userRole === "user") {
             redirectPath = redirectPaths.userDash;

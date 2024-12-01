@@ -86,7 +86,7 @@ const OwnerBookingDetails = () => {
                                         {booking.car.brand} {booking.car.model} ({booking.car.regNumber})
                                     </td>
                                     <td className="py-2 px-4 border-b">
-                                        {booking.user.fullname} ({booking.user.email})
+                                        {booking.user?.fullname} ({booking.user?.email})
                                     </td>
                                     <td className="py-2 px-4 border-b">
                                         {new Date(booking.rentalStartDate).toLocaleDateString()} - {new Date(booking.rentalEndDate).toLocaleDateString()}

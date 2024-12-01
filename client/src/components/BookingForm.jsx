@@ -62,6 +62,13 @@ const BookingForm = () => {
 
   if (!car) return <p>No car selected for booking.</p>; // Handle case where no car is passed
 
+  // Calculate the duration in hours and total price
+    const durationFunc = (start, end) => {
+      const diffInMs = new Date(end) - new Date(start);
+      return diffInMs / (1000 * 60 * 60);
+    };
+  
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
       {/* Car Details Section */}
@@ -93,6 +100,7 @@ const BookingForm = () => {
               type="text"
               id="regNumber"
               name="regNumber"
+              readOnly
               value={formData.regNumber}
               onChange={handleChange}
               required
@@ -132,7 +140,7 @@ const BookingForm = () => {
               type="number"
               id="totalPrice"
               name="totalPrice"
-              value={formData.totalPrice}
+              value={formData.totalPrice * durationFunc(formData.rentalStartDate, formData.rentalEndDate)}
               readOnly
               className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             />

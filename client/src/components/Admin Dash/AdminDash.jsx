@@ -7,6 +7,7 @@ import GetAllUsers from './GetAllUsers';
 import ChangeRole from './ChangeRole';
 import DeleteUser from './DeleteUser';
 import GetUser from './GetUser';
+import RevenueReport from '../RevenueReport';
 
 const AdminDash = () => {
   const clickedOption = useSelector(state => state.admin.clickedOption); // Fetch from correct state slice
@@ -28,7 +29,7 @@ const AdminDash = () => {
       case 'Delete User':
         return <DeleteUser/>;
       default:
-        return <div>Please select an option from the sidebar</div>;
+        return <RevenueReport/>;
     }
   };
 
