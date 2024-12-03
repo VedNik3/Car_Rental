@@ -5,6 +5,7 @@ import OwnedCars from './OwnedCars';
 import OwnerBookingDetails from './OwnerBookingDetails';
 import DeleteCarOwner from './DeleteCarOwner';
 import RevenueReport from '../RevenueReport';
+import UserProfile from '../User Dash/UserProfile';
 
 const CarOwnerDash = () => {
   const [clickedOwnerOption, setcliCkedOwnerOption] = useState("dashboard");
@@ -21,6 +22,12 @@ const CarOwnerDash = () => {
         return <OwnedCars />;
       case "Deletecarowner":
         return <DeleteCarOwner />;
+      case "profile":
+        return (
+          <div className='ml-[-44%]'>
+           <UserProfile />;
+          </div>    
+        ) 
       default:
         return <div>Defaulted</div>;
     }

@@ -34,7 +34,6 @@ const Sidebar = ({ setcliCkedOwnerOption, setClickedUserOption }) => {
 
   const profileDropdownItems = [
     { label: "View Profile" },
-    { label: "Edit Profile" },
   ];
 
   const revenueDropdownItems = [
@@ -140,6 +139,13 @@ const Sidebar = ({ setcliCkedOwnerOption, setClickedUserOption }) => {
             </li>
           )}
 
+              <div
+                className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+                onClick={() => setcliCkedOwnerOption("profile")}
+              >
+                <span className="text-base">Profile</span>
+              </div>
+
           {/* Settings (for Admin only) */}
           {userRole === "admin" ? (
             <Dropdown title="Settings" items={bookingsDropdownItems} />
@@ -161,24 +167,9 @@ const Sidebar = ({ setcliCkedOwnerOption, setClickedUserOption }) => {
           )}
 
           {/* Profile Management (common for all roles) */}
-          <Dropdown title="Profile" items={profileDropdownItems} />
-
-          {/* Revenue Analytics (for Admin only) */}
-          {userRole === "admin" ? (
-            <Dropdown title="Revenue Analytics" items={revenueDropdownItems} />
-          ) : userRole === "carOwner" ? (
-            <li>
-              <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-base">Home (Car Owner)</span>
-              </div>
-            </li>
-          ) : (
-            <li>
-              <div className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer">
-                <span className="text-base">Home</span>
-              </div>
-            </li>
-          )}
+          {/* <Dropdown title="Profile" items={profileDropdownItems} /> */}
+          
+          
         </ul>
 
         <hr className="border-gray-700 my-4" />

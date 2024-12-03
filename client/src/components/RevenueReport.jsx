@@ -67,12 +67,12 @@ const RevenueReport = () => {
 
   const getBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/admin/getallbookings", {
+      const res = await axios.get("http://localhost:8000/api/admin/allbookings", {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      setBookings(res.data.bookings);
-      calculateRevenue(res.data.bookings, setRevenue, setLastMonthRevenue);
+      setBookings(res.data);
+      calculateRevenue(res.data, setRevenue, setLastMonthRevenue);
     } catch (error) {
       console.error("Error fetching bookings:", error.message);
     }
@@ -107,16 +107,22 @@ const RevenueReport = () => {
 
   const fetchRecentBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/carOwner/recent-bookings", {
+      const endpoint =
+        userRole === "admin"
+          ? "http://localhost:8000/api/admin/recent-bookings"
+          : "http://localhost:8000/api/carOwner/recent-bookings";
+  
+      const res = await axios.get(endpoint, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      console.log(res)
+      console.log(res);
       setRecentBookings(res.data);
     } catch (error) {
       console.error("Error fetching recent bookings:", error.message);
     }
   };
+  
 
   const calculateRevenue = (bookings, setTotalRevenue, setLastMonthRevenue) => {
     const currentDate = new Date();
@@ -143,12 +149,12 @@ const RevenueReport = () => {
         {/* Align cards in a single horizontal line */}
         <div className="flex flex-wrap gap-6 ">
           {userRole === "admin" && (
-            <div className="p-6 bg-gray-100 rounded-lg shadow-md transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gray-300 hover:shadow-xl border border-gray-200">
-              <h2 className="text-xl font-semibold animate-pulse">Total Users Listed</h2>
+            <div className="p-6 w-64 bg-white rounded-lg shadow-black shadow-[0_15px_25px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400 ml">
+              <h2 className="text-xl font-semibold animate-pulse  text-black">Total Users Listed</h2>
               <p className="text-3xl font-bold">{users.length}</p>
             </div>
           )}
-          <div className="p-6 w-64 bg-white rounded-lg shadow-black shadow-[0_15px_25px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400 ml-8 ">
+          <div className="p-6 w-64 bg-white rounded-lg shadow-black shadow-[0_15px_25px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400 ml">
             <h2 className="text-xl font-semibold animate-pulse  text-black">Total Cars Listed</h2>
             <FaCar className="text-4xl text-blue-600" />
             <p className="text-3xl font-bold text-black">

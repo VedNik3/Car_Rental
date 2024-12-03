@@ -29,7 +29,14 @@ const AdminDash = () => {
       case 'Delete User':
         return <DeleteUser/>;
       default:
-        return <RevenueReport/>;
+        // <div className='ml-[-20%]'>
+          return (
+            <div className='ml-[-35%]'>
+          <RevenueReport/>;
+          </div>
+          );
+            
+        
     }
   };
 
