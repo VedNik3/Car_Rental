@@ -203,4 +203,35 @@ export const getAllBookings = async (req, res) => {
 };
 
 
+export const recentBookings = async (req, res) => {
+  try {
+  // const CarOwnerId = req.user.id;
+
+  // const cars = await Car.find({ ownerId: CarOwnerId });
+
+//   if (cars.length === 0) {
+//     return res.status(404).json({ message: "No cars found for this owner." });
+// }
+
+// const carIds = cars.map(car => car._id);
+
+const recentbookings = await Booking.find()
+          .sort({ createdAt: -1 }) // Sort by newest first
+          .limit(5) // Limit to 5 bookings
+          .populate('user', 'fullname email') 
+          .populate('car', 'brand model regNumber')
+
+if (recentbookings.length === 0) {
+          return res.status(404).json({ message: "No bookings found for these cars." });
+      } 
+
+      res.status(200).json(recentbookings);
+    }catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Server error. Unable to fetch booking details." });
+    }
+
+}
+
+
 
