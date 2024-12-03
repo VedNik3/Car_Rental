@@ -10,7 +10,9 @@ import GetUser from './GetUser';
 import RevenueReport from '../RevenueReport';
 
 const AdminDash = () => {
-  const clickedOption = useSelector(state => state.admin.clickedOption); // Fetch from correct state slice
+  const clickedOption = useSelector(state => state.admin.clickedOption); 
+  console.log(">>>",clickedOption);
+  
 
   const renderContent = () => {
     switch (clickedOption) {

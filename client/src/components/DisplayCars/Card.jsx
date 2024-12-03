@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import carImg from "../../assets/carImg.jpeg";
+import CarImageSlider from "../CarImageSlider";
 
 const Card = ({ car }) => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Card = ({ car }) => {
             src={car.images[0] || carImg}
             alt="car"
           />
+          {/* <CarImageSlider car={car}/> */}
         </a>
         <div className="px-3 pt-5 pb-5">
           <a href="#">
