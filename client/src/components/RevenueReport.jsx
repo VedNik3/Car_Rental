@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { FaUsers, FaCar, FaCalendarAlt, FaMoneyBillWave } from "react-icons/fa";
+import { GiMoneyStack } from "react-icons/gi";
+// import '../styles/RevenueReport.css'
 
 const RevenueReport = () => {
   const userRole = useSelector((state) => state.app.user?.role);
@@ -14,7 +17,7 @@ const RevenueReport = () => {
   const [carOwnerRevenue, setCarOwnerRevenue] = useState(0);
   const [lastMonthCarOwnerRevenue, setLastMonthCarOwnerRevenue] = useState(0);
   const [loading, setLoading] = useState(true);
-  
+  const [recentBookings, setRecentBookings] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +36,7 @@ const RevenueReport = () => {
     };
 
     fetchData();
+    fetchRecentBookings();
   }, [userRole]);
 
   const getCars = async () => {
@@ -63,29 +67,24 @@ const RevenueReport = () => {
 
   const getBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/admin/allbookings", {
+      const res = await axios.get("http://localhost:8000/api/admin/getallbookings", {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      console.log(res);
-      
-      setBookings(res.data);
-      calculateRevenue(res.data, setRevenue, setLastMonthRevenue);
+      setBookings(res.data.bookings);
+      calculateRevenue(res.data.bookings, setRevenue, setLastMonthRevenue);
     } catch (error) {
       console.error("Error fetching bookings:", error.message);
     }
   };
 
   const getOwnedCars = async () => {
-    
     try {
       const res = await axios.get("http://localhost:8000/api/carOwner/getallownedcars", {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-    
-    
-      
+      // console.log(res)
       setOwnedCars(res.data.cars);
     } catch (error) {
       console.error("Error fetching owned cars:", error.message);
@@ -94,16 +93,28 @@ const RevenueReport = () => {
 
   const getCarOwnerBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/carowner/CarOwnerBookingDetails", {
+      const res = await axios.get("http://localhost:8000/api/carOwner/CarOwnerBookingDetails", {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-    
-       
-      setCarOwnerBookings(res.data);
+      // console.log(res)
+      setCarOwnerBookings(res.data.bookings);
       calculateRevenue(res.data.bookings, setCarOwnerRevenue, setLastMonthCarOwnerRevenue);
     } catch (error) {
       console.error("Error fetching car owner bookings:", error.message);
+    }
+  };
+
+  const fetchRecentBookings = async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/api/carOwner/recent-bookings", {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      console.log(res)
+      setRecentBookings(res.data);
+    } catch (error) {
+      console.error("Error fetching recent bookings:", error.message);
     }
   };
 
@@ -120,51 +131,123 @@ const RevenueReport = () => {
   };
 
   return (
-    <div className="mx-auto rounded-lg p-8">
-      <h1 className="text-4xl font-bold text-gray-800 mb-6 border-b pb-4">
-        {userRole === "admin" ? "Admin Dashboard" : "Owner Dashboard"}
-      </h1>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {userRole === "admin" && (
-              <div className="p-6 bg-gray-100 rounded-lg shadow-md">
-                <h2 className="text-xl font-semibold">Total Users Listed</h2>
-                <p className="text-3xl font-bold">{users.length}</p>
-              </div>
-            )}
-            <div className="p-6 bg-gray-100 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold">Total Cars Listed</h2>
-              <p className="text-3xl font-bold">
-                {userRole === "admin" ? cars.length : ownedCars.length}
-              </p>
+    <div className="h-screen bg-white">
+  <div className="mx-auto rounded-lg p-8">
+    <h1 className="text-4xl font-bold text-black mb-6 border-b pb-4 ">
+      {userRole === "admin" ? "Admin Dashboard" : "Owner Dashboard"}
+    </h1>
+    {loading ? (
+      <p>Loading...</p>
+    ) : (
+      <div>
+        {/* Align cards in a single horizontal line */}
+        <div className="flex flex-wrap gap-6 ">
+          {userRole === "admin" && (
+            <div className="p-6 bg-gray-100 rounded-lg shadow-md transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gray-300 hover:shadow-xl border border-gray-200">
+              <h2 className="text-xl font-semibold animate-pulse">Total Users Listed</h2>
+              <p className="text-3xl font-bold">{users.length}</p>
             </div>
-            <div className="p-6 bg-gray-100 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold">Total Bookings</h2>
-              <p className="text-3xl font-bold">
-                {userRole === "admin" ? bookings?.length : carOwnerBookings?.length}
-              </p>
-            </div>
+          )}
+          <div className="p-6 w-64 bg-white rounded-lg shadow-black shadow-[0_15px_25px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400 ml-8 ">
+            <h2 className="text-xl font-semibold animate-pulse  text-black">Total Cars Listed</h2>
+            <FaCar className="text-4xl text-blue-600" />
+            <p className="text-3xl font-bold text-black">
+              {userRole === "admin" ? cars.length : ownedCars.length}
+            </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-            <div className="p-6 bg-gray-100 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold">Total Revenue</h2>
-              <p className="text-3xl font-bold">
-                Rs. {userRole === "admin" ? revenue : carOwnerRevenue}
-              </p>
-            </div>
-            <div className="p-6 bg-gray-100 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold">Last Month Revenue</h2>
-              <p className="text-3xl font-bold">
-                Rs. {userRole === "admin" ? lastMonthRevenue : lastMonthCarOwnerRevenue}
-              </p>
-            </div>
+          <div className="p-6 w-64 bg-white  rounded-lg shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400">
+            <h2 className="text-xl font-semibold animate-pulse">Total Bookings</h2>
+            <FaCalendarAlt className="text-4xl text-violet-500" />
+            <p className="text-3xl font-bold">
+              {userRole === "admin" ? bookings.length : carOwnerBookings.length}
+            </p>
+          </div>
+        {/* </div> */}
+
+        {/* Align revenue cards in a single horizontal line */}
+        {/* <div className="flex flex-wrap gap-6 justify-center mt-6"> */}
+          <div className="p-6 w-64 bg-white  rounded-lg shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400">
+            <h2 className="text-xl font-semibold animate-pulse">Total Revenue</h2>
+            <FaMoneyBillWave className="text-4xl text-yellow-400" />
+            <p className="text-3xl font-bold">
+              Rs. {userRole === "admin" ? revenue : carOwnerRevenue}
+            </p>
+          </div>
+          <div className="p-6 w-64 bg-white  rounded-lg  shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400">
+            <h2 className="text-xl font-semibold animate-pulse">Last Month Revenue</h2>
+            {/* <FaMoneyBillWave className="text-4xl text-black" /> */}
+            <GiMoneyStack  className="text-4xl text-green-600"/>
+            <p className="text-3xl font-bold">
+              Rs. {userRole === "admin" ? lastMonthRevenue : lastMonthCarOwnerRevenue}
+            </p>
           </div>
         </div>
-      )}
-    </div>
+
+         {/* Recent Bookings Table */}
+         <div className="flex flex-wrap gap-6 ">
+         <div className="border-2 rounded-xl mt-20 border-gray-300 shadow-lg bg-gradient-to-r from-white via-gray-100 to-white p-8 max-w-7xl mx-auto">
+  <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+    📋 Recent Bookings
+  </h2>
+  <div className="overflow-x-auto shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)]">
+    <table className="w-full table-auto bg-white rounded-lg shadow-md">
+      <thead>
+        <tr className="bg-gradient-to-b from-gray-700 to-gray-500 text-white text-sm uppercase tracking-wider">
+          <th className="px-6 py-0">User</th>
+          <th className="px-6 py-1">Car</th>
+          <th className="px-6 py-1">Pickup</th>
+          <th className="px-6 py-4">Dropoff</th>
+          <th className="px-6 py-4">Total Price</th>
+          <th className="px-6 py-4">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {recentBookings.map((booking) => (
+          <tr
+            key={booking._id}
+            className="border-t border-gray-200 bg-gray-50 hover:bg-gradient-to-b from-gray-100 to-gray-100 transition duration-300"
+          >
+            {console.log(booking.user)}
+            <td className="px-6 py-4 text-gray-800 font-medium">
+              {booking.user?.fullname || "N/A"}
+            </td>
+            <td className="px-6 py-4 text-gray-600">
+              🚗 {booking.car?.brand} {booking.car?.model}
+            </td>
+            <td className="px-6 py-4 text-gray-600">
+              📍 {booking.rentalLocation.pickupLocation}
+            </td>
+            <td className="px-6 py-4 text-gray-600">
+              📍 {booking.rentalLocation.dropoffLocation}
+            </td>
+            <td className="px-6 py-4 text-gray-800 font-bold">
+              ₹ {booking.totalPrice}
+            </td>
+            <td className="px-4 py-2 text-xs text-center">
+  <span
+    className={`px-2 py-2 text-sm inline-block rounded-full border ${
+      booking.status === "Completed"
+        ? "text-green-600 border-green-600"
+        : booking.status === "Pending"
+        ? "text-yellow-600 border-yellow-600"
+        : "text-red-600 border-red-600 bg-red-100"
+    }`}
+  >
+    {booking.status}
+  </span>
+</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+
   );
 };
 
