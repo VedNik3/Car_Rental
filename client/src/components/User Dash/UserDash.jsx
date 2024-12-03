@@ -7,6 +7,8 @@ import UserBookingDetails from './UserBookingDetails';
 
 const UserDash = () => {
   const [clickedUserOption, setClickedUserOption] = useState("dashboard");
+  console.log("--->",clickedUserOption);
+  
 
   const renderContent = () => {
     switch (clickedUserOption) {
