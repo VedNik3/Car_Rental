@@ -67,21 +67,18 @@ const RevenueReport = () => {
 
   const getBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/admin/allbookings", {
+      const res = await axios.get("http://localhost:8000/api/admin/getallbookings", {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      console.log(res);
-      
-      setBookings(res.data);
-      calculateRevenue(res.data, setRevenue, setLastMonthRevenue);
+      setBookings(res.data.bookings);
+      calculateRevenue(res.data.bookings, setRevenue, setLastMonthRevenue);
     } catch (error) {
       console.error("Error fetching bookings:", error.message);
     }
   };
 
   const getOwnedCars = async () => {
-    
     try {
       const res = await axios.get("http://localhost:8000/api/carOwner/getallownedcars", {
         headers: { "Content-Type": "application/json" },
