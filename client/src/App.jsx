@@ -14,6 +14,7 @@ import UserDash from "./components/User Dash/UserDash";
 import AvailableCars from "./components/AvailableCars";
 import BookingForm from "./components/BookingForm";
 import PaymentComplete from "./components/PaymentComplete";
+import UserBookingDetails from "./components/User Dash/UserBookingDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -75,6 +76,10 @@ function App() {
     {
       path: "/completed",
       element: <PaymentComplete />,
+    },
+    {
+      path: "/userbookings",
+      element: <UserBookingDetails />,
     },
   ]);
 

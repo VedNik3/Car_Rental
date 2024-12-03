@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { IoIosArrowDropdown } from "react-icons/io";
+import { CgProfile } from "react-icons/cg";
 import { API_END_POINT } from "../utils/constants";
 import toast from "react-hot-toast";
 import { setUser } from "../redux/userSlice";
@@ -89,7 +89,7 @@ const Navbar = ({toggle,setToggle}) => {
 
           <div className="flex items-center gap-10">
             <div className="flex gap-2">
-              {user && <IoIosArrowDropdown size="24px" color="white" />}
+              {user && <CgProfile  size="24px" color="white" />}
               <span className="text-white">{user?.fullname}</span>
             </div>
 

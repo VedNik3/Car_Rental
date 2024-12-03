@@ -1,6 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
-import { setLocation } from "../../redux/carSlice";
+import {
+  setLocation,
+  setStartDateInStore,
+  setDropDateInStore,
+} from "../../redux/carSlice";
 
 const Modify = () => {
   const location = useSelector((state) => state.car.location);
@@ -9,20 +13,32 @@ const Modify = () => {
   const dispatch = useDispatch();
 
   const [selectedLocation, setSelectedLocation] = useState(location);
+  const [selectedStartDate, setSelectedStartDate] = useState(startDate);
+  const [selectedDropDate, setSelectedDropDate] = useState(dropDate);
 
   const handleLocationChange = (event) => {
     setSelectedLocation(event.target.value);
   };
 
+  const handleStartDateChange = (event) => {
+    setSelectedStartDate(event.target.value);
+  };
+
+  const handleDropDateChange = (event) => {
+    setSelectedDropDate(event.target.value);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(setLocation(selectedLocation));
+    dispatch(setStartDateInStore(selectedStartDate));
+    dispatch(setDropDateInStore(selectedDropDate));
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-2xl ml-48 mt-20 mb-10 border  p-2 rounded-full shadow-lg"
+      className="max-w-2xl ml-48 mt-20 mb-10 border p-2 rounded-full shadow-lg"
     >
       <div className="grid grid-cols-4 gap-4">
         <select
@@ -48,15 +64,15 @@ const Modify = () => {
         <input
           type="datetime-local"
           className="p-2 border rounded-full"
-          placeholder="Start Date"
-          value={startDate}
+          value={selectedStartDate}
+          onChange={handleStartDateChange}
         />
 
         <input
           type="datetime-local"
           className="p-2 border rounded-full"
-          placeholder="End Date"
-          value={dropDate}
+          value={selectedDropDate}
+          onChange={handleDropDateChange}
         />
 
         <button

@@ -199,6 +199,16 @@ const FilterCar = () => {
           />
           Diesel
         </label>
+        <label className="block text-gray-600 mb-2">
+          <input
+            type="checkbox"
+            value="electric"
+            checked={filters.fuelType.includes('electric')}
+            onChange={() => handleCheckboxChange('fuelType', 'electric')}
+            className="mr-2"
+          />
+          Electric
+        </label>
       </div>
 
       {/* Filter by Price */}
