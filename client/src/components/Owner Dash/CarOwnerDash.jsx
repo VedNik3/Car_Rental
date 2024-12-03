@@ -26,10 +26,13 @@ const CarOwnerDash = () => {
     }
   };
 
+  const isRevenueReport = clickedOwnerOption === "dashboard";
+
   return (
     <div>
       <Sidebar setcliCkedOwnerOption={setcliCkedOwnerOption}/>
-      <div className="flex-grow p-4 ml-[40%]">
+      {/* <div className="flex-grow p-4"> */}
+      <div className={`flex-grow p-4 ${isRevenueReport ? 'ml-[16%]' : 'ml-[41%]'}`}>
         {renderclickedOwnerOption()}
       </div>
     </div>

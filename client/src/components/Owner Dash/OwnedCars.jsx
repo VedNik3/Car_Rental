@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import toast from "react-hot-toast";
 import { API_END_POINT_CarOwner } from "../../utils/constants";
 import axios from 'axios';
+import CarImageSlider from '../CarImageSlider';
 
 const OwnedCars = () => {
   const [cars, setCars] = useState([]);
   const [message, setMessage] = useState('');
-  const [regNumber, setRegNumber] = useState(''); // State for regNumber input
-  const [deleteMessage, setDeleteMessage] = useState(''); // State for delete success/error message
+  const [regNumber, setRegNumber] = useState('');
+  const [deleteMessage, setDeleteMessage] = useState('');
 
   // Fetch cars when the component mounts
   useEffect(() => {
@@ -16,11 +17,11 @@ const OwnedCars = () => {
         const response = await axios.get(`${API_END_POINT_CarOwner}/getAllOwnedCars`, {
           headers: {
             "Content-Type": "application/json",
+            
           },
-          withCredentials: true, // to send cookies or session info
+          withCredentials: true,
         });
     
-        
         setCars(response.data.cars);
       } catch (error) {
         console.error('Error fetching cars:', error);
@@ -48,11 +49,10 @@ const OwnedCars = () => {
         data: {
           regNumber: regNumber,
         },
-        withCredentials: true, // to send cookies or session info
+        withCredentials: true,
       });
 
       if (response.status === 200) {
-        // setDeleteMessage('Car deleted successfully.');
         toast.success("Car deleted successfully");
         // Refetch cars after deletion
         setCars(cars.filter(car => car.regNumber !== regNumber));
@@ -68,31 +68,34 @@ const OwnedCars = () => {
   };
 
   return (
-    <div className="ml-[-40%]">
-      <h1 className="text-2xl font-bold mb-4">Owned Cars</h1>
-      {message && <p className="text-red-500">{message}</p>}
+    <div className="ml-[-40%] p-6">
+      <h1 className="text-3xl font-bold text-center mb-6">Owned Cars</h1>
+      {message && <p className="text-red-500 text-center mb-4">{message}</p>}
+
       {cars.length > 0 ? (
-        <ul>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {cars.map((car) => (
-            <li key={car._id} className="mb-4 border border-gray-300 p-4 rounded-lg shadow-md">
-              <h2 className="text-xl font-semibold">{car.brand} {car.model}</h2>
-              <p><strong>Registration Number:</strong> {car.regNumber}</p>
-              <p><strong>Year:</strong> {car.year}</p>
-              <p><strong>Type:</strong> {car.type}</p>
-              <p><strong>Color:</strong> {car.color}</p>
-              <p><strong>Rental Price Per Day:</strong> ₹{car.rentalPricePerDay}</p>
-              <p><strong>Status:</strong> {car.status}</p>
-              <img src={car.images[0]} alt={`${car.brand} ${car.model}`} className="w-48 h-auto mt-2" />
-            </li>
+            <div key={car._id} className="bg-gradient-to-b from-gray-300 to-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+              
+              <CarImageSlider car={car} />
+              
+              <h2 className="text-xl font-semibold text-gray-800">{car.brand} {car.model}</h2>
+              <p className="text-sm text-gray-600 mt-2"><strong>Registration Number:</strong> {car.regNumber}</p>
+              <p className="text-sm text-gray-600 mt-1"><strong>Year:</strong> {car.year}</p>
+              <p className="text-sm text-gray-600 mt-1"><strong>Type:</strong> {car.type}</p>
+              <p className="text-sm text-gray-600 mt-1"><strong>Color:</strong> {car.color}</p>
+              <p className="text-sm text-gray-600 mt-1"><strong>Rental Price Per Day:</strong> ₹{car.rentalPricePerDay}</p>
+              <p className="text-sm text-gray-600 mt-1"><strong>Status:</strong> {car.status}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
-        <p>No cars found.</p>
+        <p className="text-center text-gray-600 mt-4">No cars found.</p>
       )}
 
       {/* Form to delete a car by registration number */}
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4">Delete a Car</h2>
+      <div className="mt-8 bg-gray-100 p-6 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-semibold mb-4 text-center">Delete a Car</h2>
         <form onSubmit={handleDeleteCar} className="space-y-4">
           <div>
             <label htmlFor="regNumber" className="block text-sm font-medium text-gray-700">Car Registration Number:</label>
@@ -106,11 +109,11 @@ const OwnedCars = () => {
               required
             />
           </div>
-          <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded">
+          <button type="submit" className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded w-full">
             Delete Car
           </button>
         </form>
-        {deleteMessage && <p className="text-red-500 mt-4">{deleteMessage}</p>}
+        {deleteMessage && <p className="text-red-500 mt-4 text-center">{deleteMessage}</p>}
       </div>
     </div>
   );

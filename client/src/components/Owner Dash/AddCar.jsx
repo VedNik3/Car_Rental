@@ -3,11 +3,11 @@ import { API_END_POINT_CarOwner, API_END_POINT_admin } from "../../utils/constan
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 const AddCar = () => {
-  const userRole = useSelector(state => state.app.user.role);
-  
+  const userRole = useSelector((state) => state.app.user.role);
+
   const [formData, setFormData] = useState({
     brand: "",
     model: "",
@@ -16,7 +16,7 @@ const AddCar = () => {
     type: "sedan",
     color: "",
     rentalPricePerDay: "",
-    fuelType: "",
+    fuelType: "petrol",
     transmission: "manual",
     seats: "",
     status: "available",
@@ -26,7 +26,15 @@ const AddCar = () => {
     currentLocation: "",
   });
 
+  const [activeField, setActiveField] = useState(null);
+  const [imageInputs, setImageInputs] = useState([""]);
+
   const navigate = useNavigate();
+
+
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, images: Array.from(e.target.files) });
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,7 +48,14 @@ const AddCar = () => {
   };
 
   const addImageField = () => {
+    setImageInputs([...imageInputs, ""]);
     setFormData({ ...formData, images: [...formData.images, ""] });
+  };
+
+  const removeImageField = (index) => {
+    const updatedImages = formData.images.filter((_, i) => i !== index);
+    setImageInputs(imageInputs.filter((_, i) => i !== index));
+    setFormData({ ...formData, images: updatedImages });
   };
 
   const handleSubmit = async (e) => {
@@ -51,233 +66,149 @@ const AddCar = () => {
       return;
     }
 
-    const endpoint = userRole === "admin" 
-      ? `${API_END_POINT_admin}/addcar` 
-      : `${API_END_POINT_CarOwner}/addcar`;
+    const endpoint =
+      userRole === "admin"
+        ? `${API_END_POINT_admin}/addcar`
+        : `${API_END_POINT_CarOwner}/addcar`;
 
-    try {
-      const res = await axios.post(endpoint, formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+        const formDataToSend = new FormData();
+  Object.entries(formData).forEach(([key, value]) => {
+    if (key === "images") {
+      value.forEach((file) => formDataToSend.append("images", file));
+    } else {
+      formDataToSend.append(key, value);
+    }
+  });
+
+  try {
+    const res = await axios.post(endpoint, formDataToSend, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      withCredentials: true,
+    });
+
 
       toast.success("Car added successfully!");
-      (userRole ==="carOwner") ? navigate("/carownerdash") : navigate("/admindash");
+      userRole === "carOwner" ? navigate("/carownerdash") : navigate("/admindash");
     } catch (error) {
-      toast.error("Error adding car: " + error.response?.data?.message || error.message);
+      toast.error("Error adding car: " + (error.response?.data?.message || error.message));
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-2xl mx-auto p-6 bg-blue-400 shadow-md rounded-md space-y-6 ml-[-10%]"
+      className="max-w-7xl p-8  shadow-lg rounded-lg space-y-6 ml-[-44%]"
     >
-      <h2 className="text-2xl font-semibold text-gray-700">Add a New Car</h2>
+      <h2 className="text-3xl font-semibold text-black text-center">Add a New Car</h2>
 
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Brand:</label>
-          <input
-            type="text"
-            name="brand"
-            value={formData.brand}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 block w-full border-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Model:</label>
-          <input
-            type="text"
-            name="model"
-            value={formData.model}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Year:</label>
-          <input
-            type="number"
-            name="year"
-            value={formData.year}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Registration Number:</label>
-          <input
-            type="text"
-            name="regNumber"
-            value={formData.regNumber}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Type:</label>
-          <select
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          >
-            <option value="sedan">Sedan</option>
-            <option value="suv">SUV</option>
-            <option value="hatchback">Hatchback</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Color:</label>
-          <input
-            type="text"
-            name="color"
-            value={formData.color}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Rental Price Per Day:</label>
-          <input
-            type="number"
-            name="rentalPricePerDay"
-            value={formData.rentalPricePerDay}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Fuel Type:</label>
-          <select
-            type="text"
-            name="fuelType"
-            value={formData.fuelType}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          >
-            <option value="petrol">petrol</option>
-            <option value="diesel">diesel</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Transmission:</label>
-          <select
-            name="transmission"
-            value={formData.transmission}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          >
-            <option value="manual">Manual</option>
-            <option value="automatic">Automatic</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Seats:</label>
-          <input
-            type="number"
-            name="seats"
-            value={formData.seats}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Status:</label>
-          <select
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          >
-            <option value="available">Available</option>
-            <option value="booked">Booked</option>
-            <option value="in service">In Service</option>
-          </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Mileage:</label>
-          <input
-            type="number"
-            name="mileage"
-            value={formData.mileage}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Description:</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Current Location:</label>
-          <input
-            type="text"
-            name="currentLocation"
-            value={formData.currentLocation}
-            onChange={handleChange}
-            required
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Images (URLs):</label>
-          {formData.images.map((image, index) => (
-            <input
-              key={index}
-              type="text"
-              value={image}
-              onChange={(e) => handleImageChange(index, e.target.value)}
-              className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-            />
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {[
+            { name: "brand", label: "Brand" },
+            { name: "model", label: "Model" },
+            { name: "year", label: "Year", type: "number" },
+            { name: "regNumber", label: "Registration Number" },
+            { name: "color", label: "Color" },
+            { name: "rentalPricePerDay", label: "Rental Price Per Day", type: "number" },
+            { name: "seats", label: "Seats", type: "number" },
+            { name: "mileage", label: "Mileage", type: "number" },
+            { name: "currentLocation", label: "Current Location" },
+          ].map((field) => (
+            <div key={field.name}>
+              <label className="block text-sm font-medium text-black">{field.label}:</label>
+              <input
+                type={field.type || "text"}
+                name={field.name}
+                value={formData[field.name]}
+                onChange={handleChange}
+                onFocus={() => setActiveField(field.name)}
+                onBlur={() => setActiveField(null)}
+                required={field.name === "regNumber"}
+                className={`mt-1 p-3 block w-full font-medium  border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                  activeField === field.name ? "bg-gradient-to-b from-gray-700 to-gray-600 text-white" : "bg-gray-300 text-black"
+                }`}
+              />
+            </div>
           ))}
-          <button
-            type="button"
-            onClick={addImageField}
-            className="mt-2 px-4 py-2 bg-indigo-600 text-white rounded-md"
-          >
-            Add Another Image
-          </button>
+
+          {/* Select Fields */}
+          {[
+            {
+              name: "type",
+              label: "Type",
+              options: ["sedan", "suv", "hatchback", "coupe", "convertible"],
+            },
+            {
+              name: "fuelType",
+              label: "Fuel Type",
+              options: ["petrol", "diesel", "electric", "hybrid"],
+            },
+            {
+              name: "transmission",
+              label: "Transmission",
+              options: ["manual", "automatic"],
+            },
+            {
+              name: "status",
+              label: "Status",
+              options: ["available", "rented", "maintenance"],
+            },
+          ].map((field) => (
+            <div key={field.name}>
+              <label className="block text-sm font-medium text-black">{field.label}:</label>
+              <select
+                name={field.name}
+                value={formData[field.name]}
+                onChange={handleChange}
+                onFocus={() => setActiveField(field.name)}
+                onBlur={() => setActiveField(null)}
+                className={`mt-1 p-3 block w-full font-medium border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                  activeField === field.name ? "bg-gradient-to-b from-gray-500 to-gray-400 text-black" : "bg-gray-300 text-black"
+                }`}
+              >
+                {field.options.map((option) => (
+                  <option key={option} value={option}>
+                    {option.charAt(0).toUpperCase() + option.slice(1)}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+
+          {/* Description Field */}
+          <div className="col-span-2">
+            <label className="block text-sm font-medium text-black">Description:</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              onFocus={() => setActiveField("description")}
+              onBlur={() => setActiveField(null)}
+              className={`mt-1 p-3 block w-full text-white  border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 ${
+                activeField === "description" ? "bg-gradient-to-b from-gray-700 to-gray-600" : "bg-gray-300"
+              }`}
+              rows="4"
+            ></textarea>
+          </div>      
+    <div>
+      <label>Upload Images</label>
+      <input
+        type="file"
+        name="images"
+        multiple // Allow multiple files
+        onChange={handleFileChange}
+      className="mt-1 block w-full text-white p-3 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-gray-300"
+      />
+    </div>
+          
         </div>
       </div>
 
       <button
         type="submit"
-        className="mt-4 w-full px-4 py-2 bg-green-600 text-white rounded-md"
+        className="w-full px-6 py-3 mt-6 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition duration-200"
       >
         Add Car
       </button>
