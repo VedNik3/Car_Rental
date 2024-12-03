@@ -6,16 +6,15 @@ import { API_END_POINT } from "../../utils/constants";
 
 const CardContainer = () => {
   const [cars, setCars] = useState([]);
-  const location = useSelector((state) => state.car.location);
   const [error, setError] = useState(null); // To handle potential errors
 
+  const location = useSelector((state) => state.car.location);
   const filters = useSelector((state) => state.filter);
 
-  const isFiltersEmpty = Object.values(filters.filter).every((value) => {
+  // Ensure filters.filter exists to avoid runtime errors
+  const isFiltersEmpty = filters.filter && Object.values(filters.filter).every((value) => {
     return (Array.isArray(value) && value.length === 0) || value === "";
   });
-
-  console.log("car folter", filters.filter.fuelType);
 
   useEffect(() => {
     const fetchCars = async () => {
@@ -36,7 +35,7 @@ const CardContainer = () => {
   }, [location]);
 
   return (
-    <div className="flex flex-wrap  mt-5 ">
+    <div className="flex flex-wrap gap-5 mt-5">
       {error ? <p>{error}</p> : null}
 
       {isFiltersEmpty &&
@@ -49,37 +48,39 @@ const CardContainer = () => {
             <Card key={filteredCar._id} car={filteredCar} />
           ))}
 
-      {!isFiltersEmpty && cars
-        .filter((car) => {
-          const isLocationMatch = car.currentLocation === location;
-          const isStatusAvailable = car.status === "available";
-          const isBrandMatch =
-            filters.filter.brand.length === 0 ||
-            filters.filter.brand.includes(car.brand);
-          const isTypeMatch =
-            filters.filter.type.length === 0 ||
-            filters.filter.type.includes(car.type);
-          const isTransmissionMatch =
-            filters.filter.transmission.length === 0 ||
-            filters.filter.transmission.includes(car.transmission);
-          const isFuelMatch =
-            filters.filter.fuelType.length === 0 ||
-            filters.filter.fuelType.includes(car.fuelType);
+      {!isFiltersEmpty &&
+        cars
+          .filter((car) => {
+            const isLocationMatch = car.currentLocation === location;
+            const isStatusAvailable = car.status === "available";
+            const isBrandMatch =
+              filters.filter.brand.length === 0 ||
+              filters.filter.brand.includes(car.brand);
+            const isTypeMatch =
+              filters.filter.type.length === 0 ||
+              filters.filter.type.includes(car.type);
+            const isTransmissionMatch =
+              filters.filter.transmission.length === 0 ||
+              filters.filter.transmission.includes(car.transmission);
+            const isFuelMatch =
+              filters.filter.fuelType.length === 0 ||
+              filters.filter.fuelType.includes(car.fuelType);
 
-          return (
-            isLocationMatch && isStatusAvailable && isBrandMatch && isTypeMatch && isTransmissionMatch && isFuelMatch
-          );
-        })
-        .map((filteredCar) => (
-          <Card key={filteredCar._id} car={filteredCar} />
-        ))}
+            return (
+              isLocationMatch &&
+              isStatusAvailable &&
+              isBrandMatch &&
+              isTypeMatch &&
+              isTransmissionMatch &&
+              isFuelMatch
+            );
+          })
+          .map((filteredCar) => (
+            <Card key={filteredCar._id} car={filteredCar} />
+          ))}
 
-{console.log("wkqlihfdwe.", cars.length)
-}
-        {cars.length == 0 && <h1>No cars</h1>}
+      {cars.length === 0 && <h1>No cars</h1>}
     </div>
-
-    
   );
 };
 

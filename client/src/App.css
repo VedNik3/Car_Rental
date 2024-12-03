@@ -47,3 +47,74 @@
   background-color: #0056b3;
 }
 
+/* payment succesfull css */
+.payment-complete-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.tick-container {
+  display: none;
+  animation: showTick 1s ease-out forwards;
+}
+
+.tick-container.show {
+  display: block;
+}
+
+.checkmark {
+  transform: scale(0);
+  animation: scaleUp 0.5s ease-out forwards;
+}
+
+.circle {
+  fill: none;
+  stroke: #d1e7e3;
+  stroke-width: 2;
+}
+
+.check-path {
+  stroke: green;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: drawCheck 1s ease-in-out forwards;
+}
+
+.success-message {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: green;
+}
+
+@keyframes showTick {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes drawCheck {
+  0% {
+    stroke-dasharray: 0, 20;
+  }
+  100% {
+    stroke-dasharray: 20, 0;
+  }
+}

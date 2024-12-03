@@ -14,6 +14,7 @@ const RevenueReport = () => {
   const [carOwnerRevenue, setCarOwnerRevenue] = useState(0);
   const [lastMonthCarOwnerRevenue, setLastMonthCarOwnerRevenue] = useState(0);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,23 +63,29 @@ const RevenueReport = () => {
 
   const getBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/admin/getallbookings", {
+      const res = await axios.get("http://localhost:8000/api/admin/allbookings", {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      setBookings(res.data.bookings);
-      calculateRevenue(res.data.bookings, setRevenue, setLastMonthRevenue);
+      console.log(res);
+      
+      setBookings(res.data);
+      calculateRevenue(res.data, setRevenue, setLastMonthRevenue);
     } catch (error) {
       console.error("Error fetching bookings:", error.message);
     }
   };
 
   const getOwnedCars = async () => {
+    
     try {
-      const res = await axios.get("http://localhost:8000/api/carowner/getownedcars", {
+      const res = await axios.get("http://localhost:8000/api/carOwner/getallownedcars", {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
+    
+    
+      
       setOwnedCars(res.data.cars);
     } catch (error) {
       console.error("Error fetching owned cars:", error.message);
@@ -87,11 +94,13 @@ const RevenueReport = () => {
 
   const getCarOwnerBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/carowner/getbookings", {
+      const res = await axios.get("http://localhost:8000/api/carowner/CarOwnerBookingDetails", {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      setCarOwnerBookings(res.data.bookings);
+    
+       
+      setCarOwnerBookings(res.data);
       calculateRevenue(res.data.bookings, setCarOwnerRevenue, setLastMonthCarOwnerRevenue);
     } catch (error) {
       console.error("Error fetching car owner bookings:", error.message);
@@ -101,10 +110,10 @@ const RevenueReport = () => {
   const calculateRevenue = (bookings, setTotalRevenue, setLastMonthRevenue) => {
     const currentDate = new Date();
     const lastMonth = currentDate.getMonth() - 1;
-    const totalRevenue = bookings.reduce((total, booking) => total + booking.amount, 0);
+    const totalRevenue = bookings.reduce((total, booking) => total + booking.totalPrice, 0);
     const lastMonthRevenue = bookings
       .filter((booking) => new Date(booking.date).getMonth() === lastMonth)
-      .reduce((total, booking) => total + booking.amount, 0);
+      .reduce((total, booking) => total + booking.totalPrice, 0);
 
     setTotalRevenue(totalRevenue);
     setLastMonthRevenue(lastMonthRevenue);
@@ -135,7 +144,7 @@ const RevenueReport = () => {
             <div className="p-6 bg-gray-100 rounded-lg shadow-md">
               <h2 className="text-xl font-semibold">Total Bookings</h2>
               <p className="text-3xl font-bold">
-                {userRole === "admin" ? bookings.length : carOwnerBookings.length}
+                {userRole === "admin" ? bookings?.length : carOwnerBookings?.length}
               </p>
             </div>
           </div>

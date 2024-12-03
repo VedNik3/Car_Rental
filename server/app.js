@@ -7,8 +7,11 @@ import carOwnerRoute from "./routes/carOwnerRoute.js"
 import bookingRoute from "./routes/bookingRoute.js"
 import cors from "cors";
 import cookieParser from "cookie-parser"; 
-
+import Stripe from 'stripe';
 dotenv.config({ path: '.env' });
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 
 const app = express();
 
@@ -28,6 +31,44 @@ app.use("/api/user", userRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/carOwner", carOwnerRoute);
 app.use("/api/booking", bookingRoute);
+
+app.post('/checkout', async (req, res) => {
+  try {
+    const { carName, totalPrice } = req.body;
+
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price_data: {
+            currency: 'inr',
+            product_data: {
+              name: carName,
+            },
+            unit_amount: totalPrice * 100,
+          },
+          quantity: 1, // Since the total price is already provided, set quantity to 1
+        },
+      ],
+      mode: 'payment',
+      success_url: `${process.env.BASE_URL}/completed`,
+      cancel_url: `${process.env.BASE_URL}/cards`,
+    });
+
+    console.log(session);
+    
+    res.json({ url: session.url });
+  } catch (error) {
+    console.error("Stripe error: ", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+app.get('/complete', (req, res) => {
+  res.send('Payment Successful')
+})
+
+
 
 // Database connection
 const connectToDatabase = async () => {

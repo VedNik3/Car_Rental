@@ -39,6 +39,8 @@ export const booked = async (req, res) => {
           }
 
           const car = await Car.findOne({ regNumber });
+          console.log("-->",car);
+          
 
           if (!car) {
             return res.status(404).json({ message: "Car not found." });
