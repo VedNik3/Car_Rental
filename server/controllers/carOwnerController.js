@@ -1,8 +1,41 @@
 import { Car } from "../models/carModel.js";
 import { Booking } from "../models/bookingModel.js";
 import { User } from "../models/UserModel.js"
+import multer from "multer";
+import path from "path";
 
 const regNumberValidation = /^(AP|AR|AS|BR|CH|DL|GA|GJ|HR|HP|JK|KA|KL|MH|MP|OD|PB|RJ|TN|UP|WB)\d{2}[A-Z]{2}\d{4}$/
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Directory where files will be stored
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`); // Unique file name
+  },
+});
+
+// File filter to accept only images
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith("image/")) {
+    cb(null, true); // Accept file
+  } else {
+    cb(new Error("Only image files are allowed!"), false); // Reject file
+  }
+};
+
+// Multer configuration
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // Limit: 5MB
+  fileFilter: fileFilter,
+});
+
+// Create upload directory if it doesn't exist
+import fs from "fs";
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
 
 
 
@@ -56,6 +89,7 @@ export const getAllOwnedCars = async (req, res) => {
 // addCar(carDetails): Allow the owner to add new cars to the platform.
 export const addCar = async (req, res) => {
   try {
+    const imagePaths = req.files.map((file) => `/uploads/${file.filename}`);
 
     const {
       brand,
@@ -71,7 +105,6 @@ export const addCar = async (req, res) => {
       status,
       mileage,
       description,
-      images,
       currentLocation,
     } = req.body;
 
@@ -105,7 +138,7 @@ export const addCar = async (req, res) => {
       status,
       mileage,
       description,
-      images,
+      images: imagePaths,
       currentLocation,
       ownerId,
     });
@@ -173,6 +206,67 @@ export const CarOwnerBookingDetails = async (req, res) => {
     return res.status(500).json({ message: "Server error. Unable to fetch booking details." });
   }
 }
+
+export const recentBookings = async (req, res) => {
+  try {
+  const CarOwnerId = req.user.id;
+
+  const cars = await Car.find({ ownerId: CarOwnerId });
+
+  if (cars.length === 0) {
+    return res.status(404).json({ message: "No cars found for this owner." });
+}
+
+const carIds = cars.map(car => car._id);
+
+const recentbookings = await Booking.find({ car: { $in: carIds } })
+          .sort({ createdAt: -1 }) // Sort by newest first
+          .limit(5) // Limit to 5 bookings
+          .populate('user', 'fullname email') 
+          .populate('car', 'brand model regNumber')
+
+if (recentbookings.length === 0) {
+          return res.status(404).json({ message: "No bookings found for these cars." });
+      } 
+
+      res.status(200).json(recentbookings);
+    }catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Server error. Unable to fetch booking details." });
+    }
+
+}
+
+export const uploadimages = upload.array("images", 5);
+
+export const handleImagesUpload = (req, res) => {
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "No files uploaded" });
+    }
+
+    // Map over the files to create a file path array
+    const filePaths = req.files.map(file => `/uploads/${file.filename}`);
+
+    res.status(200).json({
+      message: "Images uploaded successfully!",
+      filePaths: filePaths, // Return all file paths
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Image upload failed", error: error.message });
+  }
+};
+
+// export const uploadimages = async (req, res) => {
+//   try {
+//     res.status(200).json({
+//       message: "Image uploaded successfully!",
+//       filePath: `/uploads/${req.file.filename}`,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Image upload failed", error });
+//   }
+// }
 
 
 // removeCar(regNumber): Allow the owner to remove cars from the platform.
