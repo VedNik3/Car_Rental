@@ -39,7 +39,7 @@ const DeleteCarOwner = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 ml-[-45%]">
             <h1 className="text-3xl font-bold mb-4">Delete Car Owner Account</h1>
 
             {/* Show error message if there is one */}
