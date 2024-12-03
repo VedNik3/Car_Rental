@@ -7,7 +7,7 @@ const Modify = () => {
   const startDate = useSelector((state) => state.car.startDate);
   const dropDate = useSelector((state) => state.car.dropDate);
   const dispatch = useDispatch();
-  
+
   const [selectedLocation, setSelectedLocation] = useState(location);
 
   const handleLocationChange = (event) => {
@@ -20,14 +20,19 @@ const Modify = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl ml-48 mt-24  border border-black p-2 rounded ">
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-2xl ml-48 mt-20 mb-10 border  p-2 rounded-full shadow-lg"
+    >
       <div className="grid grid-cols-4 gap-4">
         <select
-          className="p-2 border rounded"
+          className="p-2 border rounded-full"
           value={selectedLocation}
           onChange={handleLocationChange}
         >
-          <option value="" disabled>Select a location</option>
+          <option value="" disabled>
+            Select a location
+          </option>
           <option value="Mumbai">Mumbai</option>
           <option value="Delhi">Delhi</option>
           <option value="Bangalore">Bangalore</option>
@@ -42,21 +47,21 @@ const Modify = () => {
 
         <input
           type="datetime-local"
-          className="p-2 border rounded"
+          className="p-2 border rounded-full"
           placeholder="Start Date"
           value={startDate}
         />
 
         <input
           type="datetime-local"
-          className="p-2 border rounded"
+          className="p-2 border rounded-full"
           placeholder="End Date"
           value={dropDate}
         />
 
         <button
           type="submit"
-          className="p-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="p-2 bg-blue-500 text-white rounded-full hover:bg-blue-600"
         >
           Modify
         </button>

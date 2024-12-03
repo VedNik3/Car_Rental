@@ -13,6 +13,7 @@ import CarOwnerDash from "./components/Owner Dash/CarOwnerDash";
 import UserDash from "./components/User Dash/UserDash";
 import AvailableCars from "./components/AvailableCars";
 import BookingForm from "./components/BookingForm";
+import PaymentComplete from "./components/PaymentComplete";
 
 function App() {
   const dispatch = useDispatch();
@@ -70,6 +71,10 @@ function App() {
     {
       path: "/bookingpage",
       element: <BookingForm />,
+    },
+    {
+      path: "/completed",
+      element: <PaymentComplete />,
     },
   ]);
 

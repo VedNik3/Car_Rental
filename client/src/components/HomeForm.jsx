@@ -47,7 +47,18 @@ const HomeForm = () => {
     if (type === "start") {
       setStartDate(value);
       dispatch(setStartDateInStore(value));
-      setDuration(calculateDuration(value, dropDate));
+
+      // Automatically set the drop date to the next day
+      const nextDay = new Date(value);
+      nextDay.setDate(nextDay.getDate() + 1); // Add one day
+      const nextDayISO = nextDay.toISOString().slice(0, 16); // Convert to ISO format for input
+
+      if (!dropDate || new Date(value) >= new Date(dropDate)) {
+        setDropDate(nextDayISO);
+        dispatch(setDropDateInStore(nextDayISO));
+      }
+
+      setDuration(calculateDuration(value, nextDayISO));
     } else {
       setDropDate(value);
       dispatch(setDropDateInStore(value));
@@ -63,6 +74,7 @@ const HomeForm = () => {
   const handleLocationChange = (e) => {
     dispatch(setLocation(e.target.value));
   };
+
   const handleToggle = (e) => {
     setToggle(!toggle);
   };
@@ -71,7 +83,6 @@ const HomeForm = () => {
     <>
       <Navbar toggle={toggle} setToggle={setToggle} />
 
-      {/* <div className="relative w-full h-screen bg-[url('https://wallpaperaccess.com/full/1846083.jpg')] bg-cover bg-center flex items-center"> */}
       <div className="relative w-full h-screen bg-[url('https://wallpaperaccess.com/full/1838837.jpg')] bg-cover bg-center flex items-center">
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
@@ -83,9 +94,7 @@ const HomeForm = () => {
         {/* Form */}
         {toggle && (
           <div className="relative z-10 border-2 border-white p-8 rounded-lg shadow-lg max-w-md w-full mt-11 ml-[25%] bg-transparent text-white">
-            <h2 className="text-2xl font-bold text-center mb-6">
-              Car Rental Form
-            </h2>
+            <h2 className="text-2xl font-bold text-center mb-6">Car Rental Form</h2>
             <form onSubmit={handleBookNow}>
               {/* Pickup Address */}
               <div className="mb-4">
@@ -102,20 +111,10 @@ const HomeForm = () => {
                   onChange={handleLocationChange}
                   required
                 >
-                  <option value="" disabled className="">
+                  <option value="" disabled>
                     Select Pickup City
                   </option>
-                  {[
-                    "Mumbai",
-                    "Delhi",
-                    "Bangalore",
-                    "Chennai",
-                    "Kolkata",
-                    "Hyderabad",
-                    "Pune",
-                    "Ahmedabad",
-                    "Amravati",
-                  ].map((city) => (
+                  {["Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata", "Hyderabad", "Pune", "Ahmedabad", "Amravati"].map((city) => (
                     <option key={city} value={city} className="text-black">
                       {city}
                     </option>
@@ -132,10 +131,11 @@ const HomeForm = () => {
                   Start Date & Time
                 </label>
                 <input
-                  className="w-full p-1 border bg-transparent border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 "
+                  className="w-full p-1 border bg-transparent border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   type="datetime-local"
                   id="start-date-time"
                   value={startDate}
+                  min={new Date().toISOString().slice(0, 16)} // Restrict to current or future dates
                   onChange={(e) => handleDateChange("start", e.target.value)}
                   required
                 />
@@ -150,10 +150,11 @@ const HomeForm = () => {
                   Drop-off Date & Time
                 </label>
                 <input
-                  className="w-full p-1 border bg-transparent border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 "
+                  className="w-full p-1 border bg-transparent border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   type="datetime-local"
                   id="drop-date-time"
                   value={dropDate}
+                  min={startDate || new Date().toISOString().slice(0, 16)} // Restrict to start date or current date
                   onChange={(e) => handleDateChange("drop", e.target.value)}
                   required
                 />
@@ -170,7 +171,7 @@ const HomeForm = () => {
                 Book Now
               </button>
               <button
-                className="absolute top-2 right-2 text-2xl "
+                className="absolute top-2 right-2 text-2xl"
                 onClick={handleToggle}
               >
                 <MdOutlineCancel />

@@ -8,9 +8,13 @@ const Card = ({ car }) => {
     navigate("/bookingpage", { state: { car } });
   };
 
+  console.log(car);
+  
+
   return (
     <div>
-      <div className="w-64 h-auto bg-white border border-gray-200 rounded-lg shadow m-2">
+      <div className="w-64 h-auto bg-gray-100 border border-gray-200 rounded-lg shadow-xl m-2">
+
         <a href="#">
           <img
             className="w-full h-40 object-cover rounded-t-lg"
@@ -18,13 +22,13 @@ const Card = ({ car }) => {
             alt="car"
           />
         </a>
-        <div className="px-5 pb-5">
+        <div className="px-3 pt-5 pb-5">
           <a href="#">
             <h5 className="text-xl font-semibold tracking-tight">
               {car.brand} {car.model}
             </h5>
           </a>
-          <div className="flex items-center mt-2.5 mb-5">
+          {/* <div className="flex items-center mt-2.5 mb-5">
             {[...Array(4)].map((_, i) => (
               <svg
                 key={i}
@@ -49,28 +53,23 @@ const Card = ({ car }) => {
             <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded ms-3">
               5.0
             </span>
-          </div>
-          <div className="flex gap-2 mb-5">
-            <div className="bg-green-100 text-green-700 rounded-full px-2 py-1 text-xs font-semibold">
+          </div> */}
+          <div className="flex justify-between mb-5 mt-5 ml-2 mr-2">
+            <div className="bg-green-100 text-green-700 rounded-sm px-2 py-1 text-xs font-semibold">
               {car.mileage} Km/Ltr
             </div>
-            <div
-              className={`rounded-full px-2 py-1 text-xs font-semibold ${
-                car.status === "Available"
-                  ? "bg-green-100 text-green-700"
-                  : "bg-red-100 text-red-700"
-              }`}
-            >
-              {car.status}
+            <div className="bg-red-100 text-red-700 rounded-sm px-2 py-1 text-xs font-semibold">
+              {car.fuelType} 
             </div>
-            <div className="bg-blue-100 text-blue-700 rounded-full px-2 py-1 text-xs font-semibold">
+            
+            <div className="bg-blue-100 text-blue-700 rounded-sm px-2 py-1 text-xs font-semibold">
               {car.currentLocation}
             </div>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-gray-900">Rs. {car.rentalPricePerDay}</span>
+            <span className="text-gray-900 font-semibold">Rs. <span className="text-xl">{car.rentalPricePerDay}</span></span>
             <div
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center cursor-pointer"
+              className="text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-1.5 text-center cursor-pointer"
               onClick={() => handleBookButton(car)}
             >
               Rent Now
