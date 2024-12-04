@@ -22,19 +22,19 @@ const CarImageSlider = ({ car }) => {
       <img
         src={`http://localhost:8000${car.images[currentImageIndex]}`}
         alt={`${car.brand} ${car.model}`}
-        className="w-full h-56  object-cover rounded-lg mb-4"
+        className="w-full h-44  object-cover rounded-lg mb-4"
       />
 
       {/* Navigation Arrows */}
       <button
         onClick={prevImage}
-        className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white hover:bg-gray-200 px-2 pb-1 shadow-md rounded-full transition duration-300 ease-in-out text-xl font-extrabold"
+        className="absolute left-2 top-1/2 transform -translate-y-1/2  hover:bg-gray-200 px-2 pb-1 shadow-md rounded-full transition duration-300 ease-in-out text-xl font-extrabold"
       >
         &#8592;
       </button>
       <button
         onClick={nextImage}
-        className="absolute right-2 top-1/2 transform -translate-y-1/2   bg-white hover:bg-gray-200 px-2 pb-1 shadow-md rounded-full transition duration-300 ease-in-out text-xl font-extrabold"
+        className="absolute right-2 top-1/2 transform -translate-y-1/2    hover:bg-gray-200 px-2 pb-1 shadow-md rounded-full transition duration-300 ease-in-out text-xl font-extrabold"
       >
         &#8594;
       </button>

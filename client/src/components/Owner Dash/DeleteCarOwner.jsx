@@ -12,13 +12,19 @@ const DeleteCarOwner = () => {
     const navigate = useNavigate(); // Hook for programmatic navigation
 
     const deleteAccount = async () => {
+        const confirmDelete = window.confirm("Are you sure you want to delete your account? This action is irreversible.");
+
+        if (!confirmDelete) {
+            return; // If user cancels, exit the function
+        }
+
         setLoading(true);
         setError('');
         setSuccessMessage('');
 
         try {
             // Send DELETE request to the backend to delete the user
-            await axios.delete(`${API_END_POINT_CarOwner}/deletecarowner`, {
+            await axios.delete("http://localhost:8000/api/carOwner/deletecarowner", {
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -26,11 +32,10 @@ const DeleteCarOwner = () => {
             });
 
             // On successful deletion, show success message and redirect to login
-            // setSuccessMessage('Your account has been successfully deleted.');
             toast.success("Your account has been successfully deleted.");
             setTimeout(() => {
                 navigate('/login'); // Redirect to login page after a short delay
-            }, 1000); // Wait for 2 seconds before redirection
+            }, 1000); // Wait for 1 second before redirection
         } catch (err) {
             setError(err.response ? err.response.data.message : "Unable to delete account. Please try again.");
         } finally {

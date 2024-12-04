@@ -118,14 +118,33 @@ const RevenueReport = () => {
     }
   };
 
+  // const calculateRevenue = (bookings, setTotalRevenue, setLastMonthRevenue) => {
+  //   const currentDate = new Date();
+  //   const lastMonth = currentDate.getMonth() - 1;
+  //   const totalRevenue = bookings.reduce((total, booking) => total + booking.totalPrice, 0);
+  //   const lastMonthRevenue = bookings
+  //     .filter((booking) => new Date(booking.date).getMonth() === lastMonth)
+  //     .reduce((total, booking) => total + booking.totalPrice, 0);
+
+  //   setTotalRevenue(totalRevenue);
+  //   setLastMonthRevenue(lastMonthRevenue);
+  // };
+
   const calculateRevenue = (bookings, setTotalRevenue, setLastMonthRevenue) => {
     const currentDate = new Date();
     const lastMonth = currentDate.getMonth() - 1;
-    const totalRevenue = bookings.reduce((total, booking) => total + booking.totalPrice, 0);
-    const lastMonthRevenue = bookings
+  
+    // Filter out canceled bookings
+    const validBookings = bookings.filter((booking) => booking.status !== "canceled");
+  
+    // Calculate total revenue from valid bookings
+    const totalRevenue = validBookings.reduce((total, booking) => total + booking.totalPrice, 0);
+  
+    // Calculate revenue for the last month from valid bookings
+    const lastMonthRevenue = validBookings
       .filter((booking) => new Date(booking.date).getMonth() === lastMonth)
       .reduce((total, booking) => total + booking.totalPrice, 0);
-
+  
     setTotalRevenue(totalRevenue);
     setLastMonthRevenue(lastMonthRevenue);
   };
@@ -228,7 +247,7 @@ const RevenueReport = () => {
     className={`px-2 py-2 text-sm inline-block rounded-full border ${
       booking.status === "Completed"
         ? "text-green-600 border-green-600"
-        : booking.status === "Pending"
+        : booking.status === "canceled"
         ? "text-yellow-600 border-yellow-600"
         : "text-red-600 border-red-600 bg-red-100"
     }`}
