@@ -38,11 +38,11 @@ const Modify = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-2xl ml-48 mt-20 mb-10 border p-2 rounded-full shadow-lg"
+      className="max-w-2xl ml-48 mt-20 mb-10 border bg-white p-2 rounded-full shadow-xl"
     >
       <div className="grid grid-cols-4 gap-4">
         <select
-          className="p-2 border rounded-full"
+          className="p-2 border-2 rounded-full"
           value={selectedLocation}
           onChange={handleLocationChange}
         >
@@ -63,14 +63,14 @@ const Modify = () => {
 
         <input
           type="datetime-local"
-          className="p-2 border rounded-full"
+          className="p-2 border-2  rounded-full"
           value={selectedStartDate}
           onChange={handleStartDateChange}
         />
 
         <input
           type="datetime-local"
-          className="p-2 border rounded-full"
+          className="p-2 border-2 rounded-full"
           value={selectedDropDate}
           onChange={handleDropDateChange}
         />

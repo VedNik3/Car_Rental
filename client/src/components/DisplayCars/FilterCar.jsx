@@ -48,13 +48,13 @@ const FilterCar = () => {
   }, [filters, dispatch]);
 
   return (
-    <div className="fixed top-0 left-0 bg-white p-6 w-56 h-full shadow-lg rounded-lg ">
-      <h3 className="text-xl font-semibold text-gray-800 mb-4">Filter Cars</h3>
+    <div className="fixed top-0 left-0 bg-custom-gray p-6 w-56 h-full shadow-lg rounded-lg ">
+      <h3 className="text-xl font-semibold text-gray-200 mb-4">Filter Cars</h3>
 
       {/* Filter by Brand */}
       <div className="filter-section mb-4">
-        <h4 className="text-lg font-medium text-gray-700 mb-2">Brand</h4>
-        <label className="block text-gray-600 mb-2">
+        <h4 className="text-lg font-medium text-gray-200 mb-2">Brand</h4>
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="Tata"
@@ -64,7 +64,7 @@ const FilterCar = () => {
           />
           Tata
         </label>
-        <label className="block text-gray-600 mb-2">
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="Mahindra"
@@ -74,7 +74,7 @@ const FilterCar = () => {
           />
           Mahindra
         </label>
-        <label className="block text-gray-600 mb-2">
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="Hyundai"
@@ -84,7 +84,7 @@ const FilterCar = () => {
           />
           Hyundai
         </label>
-        <label className="block text-gray-600 mb-2">
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="Toyota"
@@ -94,7 +94,7 @@ const FilterCar = () => {
           />
           Toyota
         </label>
-        <label className="block text-gray-600 mb-2">
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="Suzuki"
@@ -104,7 +104,7 @@ const FilterCar = () => {
           />
           Suzuki
         </label>
-        <label className="block text-gray-600 mb-2">
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="Lamborghini"
@@ -118,8 +118,8 @@ const FilterCar = () => {
 
       {/* Filter by Model */}
       <div className="filter-section mb-4">
-        <h4 className="text-lg font-medium text-gray-700 mb-2">Segment</h4>
-        <label className="block text-gray-600 mb-2">
+        <h4 className="text-lg font-medium text-gray-200 mb-2">Segment</h4>
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="sedan"
@@ -129,7 +129,7 @@ const FilterCar = () => {
           />
           Sedan
         </label>
-        <label className="block text-gray-600 mb-2">
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="suv"
@@ -139,7 +139,7 @@ const FilterCar = () => {
           />
           SUV
         </label>
-        <label className="block text-gray-600 mb-2">
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="hatchback"
@@ -153,8 +153,8 @@ const FilterCar = () => {
 
       {/* Filter by Transmission */}
       <div className="filter-section mb-4">
-        <h4 className="text-lg font-medium text-gray-700 mb-2">Transmission</h4>
-        <label className="block text-gray-600 mb-2">
+        <h4 className="text-lg font-medium text-gray-200 mb-2">Transmission</h4>
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="manual"
@@ -164,7 +164,7 @@ const FilterCar = () => {
           />
           Manual
         </label>
-        <label className="block text-gray-600 mb-2">
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="automatic"
@@ -178,8 +178,8 @@ const FilterCar = () => {
 
       {/* Filter by Fuel */}
       <div className="filter-section mb-4">
-        <h4 className="text-lg font-medium text-gray-700 mb-2">Fuel</h4>
-        <label className="block text-gray-600 mb-2">
+        <h4 className="text-lg font-medium text-gray-200 mb-2">Fuel</h4>
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="petrol"
@@ -189,7 +189,7 @@ const FilterCar = () => {
           />
           Petrol
         </label>
-        <label className="block text-gray-600 mb-2">
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="diesel"
@@ -199,7 +199,7 @@ const FilterCar = () => {
           />
           Diesel
         </label>
-        <label className="block text-gray-600 mb-2">
+        <label className="block text-gray-400 mb-2">
           <input
             type="checkbox"
             value="electric"
@@ -213,7 +213,7 @@ const FilterCar = () => {
 
       {/* Filter by Price */}
       {/* <div className="filter-section mb-4">
-        <h4 className="text-lg font-medium text-gray-700 mb-2">Price</h4>
+        <h4 className="text-lg font-medium text-gray-200 mb-2">Price</h4>
         <input
           type="range"
           min="0"
@@ -222,23 +222,23 @@ const FilterCar = () => {
           onChange={handlePriceChange}
           className="w-full"
         />
-        <div className="text-gray-600">{`Max Price: ₹${filters.price}`}</div>
+        <div className="text-gray-400">{`Max Price: ₹${filters.price}`}</div>
       </div> */}
 
       {/* Filter by Mileage */}
       {/* <div className="filter-section mb-6">
-        <h4 className="text-lg font-medium text-gray-700 mb-2">Mileage</h4>
+        <h4 className="text-lg font-medium text-gray-200 mb-2">Mileage</h4>
         <input
           type="number"
           placeholder="Max Mileage (km/l)"
           value={filters.mileage}
           onChange={(e) => handleInputChange('mileage', e.target.value)}
-          className="w-full p-2 border border-gray-300 rounded-md text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full p-2 border border-gray-300 rounded-md text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div> */}
 
       {/* Apply Filter Button */}
-      {/* <button className="w-full py-2 bg-blue-500 text-white rounded-md font-semibold text-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      {/* <button className="w-full py-2 bg-blue-500 text-white rounded-md font-semibold text-sm hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
         Apply Filters
       </button> */}
     </div>

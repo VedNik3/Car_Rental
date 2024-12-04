@@ -39,29 +39,27 @@ const DeleteUser = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 ml-[-45%]">
-            <h1 className="text-3xl font-bold mb-4">Delete User Account</h1>
-
-            {/* Show error message if there is one */}
-            {error && <div className="text-red-600 mb-4">{error}</div>}
-
-            {/* Show success message if account deletion is successful */}
-            {successMessage && <div className="text-green-600 mb-4">{successMessage}</div>}
-
-            {/* Show a confirmation message before deletion */}
-            <p className="mb-4 text-center">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-300">
+        <h1 className="text-4xl font-bold mb-8 text-red-700">Delete User Account</h1>
+    
+        {error && <div className="text-red-600 mb-6 px-4 py-2 bg-red-100 rounded-md">{error}</div>}
+    
+        {successMessage && <div className="text-green-600 mb-6 px-4 py-2 bg-green-100 rounded-md">{successMessage}</div>}
+    
+        <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 mb-8">
+            <p className="mb-6 text-center text-gray-700 text-lg">
                 Are you sure you want to delete your account? This action is irreversible.
             </p>
-
-            {/* Delete button */}
+    
             <button
-                className="bg-red-600 text-white px-6 py-2 rounded hover:bg-red-700"
+                className="w-full bg-red-600 text-white px-6 py-3 rounded-md hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300 transition ease-in-out duration-200 text-lg font-semibold"
                 onClick={deleteAccount}
                 disabled={loading}
             >
                 {loading ? 'Deleting...' : 'Delete Account'}
             </button>
         </div>
+    </div>
     );
 };
 

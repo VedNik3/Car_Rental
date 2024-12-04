@@ -194,6 +194,8 @@ export const deleteCar = async (req, res) => {
 // Get all bookings:
 export const getAllBookings = async (req, res) => {
   try {
+    // console.log("server");
+    
     const bookings = await Booking.find();
     res.status(200).json(bookings); 
 

@@ -57,7 +57,7 @@ const RevenueReport = () => {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      console.log(res.data);
+      
       
       setUsers(res.data);
     } catch (error) {
@@ -67,12 +67,14 @@ const RevenueReport = () => {
 
   const getBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/admin/getallbookings", {
+      
+      const res = await axios.get("http://localhost:8000/api/admin/allbookings", {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      setBookings(res.data.bookings);
-      calculateRevenue(res.data.bookings, setRevenue, setLastMonthRevenue);
+      
+      setBookings(res.data);
+      calculateRevenue(res.data, setRevenue, setLastMonthRevenue);
     } catch (error) {
       console.error("Error fetching bookings:", error.message);
     }
@@ -107,11 +109,19 @@ const RevenueReport = () => {
 
   const fetchRecentBookings = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/carOwner/recent-bookings", {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      });
-      console.log(res)
+      let res = [];
+      if(userRole==="admin"){
+        res = await axios.get("http://localhost:8000/api/admin/recent-bookings", {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
+      } else if (userRole==="carOwner"){
+        res = await axios.get("http://localhost:8000/api/carOwner/recent-bookings", {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
+      }
+      
       setRecentBookings(res.data);
     } catch (error) {
       console.error("Error fetching recent bookings:", error.message);
@@ -138,7 +148,12 @@ const RevenueReport = () => {
     const validBookings = bookings.filter((booking) => booking.status !== "canceled");
   
     // Calculate total revenue from valid bookings
-    const totalRevenue = validBookings.reduce((total, booking) => total + booking.totalPrice, 0);
+    let totalRevenue = 0; 
+    if(userRole==="admin"){
+       totalRevenue = validBookings.reduce((total, booking) => total + (booking.totalPrice*0.2) , 0);
+      } else if (userRole==="carOwner"){
+        totalRevenue = validBookings.reduce((total, booking) => total + (booking.totalPrice*0.8) , 0);
+    }           
   
     // Calculate revenue for the last month from valid bookings
     const lastMonthRevenue = validBookings

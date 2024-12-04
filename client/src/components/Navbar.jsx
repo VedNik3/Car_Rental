@@ -76,7 +76,7 @@ const Navbar = ({toggle,setToggle}) => {
           src={mainLogo}
           className="h-10 cursor-pointer"
         /> */}
-        <h1 className="text-white text-2xl font-medium cursor-pointer"><span className="text-red-700 ">Drive</span>Sphere<span className="text-red-700 font-bold"> .</span></h1>
+        <h1 onClick={handleLogoClick} className="text-white text-2xl font-medium cursor-pointer"><span className="text-red-700 ">Drive</span>Sphere<span className="text-red-700 font-bold"> .</span></h1>
 
         <div className="flex items-center gap-5">
           {user && (

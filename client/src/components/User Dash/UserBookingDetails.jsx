@@ -73,8 +73,8 @@ const UserBookingDetails = () => {
     }, []); // Only run once on component mount
 
     return (
-        <div className="flex flex-col items-center min-h-screen bg-gray-100 ml-[16%]">
-            <h1 className="text-3xl font-bold mb-4">Your Booking Details</h1>
+        <div className="flex flex-col items-center min-h-screen bg-gray-300 ml-[16%] ">
+            <h1 className="text-2xl font-bold p-2 border-2 bg-gray-400 text-gray-800 border-black w-full text-center">Your Booking Details</h1>
 
             {/* Show error if any */}
             {error && <div className="text-red-600 mb-4">{error}</div>}
@@ -85,59 +85,106 @@ const UserBookingDetails = () => {
 
             {/* Render booking details in a table */}
             {!loading && bookings.length > 0 && (
-                <div className="overflow-x-auto w-full">
-                    <table className="min-w-full bg-white border border-gray-200 shadow-md">
-                        <thead>
-                            <tr className="bg-gray-200">
-                                <th className="py-2 px-4 border-b">Car</th>
-                                <th className="py-2 px-4 border-b">Rental Period</th>
-                                <th className="py-2 px-4 border-b">Total Price</th>
-                                <th className="py-2 px-4 border-b">Pickup Location</th>
-                                <th className="py-2 px-4 border-b">Dropoff Location</th>
-                                <th className="py-2 px-4 border-b">Status</th>
-                                <th className="py-2 px-4 border-b">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {bookings.map((booking) => (
-                                <tr key={booking._id} className="hover:bg-gray-100">
-                                    <td className="py-2 px-4 border-b">
-                                        {booking.car.brand} {booking.car.model} ({booking.car.regNumber})
-                                    </td>
-                                    <td className="py-2 px-4 border-b">
-                                        {new Date(booking.rentalStartDate).toLocaleDateString()} - {new Date(booking.rentalEndDate).toLocaleDateString()}
-                                    </td>
-                                    <td className="py-2 px-4 border-b">${booking.totalPrice}</td>
-                                    <td className="py-2 px-4 border-b">
+    <div className="relative flex flex-col w-full max-w-7xl bg-white shadow-lg rounded-xl overflow-hidden">
+        <div className="overflow-x-auto">
+            <table className="w-full min-w-max table-auto text-left">
+                <thead>
+                    <tr>
+                        {["Car", "Rental Period", "Total Price", "Pickup Location", "Dropoff Location", "Status", "Actions"].map((head) => (
+                            <th key={head} className="border-b border-blue-gray-100 bg-blue-gray-50 p-4">
+                                <div className="font-semibold text-sm text-blue-gray-700 leading-none">
+                                    {head}
+                                </div>
+                            </th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {bookings.map((booking, index) => {
+                        const isLast = index === bookings.length - 1;
+                        const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
+
+                        return (
+                            <tr key={booking._id} className="hover:bg-blue-gray-50/50 transition-colors duration-200">
+                                <td className={classes}>
+                                    <div className="flex flex-col">
+                                        <span className="font-semibold text-sm text-blue-gray-900">
+                                            {booking.car.brand} {booking.car.model}
+                                        </span>
+                                        <span className="text-xs text-blue-gray-600">
+                                            {booking.car.regNumber}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td className={classes}>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm text-blue-gray-900">
+                                            {new Date(booking.rentalStartDate).toLocaleDateString()}
+                                        </span>
+                                        <span className="text-sm text-blue-gray-900">
+                                            to {new Date(booking.rentalEndDate).toLocaleDateString()}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td className={classes}>
+                                    <span className="font-medium text-sm text-emerald-600">
+                                        Rs. {booking.totalPrice}
+                                    </span>
+                                </td>
+                                <td className={classes}>
+                                    <span className="text-sm text-blue-gray-900">
                                         {booking.rentalLocation.pickupLocation}
-                                    </td>
-                                    <td className="py-2 px-4 border-b">
+                                    </span>
+                                </td>
+                                <td className={classes}>
+                                    <span className="text-sm text-blue-gray-900">
                                         {booking.rentalLocation.dropoffLocation}
-                                    </td>
-                                    <td className="py-2 px-4 border-b capitalize">
+                                    </span>
+                                </td>
+                                <td className={classes}>
+                                    <span className={`
+                                        inline-block px-3 py-1 rounded-full text-xs font-medium
+                                        ${booking.status === 'canceled' 
+                                            ? 'bg-red-100 text-red-800' 
+                                            : booking.status === 'booked' 
+                                            ? 'bg-blue-100 text-blue-800' 
+                                            : 'bg-green-100 text-green-800'
+                                        }
+                                    `}>
                                         {booking.status}
-                                    </td>
-                                    <td className="py-2 px-4 border-b space-x-2">
+                                    </span>
+                                </td>
+                                <td className={classes}>
+                                    <div className="flex gap-2">
                                         <button 
-                                            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                                             onClick={() => deleteBooking(booking._id)}
+                                            className="px-4 py-2 text-xs font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-200"
                                         >
                                             Delete
                                         </button>
                                         <button 
-                                            className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
                                             onClick={() => cancelBooking(booking._id)}
                                             disabled={booking.status === "canceled"}
+                                            className={`
+                                                px-4 py-2 text-xs font-medium text-white rounded-lg transition-all duration-200
+                                                ${booking.status === "canceled"
+                                                    ? 'bg-gray-300 cursor-not-allowed'
+                                                    : 'bg-yellow-500 hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2'
+                                                }
+                                            `}
                                         >
                                             Cancel
                                         </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            )}
+                                    </div>
+                                </td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        </div>
+    </div>
+)}
 
             {/* If no bookings found */}
             {!loading && bookings.length === 0 && !error && (
