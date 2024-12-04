@@ -3,6 +3,8 @@ import Sidebar from '../Sidebar';
 import UserProfile from './UserProfile';
 import { useState } from 'react';
 import UserBookingDetails from './UserBookingDetails';
+import DeleteUser from './DeleteUser';
+import MainPage from './MainPage';
 
 
 const UserDash = () => {
@@ -13,7 +15,7 @@ const UserDash = () => {
   const renderContent = () => {
     switch (clickedUserOption) {
       case 'dashboard':
-        return <div>Hi I am Vedant</div>;
+        return <MainPage/>;
       case "profile":
         return <UserProfile/>;
       case 'booking':

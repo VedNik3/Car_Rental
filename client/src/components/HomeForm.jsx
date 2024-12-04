@@ -47,24 +47,31 @@ const HomeForm = () => {
     if (type === "start") {
       setStartDate(value);
       dispatch(setStartDateInStore(value));
-
-      // Automatically set the drop date to the next day
-      const nextDay = new Date(value);
-      nextDay.setDate(nextDay.getDate() + 1); // Add one day
-      const nextDayISO = nextDay.toISOString().slice(0, 16); // Convert to ISO format for input
-
-      if (!dropDate || new Date(value) >= new Date(dropDate)) {
-        setDropDate(nextDayISO);
-        dispatch(setDropDateInStore(nextDayISO));
-      }
-
-      setDuration(calculateDuration(value, nextDayISO));
-    } else {
+  
+      // Automatically set the drop date to 24 hours later
+      const startDateObj = new Date(value);
+      console.log("Start Date:", startDateObj);
+  
+      const nextDay = new Date(startDateObj.getTime() + 24 * 60 * 60 * 1000); // Add 24 hours in milliseconds
+      console.log("Next Day (raw Date object):", nextDay);
+  
+      // Convert nextDay to a local ISO format (YYYY-MM-DDTHH:mm)
+      const localISO = nextDay.toLocaleString("sv-SE", { timeZone: "Asia/Kolkata" }).replace(" ", "T");
+      console.log("Next Day (Local ISO format):", localISO);
+  
+      setDropDate(localISO);
+      dispatch(setDropDateInStore(localISO));
+  
+      setDuration(calculateDuration(value, localISO));
+    } else if (type === "drop") {
       setDropDate(value);
       dispatch(setDropDateInStore(value));
       setDuration(calculateDuration(startDate, value));
     }
   };
+  
+  
+
 
   const handleBookNow = (event) => {
     event.preventDefault();

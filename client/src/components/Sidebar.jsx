@@ -163,6 +163,17 @@ const Sidebar = ({ setClickedUserOption, setcliCkedOwnerOption }) => {
             </li>
           )}
 
+          {
+            userRole==="user" && <li>
+            <div
+              className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+              onClick={() => setClickedUserOption("Delete User")}
+            >
+              <span className="text-base">Setting</span>
+            </div>
+          </li>
+          }
+
           {/* Profile Management (common for all roles) */}
           {/* <Dropdown title="Profile" items={profileDropdownItems} /> */}
 

@@ -133,9 +133,12 @@ const BookingForm = () => {
             type="number"
             readOnly
             value={
-              formData.totalPrice *
-              durationFunc(formData.rentalStartDate, formData.rentalEndDate)
+              Math.floor(
+                formData.totalPrice *
+                durationFunc(formData.rentalStartDate, formData.rentalEndDate)
+              )
             }
+            
             className="w-full mb-4"
           />
 
