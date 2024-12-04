@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const CarImageSlider = ({ car }) => {
+const CarImageSlider = ({ car, height = "200px" }) => {
   // Assuming car.images is an array of image URLs
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -22,7 +22,8 @@ const CarImageSlider = ({ car }) => {
       <img
         src={`http://localhost:8000${car.images[currentImageIndex]}`}
         alt={`${car.brand} ${car.model}`}
-        className="w-full h-44  object-cover rounded-lg mb-4"
+        style={{ height }} // Dynamically apply height
+        className="w-full object-cover rounded-lg mb-4"
       />
 
       {/* Navigation Arrows */}

@@ -169,9 +169,7 @@ const RevenueReport = () => {
     const lastMonth = currentDate.getMonth() - 1;
 
     // Filter out canceled bookings
-    const validBookings = bookings.filter(
-      (booking) => booking.status !== "canceled"
-    );
+    const validBookings = bookings.filter((booking) => booking.status !== "canceled");
 
     // Calculate total revenue from valid bookings
     let totalRevenue = 0;
@@ -189,8 +187,8 @@ const RevenueReport = () => {
 
     // Calculate revenue for the last month from valid bookings
     const lastMonthRevenue = validBookings
-      .filter((booking) => new Date(booking.date).getMonth() === lastMonth)
-      .reduce((total, booking) => total + booking.totalPrice, 0);
+      .filter((booking) => new Date(booking.rentalStartDate).getMonth() === lastMonth)
+      .reduce((total, booking) => total + booking.totalPrice * 0.8, 0);
 
     setTotalRevenue(totalRevenue);
     setLastMonthRevenue(lastMonthRevenue);
@@ -210,63 +208,48 @@ const RevenueReport = () => {
             <div className="flex flex-wrap gap-6 ">
               {userRole === "admin" && (
                 <div className="p-6 bg-gray-100 rounded-lg shadow-md transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gray-300 hover:shadow-xl border border-gray-200">
-                  <h2 className="text-xl font-semibold animate-pulse">
-                    Total Users Listed
-                  </h2>
+                  <h2 className="text-xl font-semibold animate-pulse">Total Users Listed</h2>
                   <p className="text-3xl font-bold">{users.length}</p>
                 </div>
               )}
-              <div className="p-6 w-64 bg-white rounded-lg shadow-black shadow-[0_15px_25px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400 ml-8 ">
-                <h2 className="text-xl font-semibold animate-pulse  text-black">
-                  Total Cars Listed
-                </h2>
+              <div className="p-6 w-64 bg-white bg-gradient-to-r from-blue-100 to-blue-400 rounded-lg shadow-black shadow-[0_15px_25px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover: ml-8 ">
+                <h2 className="text-xl font-semibold animate-pulse  text-black">Total Cars Listed</h2>
                 <FaCar className="text-4xl text-blue-600" />
                 <p className="text-3xl font-bold text-black">
                   {userRole === "admin" ? cars.length : ownedCars.length}
                 </p>
               </div>
-              <div className="p-6 w-64 bg-white  rounded-lg shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400">
-                <h2 className="text-xl font-semibold animate-pulse">
-                  Total Bookings
-                </h2>
+              <div className="p-6 w-64 bg-white bg-gradient-to-r from-violet-100 to-violet-400 rounded-lg shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out">
+                <h2 className="text-xl font-semibold animate-pulse">Total Bookings</h2>
                 <FaCalendarAlt className="text-4xl text-violet-500" />
                 <p className="text-3xl font-bold">
-                  {userRole === "admin"
-                    ? bookings.length
-                    : carOwnerBookings.length}
+                  {userRole === "admin" ? bookings.length : carOwnerBookings.length}
                 </p>
               </div>
               {/* </div> */}
 
               {/* Align revenue cards in a single horizontal line */}
               {/* <div className="flex flex-wrap gap-6 justify-center mt-6"> */}
-              <div className="p-6 w-64 bg-white  rounded-lg shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400">
-                <h2 className="text-xl font-semibold animate-pulse">
-                  Total Revenue
-                </h2>
+              <div className="p-6 w-64 bg-white bg-gradient-to-r from-yellow-100 to-yellow-400 rounded-lg shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out ">
+                <h2 className="text-xl font-semibold animate-pulse">Total Revenue</h2>
                 <FaMoneyBillWave className="text-4xl text-yellow-400" />
                 <p className="text-3xl font-bold">
                   Rs. {userRole === "admin" ? revenue : carOwnerRevenue}
                 </p>
               </div>
-              <div className="p-6 w-64 bg-white  rounded-lg  shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400">
-                <h2 className="text-xl font-semibold animate-pulse">
-                  Last Month Revenue
-                </h2>
+              <div className="p-6 w-64 bg-white bg-gradient-to-r from-green-100 to-green-400  rounded-lg  shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out ">
+                <h2 className="text-xl font-semibold animate-pulse">Last Month Revenue</h2>
                 {/* <FaMoneyBillWave className="text-4xl text-black" /> */}
                 <GiMoneyStack className="text-4xl text-green-600" />
                 <p className="text-3xl font-bold">
-                  Rs.{" "}
-                  {userRole === "admin"
-                    ? lastMonthRevenue
-                    : lastMonthCarOwnerRevenue}
+                  Rs. {userRole === "admin" ? lastMonthRevenue : lastMonthCarOwnerRevenue}
                 </p>
               </div>
             </div>
 
             {/* Recent Bookings Table */}
             <div className="flex flex-wrap gap-6 ">
-              <div className="border-2 rounded-xl mt-20 border-gray-300 shadow-lg bg-gradient-to-r from-white via-gray-100 to-white p-8 max-w-7xl mx-auto">
+              <div className="border-2 rounded-xl mt-20 border-gray-300 shadow-lg bg-gradient-to-r from-white via-gray-100 to-white p-8 w-full mx-auto">
                 <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
                   📋 Recent Bookings
                 </h2>
@@ -306,13 +289,12 @@ const RevenueReport = () => {
                           </td>
                           <td className="px-4 py-2 text-xs text-center">
                             <span
-                              className={`px-2 py-2 text-sm inline-block rounded-full border ${
-                                booking.status === "Completed"
-                                  ? "text-green-600 border-green-600"
+                              className={`px-2 py-2 text-sm inline-block rounded-full border ${booking.status === "completed"
+                                  ? "text-green-600 border-green-600 bg-green-100"
                                   : booking.status === "canceled"
-                                  ? "text-yellow-600 border-yellow-600"
-                                  : "text-red-600 border-red-600 bg-red-100"
-                              }`}
+                                    ? "text-yellow-600 border-yellow-600 bg-yellow-100"
+                                    : "text-red-600 border-red-600 bg-red-100"
+                                }`}
                             >
                               {booking.status}
                             </span>
@@ -328,6 +310,7 @@ const RevenueReport = () => {
         )}
       </div>
     </div>
+
   );
 };
 

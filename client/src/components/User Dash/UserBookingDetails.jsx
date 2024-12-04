@@ -49,37 +49,27 @@ const UserBookingDetails = () => {
     }
   };
 
-  // Function to cancel a booking
-  const cancelBooking = async (bookingId) => {
-    setMessage("");
-    try {
-      await axios.patch(
-        `${API_END_POINT}/canceluserbooking/${bookingId}`,
-        {
-          status: "canceled", // Send the status update
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true, // to send cookies or session info
+    // Function to cancel a booking
+    const cancelBooking = async (bookingId) => {
+        setMessage('');
+        try {
+            await axios.patch(`${API_END_POINT}/canceluserbooking/${bookingId}`, {
+                status: "canceled", // Send the status update
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                withCredentials: true, // to send cookies or session info
+            });
+            // Update the booking status in the state
+            setBookings(bookings.map(booking =>
+                booking._id === bookingId ? { ...booking, status: "canceled" } : booking
+            ));
+            toast.success("Booking canceled successfully.");
+        } catch (err) {
+            setError(err.response ? err.response.data.message : "Unable to cancel booking");
         }
-      );
-      // Update the booking status in the state
-      setBookings(
-        bookings.map((booking) =>
-          booking._id === bookingId
-            ? { ...booking, status: "canceled" }
-            : booking
-        )
-      );
-      toast.success("Booking canceled successfully.");
-    } catch (err) {
-      setError(
-        err.response ? err.response.data.message : "Unable to cancel booking"
-      );
-    }
-  };
+    };
 
   // Automatically fetch bookings when the component loads
   useEffect(() => {
