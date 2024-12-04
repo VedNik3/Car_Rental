@@ -1,121 +1,156 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { API_END_POINT } from "../../utils/constants";
-import axios from 'axios';
+import axios from "axios";
+import homeImage from "../../assets/image1.png";
 
 const UserProfile = () => {
-  const [userData, setUserData] = useState(null); // State for user data
-  const [error, setError] = useState(''); // State for errors
-  const [name, setName] = useState(''); // State for editing the user's name
-  const [loading, setLoading] = useState(false); // State for handling loading during update
-  const [isEditing, setIsEditing] = useState(false); // State for managing edit mode
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState("");
+  const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-  // Fetch user data on component mount
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const res = await axios.get(`${API_END_POINT}/profile`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true, // Send cookies along with the request
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
         });
-
-        setUserData(res.data); // Save the user data to state
-        setName(res.data.fullname); // Set initial name in the state
+        setUserData(res.data);
+        setName(res.data.fullname);
       } catch (error) {
-        setError('Error fetching user information');
+        setError("Error fetching user information");
         console.error("Error response:", error.response);
       }
     };
-
     fetchUserData();
   }, []);
 
-  // Function to handle the update of the user's name
   const handleUpdate = async () => {
     setLoading(true);
-    setError('');
+    setError("");
     try {
-      const res = await axios.put(`${API_END_POINT}/update`, { fullname: name }, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true, // Send cookies along with the request
-      });
-
-      setUserData(res.data); // Update the user data in state
-      setIsEditing(false); // Exit edit mode after updating
-      setError(''); // Clear any previous errors
-      setLoading(false);
+      const res = await axios.put(
+        `${API_END_POINT}/update`,
+        { fullname: name },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      );
+      setUserData(res.data);
+      setIsEditing(false);
+      setError("");
     } catch (error) {
-      setError('Error updating user information');
+      setError("Error updating user information");
       console.error("Update error response:", error.response);
+    } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md text-center">
-        <h2 className="text-2xl font-semibold mb-6">User Information</h2>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        {userData ? (
-          <div>
-            {isEditing ? (
-              // Edit Mode: Show the form when editing
-              <div>
-                <h3 className="text-xl font-medium mb-4">Edit Your Details</h3>
-                
-                {/* Name input field for editing */}
-                <div className="mb-4">
-                  <label className="block text-left mb-2 text-gray-600">Name:</label>
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded"
-                  />
-                </div>
-
-                <p className="mt-4"><strong>Email:</strong> {userData.email}</p>
-
-                {/* Update and Cancel Buttons */}
-                <button
-                  onClick={handleUpdate}
-                  className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                  disabled={loading}
-                >
-                  {loading ? 'Updating...' : 'Update Name'}
-                </button>
-
-                {/* Cancel button to return to view mode */}
-                <button
-                  onClick={() => setIsEditing(false)}
-                  className="ml-4 mt-6 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
-                >
-                  Cancel
-                </button>
+    <div className="min-h-screen bg-gradient-to-br from-rose-100 via-red-300 to-red-500">
+      <div className="container mx-auto  px-4 py-16 flex flex-col md:flex-row items-center  gap-40">
+        {/* Profile Card */}
+        <div className="w-full md:w-1/2 max-w-md ml-52 mt-5">
+          <div className="bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl p-8 transform hover:translate-y-[-4px] transition-all duration-300">
+            <h2 className="text-3xl font-bold text-gray-800 mb-6 border-b pb-4">
+              User Profile
+            </h2>
+            
+            {error && (
+              <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded">
+                <p>{error}</p>
               </div>
-            ) : (
-              // Normal View: Display user info when not editing
-              <div>
-                <h3 className="text-xl font-medium">User Details</h3>
-                <p className="mt-2"><strong>Name:</strong> {userData.fullname}</p>
-                <p className="mt-2"><strong>Email:</strong> {userData.email}</p>
+            )}
 
-                {/* Button to open the edit form */}
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="mt-6 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                >
-                  Edit Name
-                </button>
+            {userData ? (
+              isEditing ? (
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
+                      placeholder="Enter your name"
+                    />
+                  </div>
+                  
+                  <div className="flex gap-4 justify-end">
+                    <button
+                      onClick={() => setIsEditing(false)}
+                      className="px-6 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleUpdate}
+                      disabled={loading}
+                      className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors disabled:opacity-50"
+                    >
+                      {loading ? (
+                        <span className="flex items-center">
+                          <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                          </svg>
+                          Updating...
+                        </span>
+                      ) : (
+                        "Save Changes"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex flex-col gap-4">
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <p className="text-sm text-gray-500">Full Name</p>
+                      <p className="text-lg font-medium">{userData.fullname}</p>
+                    </div>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <p className="text-sm text-gray-500">Email</p>
+                      <p className="text-lg font-medium">{userData.email}</p>
+                    </div>
+                  </div>
+                  
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="w-full mt-6 px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                  >
+                    Edit Profile
+                  </button>
+                </div>
+              )
+            ) : (
+              <div className="flex justify-center items-center h-40">
+                <div className="animate-pulse flex space-x-4">
+                  <div className="rounded-full bg-gray-200 h-12 w-12"></div>
+                  <div className="space-y-4">
+                    <div className="h-4 bg-gray-200 rounded w-36"></div>
+                    <div className="h-4 bg-gray-200 rounded w-24"></div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
-        ) : (
-          <p>Loading...</p> // Display a loading message while data is being fetched
-        )}
+        </div>
+
+        {/* Image Section */}
+        <div className="w-full md:w-1/2 max-w-md mt-32">
+          <img
+            src={homeImage}
+            alt="Profile Illustration"
+            className="w-full h-auto rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-500"
+          />
+        </div>
       </div>
     </div>
   );

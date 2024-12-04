@@ -20,7 +20,7 @@ const AdminDash = () => {
         return <GetAllCars/>;
       case 'Add New Car':
         return <AddCar/>;
-      case 'Update/Delete Cars':
+      case 'Delete car':
         return <div>Updating/Deleting Cars</div>;
       case 'View All Users':
         return <GetAllUsers/>;

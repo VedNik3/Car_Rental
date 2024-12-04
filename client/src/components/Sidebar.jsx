@@ -1,9 +1,15 @@
 import { useSelector } from "react-redux";
-import mainLogo from "../assets/mainLogo.png";
+import mainLogo from "../assets/Drivesphere2.png";
 import { useNavigate } from "react-router";
 import Dropdown from "./Admin Dash/DropDown";
 import { useDispatch } from "react-redux";
 import { setClickedOption } from "../redux/adminSlice";
+import { CgProfile } from "react-icons/cg";
+import { IoCarSportOutline } from "react-icons/io5";
+import { IoSettingsOutline } from "react-icons/io5";
+import { MdLogout } from "react-icons/md";
+import { RiDashboardLine } from "react-icons/ri";
+import { FaCar } from "react-icons/fa";
 
 const Sidebar = ({ setClickedUserOption, setcliCkedOwnerOption }) => {
   const navigate = useNavigate();
@@ -17,9 +23,8 @@ const Sidebar = ({ setClickedUserOption, setcliCkedOwnerOption }) => {
 
   // Dropdown data for different sections based on user role
   const carsDropdownItems = [
-    { label: "Add New Car" },
     { label: "View All Cars" },
-    { label: "Update/Delete Cars" },
+    { label: "Delete car" },
   ];
 
   const usersDropdownItems = [
@@ -53,12 +58,19 @@ const Sidebar = ({ setClickedUserOption, setcliCkedOwnerOption }) => {
   return (
     <div className="flex fixed top-0 left-0 z-9">
       <div className="flex flex-col p-4 bg-gray-900 text-white w-60 min-h-screen">
-        <img
+        {/* <img
           onClick={handleLogoClick}
           alt="Your Company"
           src={mainLogo}
-          className="h-10 cursor-pointer"
-        />
+          className="ml-5  mb-5 h-11 w-32 cursor-pointer"
+        /> */}
+        <h1
+          onClick={handleLogoClick}
+          className="text-white text-2xl font-medium cursor-pointer ml-5  mb-3 h-11"
+        >
+          <span className="text-red-700 ">Drive</span>Sphere
+          <span className="text-red-700 font-bold"> .</span>
+        </h1>
 
         <hr className="border-gray-700 mb-4" />
         <ul className="flex flex-col space-y-2">
@@ -70,37 +82,65 @@ const Sidebar = ({ setClickedUserOption, setcliCkedOwnerOption }) => {
                 userRole === "carOwner"
                   ? setcliCkedOwnerOption("dashboard")
                   : userRole === "user"
-                  ? setClickedUserOption("dashboard")
+                  ? setClickedUserOption("booking")
                   : dispatch(setClickedOption("dashboard"));
               }}
             >
-              <span className="text-base">
-                {userRole === "admin"
-                  ? "Dashboard (Admin)"
-                  : userRole === "carOwner"
-                  ? "Dashboard (Owner)"
-                  : "Dashboard (User)"}
+              <span className="text-base flex items-center gap-2">
+                {userRole === "admin" && (
+                  <>
+                    <RiDashboardLine size="20px" color="white" />
+                    Dashboard (Admin)
+                  </>
+                )}
+                {userRole === "carOwner" && (
+                  <>
+                    <RiDashboardLine size="20px" color="white" />
+                    Dashboard (Owner)
+                  </>
+                )}
               </span>
             </div>
           </li>
 
           {/* Cars Management (for Admin only) */}
           {userRole === "admin" && (
-            <Dropdown title="Cars Management" items={carsDropdownItems} />
+            <Dropdown
+              title={
+                <span className="flex gap-1 items-center">
+                  <CgProfile size="20px" color="white" />
+                  Car Management
+                </span>
+              }
+              items={carsDropdownItems}
+            />
           )}
 
           {/* User management & profile sections */}
           {userRole === "admin" ? (
             <>
-              <Dropdown title="Users Management" items={usersDropdownItems} />
               <Dropdown
-                title="Bookings Management"
+                title={
+                  <span className="flex gap-1 items-center">
+                    <CgProfile size="20px" color="white" />
+                    User Management
+                  </span>
+                }
+                items={usersDropdownItems}
+              />
+              <Dropdown
+                title={
+                  <span className="flex gap-1 items-center">
+                    <CgProfile size="20px" color="white" />
+                    Booking Management
+                  </span>
+                }
                 items={bookingsDropdownItems}
               />
-              <Dropdown
+              {/* <Dropdown
                 title="Revenue Analytics"
                 items={revenueDropdownItems}
-              />
+              /> */}
             </>
           ) : userRole === "carOwner" ? (
             <>
@@ -135,15 +175,15 @@ const Sidebar = ({ setClickedUserOption, setcliCkedOwnerOption }) => {
                 className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
                 onClick={() => setClickedUserOption("profile")}
               >
-                <span className="text-base">Profile</span>
+                <span className="text-base flex gap-2 items-center ">
+                  <CgProfile size="20px" color="white" /> Profile
+                </span>
               </div>
             </li>
           )}
 
           {/* Users Management (for Admin only) */}
-          {userRole === "admin" ? (
-            <Dropdown title="Users Management" items={usersDropdownItems} />
-          ) : userRole === "carOwner" ? (
+          {/* {userRole === "carOwner" ? (
             <li>
               <div
                 className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
@@ -158,21 +198,47 @@ const Sidebar = ({ setClickedUserOption, setcliCkedOwnerOption }) => {
                 className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
                 onClick={() => setClickedUserOption("booking")}
               >
-                <span className="text-base">User Bookings</span>
+                <span className="text-base flex gap-2 items-center "><IoCarSportOutline  size="20px" color="white" />Bookings</span>
+              </div>
+            </li>
+          )} */}
+
+          <li>
+            {userRole === "carOwner" && (
+              <div
+                className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+                onClick={() => setcliCkedOwnerOption("ownedcars")}
+              >
+                <span className="text-base">Owned Cars</span>
+              </div>
+            )}
+
+            {userRole === "user" && (
+              <div
+                className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+                onClick={() => setClickedUserOption("booking")}
+              >
+                <span className="text-base flex gap-2 items-center">
+                  <IoCarSportOutline size="20px" color="white" />
+                  Bookings
+                </span>
+              </div>
+            )}
+          </li>
+
+          {userRole === "user" && (
+            <li>
+              <div
+                className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
+                onClick={() => setClickedUserOption("Delete User")}
+              >
+                <span className="text-base flex gap-2 items-center ">
+                  <IoSettingsOutline size="20px" color="white" />
+                  Settings
+                </span>
               </div>
             </li>
           )}
-
-          {
-            userRole==="user" && <li>
-            <div
-              className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
-              onClick={() => setClickedUserOption("Delete User")}
-            >
-              <span className="text-base">Setting</span>
-            </div>
-          </li>
-          }
 
           {/* Profile Management (common for all roles) */}
           {/* <Dropdown title="Profile" items={profileDropdownItems} /> */}
@@ -189,7 +255,10 @@ const Sidebar = ({ setClickedUserOption, setcliCkedOwnerOption }) => {
             className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
             onClick={handleLogOut}
           >
-            <span className="text-base">Log Out</span>
+            <span className="text-base flex gap-2 items-center ">
+              <MdLogout size="20px" color="white" />
+              Logout
+            </span>
           </div>
         </div>
       </div>

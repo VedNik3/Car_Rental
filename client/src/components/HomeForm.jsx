@@ -93,7 +93,7 @@ const HomeForm = () => {
       <div className="relative w-full h-screen bg-[url('https://wallpaperaccess.com/full/1838837.jpg')] bg-cover bg-center flex items-center">
         <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
-        <h1 className="text-white text-4xl md:text-5xl font-bold relative ml-[10%] mb-[25%]">
+        <h1 className="text-white text-4xl md:text-5xl font-bold relative mt-24 ml-[10%] mb-[25%]">
           <span>Your Ideal Car,</span>
           <span className="block mt-4">Just a Click Away!</span>
         </h1>

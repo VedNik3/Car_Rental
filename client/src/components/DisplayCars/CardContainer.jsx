@@ -35,7 +35,7 @@ const CardContainer = () => {
   }, [location]);
 
   return (
-    <div className="flex flex-wrap gap-5 mt-5">
+    <div className="flex flex-wrap gap-5 mt-5 bg">
       {error ? <p>{error}</p> : null}
 
       {isFiltersEmpty &&
