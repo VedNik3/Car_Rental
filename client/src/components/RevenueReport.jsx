@@ -57,8 +57,8 @@ const RevenueReport = () => {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      
-      
+
+
       setUsers(res.data);
     } catch (error) {
       console.error("Error fetching users:", error.message);
@@ -67,12 +67,12 @@ const RevenueReport = () => {
 
   const getBookings = async () => {
     try {
-      
+
       const res = await axios.get("http://localhost:8000/api/admin/allbookings", {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      
+
       setBookings(res.data);
       calculateRevenue(res.data, setRevenue, setLastMonthRevenue);
     } catch (error) {
@@ -109,20 +109,21 @@ const RevenueReport = () => {
 
   const fetchRecentBookings = async () => {
     try {
-      let res = [];
-      if(userRole==="admin"){
+      let res;
+      if (userRole === "admin") {
         res = await axios.get("http://localhost:8000/api/admin/recent-bookings", {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         });
-      } else if (userRole==="carOwner"){
+      } else if (userRole === "carOwner") {
         res = await axios.get("http://localhost:8000/api/carOwner/recent-bookings", {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         });
       }
-      
-      setRecentBookings(res.data);
+
+      console.log("Fetched recent bookings:", res.data); // Log response data directly
+      setRecentBookings(res.data); // Update state with fetched data
     } catch (error) {
       console.error("Error fetching recent bookings:", error.message);
     }
@@ -148,13 +149,13 @@ const RevenueReport = () => {
     const validBookings = bookings.filter((booking) => booking.status !== "canceled");
 
     // Calculate total revenue from valid bookings
-    let totalRevenue = 0; 
-    if(userRole==="admin"){
-       totalRevenue = validBookings.reduce((total, booking) => total + (booking.totalPrice*0.2) , 0);
-      } else if (userRole==="carOwner"){
-        totalRevenue = validBookings.reduce((total, booking) => total + (booking.totalPrice*0.8) , 0);
-    }           
-  
+    let totalRevenue = 0;
+    if (userRole === "admin") {
+      totalRevenue = validBookings.reduce((total, booking) => total + (booking.totalPrice * 0.2), 0);
+    } else if (userRole === "carOwner") {
+      totalRevenue = validBookings.reduce((total, booking) => total + (booking.totalPrice * 0.8), 0);
+    }
+
     // Calculate revenue for the last month from valid bookings
     const lastMonthRevenue = validBookings
       .filter((booking) => new Date(booking.rentalStartDate).getMonth() === lastMonth)
@@ -260,10 +261,10 @@ const RevenueReport = () => {
                           <td className="px-4 py-2 text-xs text-center">
                             <span
                               className={`px-2 py-2 text-sm inline-block rounded-full border ${booking.status === "completed"
-                                  ? "text-green-600 border-green-600 bg-green-100"
-                                  : booking.status === "canceled"
-                                    ? "text-yellow-600 border-yellow-600 bg-yellow-100"
-                                    : "text-red-600 border-red-600 bg-red-100"
+                                ? "text-green-600 border-green-600 bg-green-100"
+                                : booking.status === "canceled"
+                                  ? "text-yellow-600 border-yellow-600 bg-yellow-100"
+                                  : "text-red-600 border-red-600 bg-red-100"
                                 }`}
                             >
                               {booking.status}

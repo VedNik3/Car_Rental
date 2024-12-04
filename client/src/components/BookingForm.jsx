@@ -87,7 +87,7 @@ const BookingForm = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-      <div className="max-w-4xl mx-auto p-8 bg-white rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300">
+      <div className="w-full mx-auto p-8 bg-white rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300">
   <h2 className="text-3xl font-bold text-gray-800 mb-6 pb-2 border-b">
      Car Details
   </h2>

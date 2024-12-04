@@ -21,14 +21,9 @@ const PaymentComplete = () => {
 
       // Mark the booking process as started
       bookingCalled.current = true;
-      if (!formData || bookingCalled.current) return;
-
-      // Mark the booking process as started
-      bookingCalled.current = true;
 
       try {
         const bookingResponse = await axios.post(
-          `http://localhost:8000/api/booking/booked`,
           `http://localhost:8000/api/booking/booked`,
           {
             ...formData,
@@ -42,11 +37,10 @@ const PaymentComplete = () => {
               "Content-Type": "application/json",
             },
             withCredentials: true,
-            withCredentials: true,
           }
         );
 
-        // console.log("Booking response:", bookingResponse);
+        console.log("Booking response:", bookingResponse);
 
         setBookingStatus({
           isCompleted: true,
@@ -90,10 +84,6 @@ const PaymentComplete = () => {
           </h1>
           <p>
             <strong>Total Price:</strong> Rs{" "}
-            {formData.totalPrice *
-              (new Date(formData.rentalEndDate) -
-                new Date(formData.rentalStartDate)) /
-              (1000 * 60 * 60 * 24)}
             {formData.totalPrice *
               (new Date(formData.rentalEndDate) -
                 new Date(formData.rentalStartDate)) /
