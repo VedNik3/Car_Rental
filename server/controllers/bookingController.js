@@ -18,6 +18,7 @@
 
 import { Car } from "../models/carModel.js";
 import { Booking } from "../models/bookingModel.js";
+import cron  from "node-cron";
 
 export const booked = async (req, res) => {
     try {
@@ -93,3 +94,96 @@ export const getAvailableCars = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+
+// const updateCarStatuses = async () => {
+//   try {
+//       const currentTime = new Date();
+
+//       // Find bookings where rentalEndDate has passed
+//       const expiredBookings = await Booking.find({
+//           rentalEndDate: { $lte: currentTime }, // Rentals that have ended
+//       });
+
+//       for (let booking of expiredBookings) {
+//           const carId = booking.car;
+//           console.log(carId);
+
+//           // Update the car's status to "available"
+//           await Car.findByIdAndUpdate(carId, { status: "available" });
+
+//           // Optionally, delete the booking if it's no longer needed
+//           // await Booking.findByIdAndDelete(booking._id);
+//       }
+
+//       console.log(`Updated statuses for ${expiredBookings.length} cars.`);
+//   } catch (err) {
+//       console.error("Error updating car statuses:", err);
+//   }
+// };
+
+// // const cron = require("node-cron");
+
+// // Schedule the job to run every hour
+// cron.schedule("0 * * * *", updateCarStatuses);
+
+const updateCarStatuses = async () => {
+  try {
+      const currentTime = new Date();
+
+      // Find bookings where rentalEndDate has passed
+      const expiredBookings = await Booking.find({
+          rentalEndDate: { $lte: currentTime }, // Rentals that have ended
+      });
+
+      for (let booking of expiredBookings) {
+          const carId = booking.car;
+          console.log(carId);
+
+          // Find the car to check its current status
+          const car = await Car.findById(carId);
+
+          // Only update the status if it's not already "available"
+          if (car && car.status !== "available") {
+              // Update the car's status to "available"
+              await Car.findByIdAndUpdate(carId, { status: "available" });
+              console.log(`Updated car ${carId} status to available.`);
+          } else {
+              console.log(`Car ${carId} is already available.`);
+          }
+
+          // Optionally, delete the booking if it's no longer needed
+          // await Booking.findByIdAndDelete(booking._id);
+      }
+
+      console.log(`Updated statuses for ${expiredBookings.length} cars.`);
+  } catch (err) {
+      console.error("Error updating car statuses:", err);
+  }
+};
+
+const updateBookingStatuses = async () => {
+  try {
+      const currentTime = new Date();
+
+      // Find bookings where rentalEndDate has passed and status is not "canceled"
+      const expiredBookings = await Booking.find({
+          rentalEndDate: { $lte: currentTime }, // Rentals that have ended
+          status: { $ne: "canceled" }, // Only bookings that are not canceled
+      });
+
+      for (let booking of expiredBookings) {
+          // Update the booking status to "completed"
+          await Booking.findByIdAndUpdate(booking._id, { status: "completed" });
+          console.log(`Booking ${booking._id} status updated to completed.`);
+      }
+
+      console.log(`Updated statuses for ${expiredBookings.length} bookings.`);
+  } catch (err) {
+      console.error("Error updating booking statuses:", err);
+  }
+};
+
+// Schedule the job to run every hour
+// cron.schedule("* * * * * *", updateCarStatuses); 
+// cron.schedule("* * * * * *", updateBookingStatuses);
