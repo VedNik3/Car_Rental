@@ -64,23 +64,23 @@ const OwnerBookingDetails = () => {
   const cancelBooking = async (bookingId) => {
     setMessage('');
     try {
-        await axios.patch(`${API_END_POINT_CarOwner}/canceluserbooking/${bookingId}`, {
-            status: "canceled", // Send the status update
-        }, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            withCredentials: true, // to send cookies or session info
-        });
-        // Update the booking status in the state
-        setBookings(bookings.map(booking => 
-            booking._id === bookingId ? { ...booking, status: "canceled" } : booking
-        ));
-        toast.success("Booking canceled successfully.");
+      await axios.patch(`${API_END_POINT_CarOwner}/canceluserbooking/${bookingId}`, {
+        status: "canceled", // Send the status update
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true, // to send cookies or session info
+      });
+      // Update the booking status in the state
+      setBookings(bookings.map(booking =>
+        booking._id === bookingId ? { ...booking, status: "canceled" } : booking
+      ));
+      toast.success("Booking canceled successfully.");
     } catch (err) {
-        setError(err.response ? err.response.data.message : "Unable to cancel booking");
+      setError(err.response ? err.response.data.message : "Unable to cancel booking");
     }
-};
+  };
 
   // Automatically fetch bookings when the component loads
   useEffect(() => {
@@ -117,28 +117,40 @@ const OwnerBookingDetails = () => {
             <tbody>
               {bookings.map((booking) => (
                 <tr key={booking._id} className="hover:bg-gray-100">
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 px-4 border">
                     {booking.car.brand} {booking.car.model} (
                     {booking.car.regNumber})
                   </td>
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 px-4 border">
                     {booking.user?.fullname} ({booking.user?.email})
                   </td>
                   <td className="py-2 px-4 border-b">
                     {new Date(booking.rentalStartDate).toLocaleDateString()} -{" "}
                     {new Date(booking.rentalEndDate).toLocaleDateString()}
                   </td>
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 px-4 border">
                     ₹{booking.totalPrice}
                   </td>
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 px-4 border">
                     {booking.rentalLocation.pickupLocation}
                   </td>
-                  <td className="py-2 px-4 border-b">
+                  <td className="py-2 px-4 border">
                     {booking.rentalLocation.dropoffLocation}
                   </td>
-                  <td className="py-2 px-4 border-b">{booking.status}</td>
-                  <td className="py-2 px-4 border-b flex">
+                  {/* <td className="py-2 px-4 border-b">{booking.status}</td> */}
+                  <td className="px-4 py-2 text-xs text-center border">
+                    <span
+                      className={`px-2 py-2 text-sm inline-block rounded-full border ${booking.status === "completed"
+                        ? "text-green-600 border-green-600 bg-green-100"
+                        : booking.status === "canceled"
+                          ? "text-yellow-600 border-yellow-600 bg-yellow-100"
+                          : "text-red-600 border-red-600 bg-red-100"
+                        }`}
+                    >
+                      {booking.status}
+                    </span>
+                  </td>
+                  {/* <td className="py-2 px-4 border-b flex">
                     <button
                       className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mr-2"
                       onClick={() => deleteBooking(booking._id)}
@@ -146,16 +158,36 @@ const OwnerBookingDetails = () => {
                       Delete
                     </button>
                     <button
-                      className={`px-4 py-2 rounded ${
-                        booking.status === "canceled"
+                      className={`px-4 py-2 rounded ${booking.status === "canceled" || booking.status === "completed"
                           ? "bg-gray-400 text-white cursor-not-allowed"
                           : "bg-yellow-500 text-white hover:bg-yellow-600"
-                      }`}
+                        }`}
                       onClick={() =>
-                        booking.status !== "canceled" &&
+                        booking.status !== "canceled" && booking.status !== "completed" &&
                         cancelBooking(booking._id)
                       }
-                      disabled={booking.status === "canceled"}
+                      disabled={booking.status === "canceled" || booking.status === "completed"}
+                    >
+                      Cancel
+                    </button>
+                  </td> */}
+                  <td className="pb-3 px-4 border-b space-x-2 flex mt-3">
+                    <button
+                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                      onClick={() => deleteBooking(booking._id)}
+                    >
+                      Delete
+                    </button>
+                    <button
+                      className={`px-4 py-2 rounded ${booking.status === "canceled" || booking.status === "completed"
+                        ? "bg-gray-400 text-white cursor-not-allowed"
+                        : "bg-yellow-500 text-white hover:bg-yellow-600"
+                        }`}
+                      onClick={() =>
+                        booking.status !== "canceled" && booking.status !== "completed" &&
+                        cancelBooking(booking._id)
+                      }
+                      disabled={booking.status === "canceled" || booking.status === "completed"}
                     >
                       Cancel
                     </button>

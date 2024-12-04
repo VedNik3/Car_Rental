@@ -129,7 +129,10 @@ const OwnedCars = () => {
               key={car._id}
               className="bg-gradient-to-b from-gray-300 to-gray-100 p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300"
             >
-              <CarImageSlider car={car} />
+              {/* <div className="h-40"> */}
+
+              <CarImageSlider car={car} height="176px"/>
+              {/* </div> */}
 
               <h2 className="text-xl font-semibold text-gray-800">
                 {car.brand} {car.model}
