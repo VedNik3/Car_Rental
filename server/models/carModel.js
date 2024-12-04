@@ -34,7 +34,7 @@ const carSchema = new mongoose.Schema(
     },
     fuelType: {
       type: String,
-      enum: ["petrol", "diesel"],
+      enum: ["petrol", "diesel", "electric"],
       required: true,
     },
     transmission: {
@@ -53,7 +53,7 @@ const carSchema = new mongoose.Schema(
     // },
     status: {
       type: String,
-      enum: ["available", "booked", "in service"],
+      enum: ["available", "booked", "maintenance"],
       default: "available",
     },
     mileage: {

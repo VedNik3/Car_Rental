@@ -1,7 +1,7 @@
 import express from "express"
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import checkRoleMiddleware from "../middlewares/checkRoleMiddleware.js";
-import { addCar, CarOwnerBookingDetails, deleteCar, getAllOwnedCars, getOwnedCar, updateCarDetails, deletecarownerbooking, deletecarowner, recentBookings, uploadimages, handleImagesUpload } from "../controllers/carOwnerController.js";
+import { addCar, CarOwnerBookingDetails, deleteCar, getAllOwnedCars, getOwnedCar, updateCarDetails, deletecarownerbooking, deletecarowner, recentBookings, uploadimages, handleImagesUpload ,cancelBooking, updateCar} from "../controllers/carOwnerController.js";
 
 
 const router = express.Router();
@@ -18,6 +18,9 @@ router.delete("/deletecar", authMiddleware,checkRoleMiddleware(["carOwner"]), de
 router.put("/updatecardetails", authMiddleware,checkRoleMiddleware(["carOwner"]), updateCarDetails);
 router.delete("/deletecarownerbooking/:bookingId", authMiddleware,checkRoleMiddleware(["carOwner"]), deletecarownerbooking);
 router.delete("/deletecarowner", authMiddleware,checkRoleMiddleware(["carOwner"]), deletecarowner);
+router.patch("/canceluserbooking/:id", authMiddleware,checkRoleMiddleware(["carOwner"]), cancelBooking);
+router.put("/editcar/:carId", authMiddleware,checkRoleMiddleware(["carOwner"]), updateCar);
+
 // router.post("/deletcarowner", authMiddleware,checkRoleMiddleware(["carOwner"]), deletcarowner);
 
 
