@@ -69,7 +69,7 @@ export const booked = async (req, res) => {
 
           await newBooking.save();
 
-          car.status = "in service";
+          car.status = "booked";
           await car.save();
 
           return res.status(201).json({

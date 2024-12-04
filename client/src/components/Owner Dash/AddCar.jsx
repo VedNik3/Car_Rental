@@ -138,12 +138,12 @@ const AddCar = () => {
             {
               name: "type",
               label: "Type",
-              options: ["sedan", "suv", "hatchback", "coupe", "convertible"],
+              options: ["sedan", "suv", "hatchback"],
             },
             {
               name: "fuelType",
               label: "Fuel Type",
-              options: ["petrol", "diesel", "electric", "hybrid"],
+              options: ["petrol", "diesel", "electric"],
             },
             {
               name: "transmission",
@@ -153,7 +153,7 @@ const AddCar = () => {
             {
               name: "status",
               label: "Status",
-              options: ["available", "rented", "maintenance"],
+              options: ["available", "booked", "maintenance"],
             },
           ].map((field) => (
             <div key={field.name}>

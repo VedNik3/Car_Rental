@@ -7,7 +7,7 @@ const UserBookingDetails = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [message, setMessage] = useState(''); // To show success message after deleting
+    const [message, setMessage] = useState(''); // To show success message after actions
 
     // Function to fetch bookings for the user
     const fetchBookings = async () => {
@@ -39,10 +39,31 @@ const UserBookingDetails = () => {
                 withCredentials: true, // to send cookies or session info
             });
             setBookings(bookings.filter(booking => booking._id !== bookingId));
-            // setMessage('Booking deleted successfully.');
             toast.success("Booking deleted successfully.");
         } catch (err) {
             setError(err.response ? err.response.data.message : "Unable to delete booking");
+        }
+    };
+
+    // Function to cancel a booking
+    const cancelBooking = async (bookingId) => {
+        setMessage('');
+        try {
+            await axios.patch(`${API_END_POINT}/canceluserbooking/${bookingId}`, {
+                status: "canceled", // Send the status update
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                withCredentials: true, // to send cookies or session info
+            });
+            // Update the booking status in the state
+            setBookings(bookings.map(booking => 
+                booking._id === bookingId ? { ...booking, status: "canceled" } : booking
+            ));
+            toast.success("Booking canceled successfully.");
+        } catch (err) {
+            setError(err.response ? err.response.data.message : "Unable to cancel booking");
         }
     };
 
@@ -57,7 +78,7 @@ const UserBookingDetails = () => {
 
             {/* Show error if any */}
             {error && <div className="text-red-600 mb-4">{error}</div>}
-            {/* Show success message after deletion */}
+            {/* Show success message after actions */}
             {message && <div className="text-green-600 mb-4">{message}</div>}
             {/* Show loading spinner */}
             {loading && <div className="text-blue-600">Loading...</div>}
@@ -73,6 +94,7 @@ const UserBookingDetails = () => {
                                 <th className="py-2 px-4 border-b">Total Price</th>
                                 <th className="py-2 px-4 border-b">Pickup Location</th>
                                 <th className="py-2 px-4 border-b">Dropoff Location</th>
+                                <th className="py-2 px-4 border-b">Status</th>
                                 <th className="py-2 px-4 border-b">Actions</th>
                             </tr>
                         </thead>
@@ -92,12 +114,22 @@ const UserBookingDetails = () => {
                                     <td className="py-2 px-4 border-b">
                                         {booking.rentalLocation.dropoffLocation}
                                     </td>
-                                    <td className="py-2 px-4 border-b">
+                                    <td className="py-2 px-4 border-b capitalize">
+                                        {booking.status}
+                                    </td>
+                                    <td className="py-2 px-4 border-b space-x-2">
                                         <button 
                                             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                                             onClick={() => deleteBooking(booking._id)}
                                         >
                                             Delete
+                                        </button>
+                                        <button 
+                                            className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+                                            onClick={() => cancelBooking(booking._id)}
+                                            disabled={booking.status === "canceled"}
+                                        >
+                                            Cancel
                                         </button>
                                     </td>
                                 </tr>

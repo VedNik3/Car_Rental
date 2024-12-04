@@ -187,6 +187,80 @@ export const getAllCars = async (req, res) => {
   }
 }
 
+// export const cancelBooking = async (req, res) => {
+//   const { id } = req.params; // Get booking ID from params
+
+//   try {
+//       // Find the booking by ID
+//       const booking = await Booking.findById(id);
+//       console.log(id);
+
+//       if (!booking) {
+//           return res.status(404).json({ message: "Booking not found" });
+//       }
+
+//       // Check if the booking is already canceled
+//       if (booking.status === "canceled") {
+//           return res.status(400).json({ message: "Booking is already canceled" });
+//       }
+
+//       // Update the status of the booking to "canceled"
+//       booking.status = "canceled";
+//       await booking.save();
+
+//       return res.status(200).json({
+//           message: "Booking canceled successfully",
+//           booking,
+//       });
+//   } catch (error) {
+//       console.error("Error canceling booking:", error);
+//       return res.status(500).json({
+//           message: "Internal server error while canceling the booking",
+//       });
+//   }
+// };
+
+export const cancelBooking = async (req, res) => {
+  const { id } = req.params; // Get booking ID from params
+
+  try {
+      // Find the booking by ID
+      const booking = await Booking.findById(id).populate('car'); // Populate car to get its details
+      console.log(id);
+
+      if (!booking) {
+          return res.status(404).json({ message: "Booking not found" });
+      }
+
+      // Check if the booking is already canceled
+      if (booking.status === "canceled") {
+          return res.status(400).json({ message: "Booking is already canceled" });
+      }
+
+      // Update the status of the booking to "canceled"
+      booking.status = "canceled";
+      await booking.save();
+
+      // Update the car status to "available"
+      const car = booking.car;
+      if (car) {
+          car.status = "available";
+          await car.save();
+      }
+
+      return res.status(200).json({
+          message: "Booking canceled successfully and car status updated to available",
+          booking,
+      });
+  } catch (error) {
+      console.error("Error canceling booking:", error);
+      return res.status(500).json({
+          message: "Internal server error while canceling the booking",
+      });
+  }
+};
+
+
 
 //View Booking History (GET /api/users/:id/bookings)
 

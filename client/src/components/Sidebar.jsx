@@ -187,9 +187,9 @@ const Sidebar = ({ setClickedUserOption, setcliCkedOwnerOption }) => {
             <li>
               <div
                 className="flex items-center p-2 rounded-lg hover:bg-gray-700 transition-colors cursor-pointer"
-                onClick={() => setcliCkedOwnerOption("ownedcars")}
+                onClick={() => setcliCkedOwnerOption("Deletecarowner")}
               >
-                <span className="text-base">Owned Cars</span>
+                <span className="text-base">Settings</span>
               </div>
             </li>
           ) : (

@@ -348,13 +348,14 @@ export const deletecarowner = async (req, res) => {
 
     // Find the user by ID
     const user = await User.findById(ownerId);
+    console.log(user);
 
     if (!user) {
       return res.status(404).send('User not found');
     }
 
     // Find all cars associated with the car owner
-    const cars = await Car.find({ owner: ownerId });
+    const cars = await Car.find({ ownerId : ownerId });
 
     if (cars.length > 0) {
       // Extract car IDs
@@ -364,7 +365,7 @@ export const deletecarowner = async (req, res) => {
       await Booking.deleteMany({ car: { $in: carIds } });
 
       // Delete all cars owned by the user
-      await Car.deleteMany({ owner: ownerId });
+      await Car.deleteMany({ ownerId : ownerId });
     }
 
     // Delete the user from the database
@@ -376,6 +377,109 @@ export const deletecarowner = async (req, res) => {
   } catch (err) {
     console.error(err);
     return res.status(500).send(`Error deleting user: ${err.message}`);
+  }
+};
+
+export const cancelBooking = async (req, res) => {
+  const { id } = req.params; // Get booking ID from params
+
+  try {
+      // Find the booking by ID
+      const booking = await Booking.findById(id).populate('car'); // Populate car to get its details
+      console.log(id);
+
+      if (!booking) {
+          return res.status(404).json({ message: "Booking not found" });
+      }
+
+      // Check if the booking is already canceled
+      if (booking.status === "canceled") {
+          return res.status(400).json({ message: "Booking is already canceled" });
+      }
+
+      // Update the status of the booking to "canceled"
+      booking.status = "canceled";
+      await booking.save();
+
+      // Update the car status to "available"
+      const car = booking.car;
+      if (car) {
+          car.status = "available";
+          await car.save();
+      }
+
+      return res.status(200).json({
+          message: "Booking canceled successfully and car status updated to available",
+          booking,
+      });
+  } catch (error) {
+      console.error("Error canceling booking:", error);
+      return res.status(500).json({
+          message: "Internal server error while canceling the booking",
+      });
+  }
+};
+
+export const updateCar = async (req, res) => {
+  const carId = req.params.carId;
+  // console.log(carId);
+  const {
+    brand,
+    model,
+    year,
+    type,
+    color,
+    seats,
+    mileage,
+    rentalPricePerDay,
+    status, // Add status in the request body
+  } = req.body;
+
+  try {
+    // Validate if the request body contains all the required fields
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //   return res.status(400).json({ message: "Invalid input data", errors: errors.array() });
+    // }
+
+    // Find the car by ID and check if it belongs to the logged-in user (owner)
+    const car = await Car.findById(carId);
+    if (!car) {
+      return res.status(404).json({ message: "Car not found" });
+    }
+
+    // Ensure the car is owned by the logged-in user
+    // if (car.ownerId.toString() !== req.user.id) {
+    //   return res.status(403).json({ message: "You are not authorized to edit this car" });
+    // }
+
+    // Update the car details if provided
+    car.brand = brand || car.brand;
+    car.model = model || car.model;
+    car.year = year || car.year;
+    car.type = type || car.type;
+    car.color = color || car.color;
+    car.seats = seats || car.seats;
+    car.mileage = mileage || car.mileage;
+    car.rentalPricePerDay = rentalPricePerDay || car.rentalPricePerDay;
+
+    // Update the car status if provided
+    if (status) {
+      if (["available", "maintenance", "booked"].includes(status)) {
+        car.status = status;
+      } else {
+        return res.status(400).json({ message: "Invalid status value" });
+      }
+    }
+
+    // Save the updated car details to the database
+    await car.save();
+
+    // Send a success response with updated car details
+    return res.status(200).json({ message: "Car details updated successfully", car });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error. Could not update car details" });
   }
 };
 

@@ -17,12 +17,15 @@ const Card = ({ car }) => {
       <div className="w-64 h-auto bg-gray-100 border border-gray-200 rounded-lg shadow-xl m-2">
 
         <a href="#">
-          <img
+          {/* <img
             className="w-full h-40 object-cover rounded-t-lg"
             src={car.images[0] || carImg}
             alt="car"
-          />
-          {/* <CarImageSlider car={car}/> */}
+          /> */}
+          <div>
+
+          <CarImageSlider car={car}/>
+          </div>
         </a>
         <div className="px-3 pt-5 pb-5">
           <a href="#">
