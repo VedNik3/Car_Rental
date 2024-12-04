@@ -16,9 +16,9 @@ router.get("/recent-bookings", authMiddleware,checkRoleMiddleware(["carOwner"]),
 // router.post("/uploadimages", authMiddleware,checkRoleMiddleware(["carOwner"]), uploadimages, handleImagesUpload);
 router.delete("/deletecar", authMiddleware,checkRoleMiddleware(["carOwner"]), deleteCar);
 router.put("/updatecardetails", authMiddleware,checkRoleMiddleware(["carOwner"]), updateCarDetails);
-router.delete("/deletecarownerbooking/:bookingId", authMiddleware,checkRoleMiddleware(["carOwner"]), deletecarownerbooking);
+router.delete("/deletecarownerbooking/:bookingId", authMiddleware,checkRoleMiddleware(["carOwner", "admin"]), deletecarownerbooking);
 router.delete("/deletecarowner", authMiddleware,checkRoleMiddleware(["carOwner"]), deletecarowner);
-router.patch("/canceluserbooking/:id", authMiddleware,checkRoleMiddleware(["carOwner"]), cancelBooking);
+router.patch("/canceluserbooking/:id", authMiddleware,checkRoleMiddleware(["carOwner", "admin"]), cancelBooking);
 router.put("/editcar/:carId", authMiddleware,checkRoleMiddleware(["carOwner"]), updateCar);
 
 // router.post("/deletcarowner", authMiddleware,checkRoleMiddleware(["carOwner"]), deletcarowner);

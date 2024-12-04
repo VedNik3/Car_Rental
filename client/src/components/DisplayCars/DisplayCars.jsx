@@ -6,7 +6,7 @@ import Modify from './Modify'
 
 const DisplayCars = () => {
   return (
-    <div className="bg-gray-200 h-[100vh]">
+    <div className="  h-[100vh]">
       <Navbar/>
       <div className='flex'>
       <FilterCar/>

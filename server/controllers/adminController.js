@@ -196,10 +196,14 @@ export const deleteCar = async (req, res) => {
 // Get all bookings:
 export const getAllBookings = async (req, res) => {
   try {
-    // console.log("server");
     
-    const bookings = await Booking.find();
+    
+    const bookings = await Booking.find()
+    .populate('user', 'fullname email') 
+    .populate('car', 'brand model regNumber')
+    
     res.status(200).json(bookings); 
+    
 
   } catch (error) {
     res.status(500).json({ message: "Server error. Unable to fetch bookings." });

@@ -524,3 +524,61 @@
 // };
 
 // export default Sidebar;
+////////////////////////
+
+
+import Sidebar from '../Sidebar';
+import { useSelector } from 'react-redux';
+
+import GetAllCars from '../GetAllCars';
+import AddCar from '../Owner Dash/AddCar';
+import GetAllUsers from './GetAllUsers';
+import ChangeRole from './ChangeRole';
+import DeleteUser from './DeleteUser';
+import GetUser from './GetUser';
+import RevenueReport from '../RevenueReport';
+import AdminReports from './AdminReports'
+const AdminDash = () => {
+  const clickedOption = useSelector(state => state.admin.clickedOption); 
+  console.log(">>>",clickedOption);
+  
+
+  const renderContent = () => {
+    switch (clickedOption) {
+      case 'View All Cars':
+        return <GetAllCars/>;
+      case 'Add New Car':
+        return <AddCar/>;
+      case 'Update/Delete Cars':
+        return <div>Updating/Deleting Cars</div>;
+      case 'View All Users':
+        return <GetAllUsers/>;
+      case 'Get User':
+        return <GetUser/>;
+      case 'Change User Role':
+        return <ChangeRole/>;
+      case 'Delete User':
+        return <DeleteUser/>;
+      default:
+        // <div className='ml-[-20%]'>
+          return (
+            <div className='ml-[-35%]'>
+          <AdminReports/>;
+          </div>
+          );
+            
+        
+    }
+  };
+
+  return (
+    <div className="bg-gray-900">
+      <Sidebar />
+      <div className="content-area ml-[40%] min-h-screen">
+        {renderContent()}
+      </div>
+    </div>
+  );
+};
+
+export default AdminDash;
