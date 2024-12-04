@@ -7,7 +7,9 @@ import GetAllUsers from './GetAllUsers';
 import ChangeRole from './ChangeRole';
 import DeleteUser from './DeleteUser';
 import GetUser from './GetUser';
-import RevenueReport from '../RevenueReport';
+
+import AdminBookings from './AdminBookings';
+import AdminReport from './AdminReport';
 
 const AdminDash = () => {
   const clickedOption = useSelector(state => state.admin.clickedOption); 
@@ -30,15 +32,17 @@ const AdminDash = () => {
         return <ChangeRole/>;
       case 'Delete User':
         return <DeleteUser/>;
+      case 'View All Bookings':
+        return <AdminBookings/>;
       default:
-        return <RevenueReport/>;
+        return <AdminReport/>;
     }
   };
 
   return (
-    <div className="admin-dash">
+    <div className=" bg-gray-700 ">
       <Sidebar />
-      <div className="content-area ml-[40%] mt-12">
+      <div className="content-area ml-[40%]  min-h-screen">
         {renderContent()}
       </div>
     </div>

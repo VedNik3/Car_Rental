@@ -73,60 +73,66 @@ const ChangeRole = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-gray-100 ml-[-10%] shadow-md rounded-md space-y-6">
-      <h2 className="text-2xl font-semibold text-gray-700">Change User Role</h2>
-
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">User Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter user email"
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-            required
-          />
-        </div>
-
-        <button
-          onClick={fetchCurrentRole}
-          className="px-4 py-2 bg-blue-500 text-white font-semibold rounded hover:bg-blue-600"
-        >
-          Fetch Current Role
-        </button>
-
-        {currentRole && (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold text-gray-700">
-              Current Role: <span className="text-blue-600">{currentRole}</span>
-            </h3>
-          </div>
-        )}
-
-        <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700">New Role:</label>
-          <select
-            value={newRole}
-            onChange={(e) => setNewRole(e.target.value)}
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500"
-            required
-          >
-            <option value="" disabled>Select a role</option>
-            <option value="user">User</option>
-            <option value="carOwner">Car Owner</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
+    <div className="w-[100%] max-w-3xl mx-auto p-10 h-[100vh]  bg-gray-700  text-white space-y-8 ml-[-20%]">
+    <h2 className="text-3xl font-bold text-center">Change User Role</h2>
+  
+    <div className="space-y-6">
+      {/* Email Input */}
+      <div>
+        <label className="block text-lg font-medium mb-2">User Email:</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Enter user email"
+          className="w-full p-4 border border-gray-500 rounded-lg shadow-sm bg-gray-700 text-white focus:ring-blue-500 focus:border-blue-500 placeholder-gray-100"
+          required
+        />
       </div>
-
+  
+      {/* Fetch Current Role Button */}
       <button
-        onClick={handleChangeRole}
-        className="px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600"
+        onClick={fetchCurrentRole}
+        className="w-full py-3 bg-blue-600 text-white font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-300"
       >
-        Change Role
+        Fetch Current Role
       </button>
+  
+      {/* Current Role Display */}
+      {currentRole && (
+        <div className="mt-6 text-center">
+          <h3 className="text-xl font-semibold">
+            Current Role: <span className="text-blue-400">{currentRole}</span>
+          </h3>
+        </div>
+      )}
+  
+      {/* New Role Selection */}
+      <div>
+        <label className="block text-lg font-medium mb-2">New Role:</label>
+        <select
+          value={newRole}
+          onChange={(e) => setNewRole(e.target.value)}
+          className="w-full p-4 border border-gray-500 rounded-lg shadow-sm bg-gray-700 text-white focus:ring-green-500 focus:border-green-500"
+          required
+        >
+          <option value="" disabled>Select a role</option>
+          <option value="user">User</option>
+          <option value="carOwner">Car Owner</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
     </div>
+  
+    {/* Change Role Button */}
+    <button
+      onClick={handleChangeRole}
+      className="w-full py-3 bg-green-600 text-white font-semibold rounded-lg shadow hover:bg-green-700 transition duration-300"
+    >
+      Change Role
+    </button>
+  </div>
+  
   );
 };
 

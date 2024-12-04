@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import toast from 'react-hot-toast';
-import { API_END_POINT_admin } from '../../utils/constants'; 
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { API_END_POINT_admin } from "../../utils/constants";
 
 const GetAllUsers = () => {
   const [users, setUsers] = useState([]);
-  const [selectedRole, setSelectedRole] = useState(''); 
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch all users on component mount
   useEffect(() => {
@@ -14,65 +14,96 @@ const GetAllUsers = () => {
       try {
         const response = await axios.get(`${API_END_POINT_admin}/getallusers`, {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           withCredentials: true,
         });
         setUsers(response.data);
+        setFilteredUsers(response.data); // Initialize filteredUsers with all users
       } catch (error) {
-        toast.error(error.response?.data?.message || 'Error fetching users');
+        toast.error(error.response?.data?.message || "Error fetching users");
       }
     };
 
     fetchUsers();
   }, []);
 
-  // Filter users based on selected role
-  useEffect(() => {
-    if (selectedRole) {
-      const filtered = users.filter((user) => user.role === selectedRole);
-      setFilteredUsers(filtered);
-    } else {
-      setFilteredUsers(users); // Show all users if no role is selected
-    }
-  }, [selectedRole, users]);
+  // Handle search query changes
+  const handleSearch = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    const filtered = users.filter(
+      (user) =>
+        user.fullname.toLowerCase().includes(query) ||
+        user.email.toLowerCase().includes(query) ||
+        user.role.toLowerCase().includes(query)
+    );
+    setFilteredUsers(filtered);
+  };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-gray-100 ml-[-10%] shadow-md rounded-md space-y-6">
-      <h2 className="text-2xl font-semibold text-gray-700">User List</h2>
+    <div className=" bg-gray-700 text-white w-[84.4%] p-6 fixed top-0 right-0  ">
+      <h2 className="text-2xl font-semibold text-white mb-6">User Details</h2>
 
-      {/* Dropdown to select user role */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Filter by Role:
-        </label>
-        <select
-          value={selectedRole}
-          onChange={(e) => setSelectedRole(e.target.value)}
-          className="mt-1 p-2 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="">All Users</option>
-          <option value="admin">Admin</option>
-          <option value="carOwner">Car Owner</option>
-          <option value="user">User</option>
-        </select>
+      {/* Search Box */}
+      <div className="relative mb-6">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearch}
+          placeholder="Search users..."
+          className="w-full p-3 text-black bg-gray-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-black"
+        />
       </div>
 
-      {/* Display list of filtered users */}
-      <div>
-        {filteredUsers.length > 0 ? (
-          <ul className="space-y-4">
-            {filteredUsers.map((user) => (
-              <li key={user._id} className="p-4 bg-white rounded-md shadow-md">
-                <div className="font-semibold">Name: {user.fullname || 'N/A'}</div>
-                <div>Email: {user.email}</div>
-                <div>Role: {user.role}</div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="text-center text-gray-500">No users found for this role.</p>
-        )}
+      {/* User Table */}
+      <div className="overflow-x-auto h-full">
+        <table className="min-w-full  text-gray-300 table-auto">
+          <thead>
+            <tr className="text-left bg-custom-gray">
+              <th className="py-3 px-6">Name</th>
+              <th className="py-3 px-6">Email</th>
+              <th className="py-3 px-6">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredUsers.length > 0 ? (
+              filteredUsers.map((user) => (
+                <tr
+                  key={user._id}
+                  className="border-t border-gray-900 hover:bg-gray-600 transition"
+                >
+                  <td className="py-3 px-6 flex items-center">
+                    <div className="w-8 h-8 rounded-full bg-blue-500 text-center text-white font-bold flex items-center justify-center mr-3">
+                      {user.fullname.charAt(0).toUpperCase()}
+                    </div>
+                    {user.fullname || "N/A"}
+                  </td>
+                  <td className="py-3 px-6">{user.email}</td>
+                  <td className="py-3 px-6">
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                        user.role === "admin"
+                          ? "bg-blue-500 text-white"
+                          : user.role === "carOwner"
+                          ? "bg-green-500 text-white"
+                          : "bg-gray-500 text-white"
+                      }`}
+                    >
+                      {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" className="text-center py-6 text-gray-400">
+                  No users found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ const Card = ({ car }) => {
 
   return (
     <div>
-      <div className="w-64 h-auto bg-gray-100 border border-gray-200 rounded-lg shadow-xl m-2">
+      <div className="w-64 h-auto bg-gray-100 border border-gray-200 rounded-lg shadow-2xl m-2">
 
         <a href="#">
           {/* <img

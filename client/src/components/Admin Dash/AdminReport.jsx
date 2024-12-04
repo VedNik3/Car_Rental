@@ -3,9 +3,12 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { FaUsers, FaCar, FaCalendarAlt, FaMoneyBillWave } from "react-icons/fa";
 import { GiMoneyStack } from "react-icons/gi";
-// import '../styles/RevenueReport.css'
+import Chart from "./Chart";
+import Graph from "./Graph";
+import { CgProfile } from "react-icons/cg";
+// import '../styles/AdminReport.css'
 
-const RevenueReport = () => {
+const AdminReport = () => {
   const userRole = useSelector((state) => state.app.user?.role);
   const [cars, setCars] = useState([]);
   const [ownedCars, setOwnedCars] = useState([]);
@@ -197,7 +200,7 @@ const RevenueReport = () => {
   };
 
   return (
-    <div className="h-screen bg-white">
+    <div className="h-screen bg-white ml-[-40.5%]">
       <div className="mx-auto rounded-lg p-8">
         <h1 className="text-4xl font-bold text-black mb-6 border-b pb-4 ">
           {userRole === "admin" ? "Admin Dashboard" : "Owner Dashboard"}
@@ -209,14 +212,15 @@ const RevenueReport = () => {
             {/* Align cards in a single horizontal line */}
             <div className="flex flex-wrap gap-6 ">
               {userRole === "admin" && (
-                <div className="p-6 bg-gray-100 rounded-lg shadow-md transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gray-300 hover:shadow-xl border border-gray-200">
+                <div className="p-6 w-64 bg-gradient-to-r from-red-100 to-red-400 rounded-lg shadow-black shadow-[0_15px_25px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out ml-8 ">
                   <h2 className="text-xl font-semibold animate-pulse">
                     Total Users Listed
                   </h2>
+                  <span><CgProfile  size="34px" color="red" /></span>
                   <p className="text-3xl font-bold">{users.length}</p>
                 </div>
               )}
-              <div className="p-6 w-64 bg-white rounded-lg shadow-black shadow-[0_15px_25px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400 ml-8 ">
+              <div className="p-6 w-64 bg-gradient-to-r from-blue-100 to-blue-400 rounded-lg shadow-black shadow-[0_15px_25px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out  ml-8 ">
                 <h2 className="text-xl font-semibold animate-pulse  text-black">
                   Total Cars Listed
                 </h2>
@@ -225,7 +229,7 @@ const RevenueReport = () => {
                   {userRole === "admin" ? cars.length : ownedCars.length}
                 </p>
               </div>
-              <div className="p-6 w-64 bg-white  rounded-lg shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400">
+              <div className="p-6 w-64 bg-gradient-to-r from-violet-100 to-violet-400  rounded-lg shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out ">
                 <h2 className="text-xl font-semibold animate-pulse">
                   Total Bookings
                 </h2>
@@ -240,7 +244,7 @@ const RevenueReport = () => {
 
               {/* Align revenue cards in a single horizontal line */}
               {/* <div className="flex flex-wrap gap-6 justify-center mt-6"> */}
-              <div className="p-6 w-64 bg-white  rounded-lg shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400">
+              <div className="p-6 w-64 bg-gradient-to-r from-yellow-100 to-yellow-400  rounded-lg shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out">
                 <h2 className="text-xl font-semibold animate-pulse">
                   Total Revenue
                 </h2>
@@ -249,11 +253,10 @@ const RevenueReport = () => {
                   Rs. {userRole === "admin" ? revenue : carOwnerRevenue}
                 </p>
               </div>
-              <div className="p-6 w-64 bg-white  rounded-lg  shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400">
+              {/* <div className="p-6 w-64 bg-white  rounded-lg  shadow-black shadow-[0_15px_15px_-15px_rgba(0,0,0,0)] transform hover:scale-105 transition duration-300 ease-in-out hover:bg-gradient-to-b from-gray-200 to-gray-400">
                 <h2 className="text-xl font-semibold animate-pulse">
                   Last Month Revenue
                 </h2>
-                {/* <FaMoneyBillWave className="text-4xl text-black" /> */}
                 <GiMoneyStack className="text-4xl text-green-600" />
                 <p className="text-3xl font-bold">
                   Rs.{" "}
@@ -261,12 +264,18 @@ const RevenueReport = () => {
                     ? lastMonthRevenue
                     : lastMonthCarOwnerRevenue}
                 </p>
-              </div>
+              </div> */}
             </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-14">
+            <Chart/>
+            <Graph/>
+            </div>
+
 
             {/* Recent Bookings Table */}
             <div className="flex flex-wrap gap-6 ">
-              <div className="border-2 rounded-xl mt-20 border-gray-300 shadow-lg bg-gradient-to-r from-white via-gray-100 to-white p-8 max-w-7xl mx-auto">
+              <div className="border-2 rounded-xl mt-20 border-gray-300 shadow-lg bg-gradient-to-r from-white via-gray-100 to-white p-8 w-full mx-auto">
                 <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
                   📋 Recent Bookings
                 </h2>
@@ -308,9 +317,9 @@ const RevenueReport = () => {
                             <span
                               className={`px-2 py-2 text-sm inline-block rounded-full border ${
                                 booking.status === "Completed"
-                                  ? "text-green-600 border-green-600"
+                                  ? "text-green-600 border-green-600 bg-green-100"
                                   : booking.status === "canceled"
-                                  ? "text-yellow-600 border-yellow-600"
+                                  ? "text-yellow-600 border-yellow-600 bg-yellow-100"
                                   : "text-red-600 border-red-600 bg-red-100"
                               }`}
                             >
@@ -324,6 +333,8 @@ const RevenueReport = () => {
                 </div>
               </div>
             </div>
+
+
           </div>
         )}
       </div>
@@ -331,4 +342,4 @@ const RevenueReport = () => {
   );
 };
 
-export default RevenueReport;
+export default AdminReport;

@@ -30,14 +30,12 @@ const Sidebar = ({ setClickedUserOption, setcliCkedOwnerOption }) => {
   const usersDropdownItems = [
     { label: "View All Users" },
     { label: "Change User Role" },
-    { label: "View Car Owners" },
     { label: "Get User" },
     { label: "Delete User" },
   ];
 
   const bookingsDropdownItems = [
-    { label: "View All Bookings" },
-    { label: "Add/Delete Bookings" },
+    { label: "View All Bookings" },,
   ];
 
   const profileDropdownItems = [
