@@ -77,7 +77,9 @@ export const deleteUser = async (req, res) => {
 // getAllCars(): Fetch details of all cars listed on the platform.
 export const getAllCars = async (req, res) => {
   try {
-    const cars = await Car.find();
+    const cars = await Car.find()
+    .populate('ownerId', 'fullname email') ;
+
     res.status(200).json(cars);
   } catch (error) {
     res.status(500).json({ message: error.message });
