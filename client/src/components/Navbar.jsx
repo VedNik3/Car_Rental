@@ -6,7 +6,7 @@ import { API_END_POINT } from "../utils/constants";
 import toast from "react-hot-toast";
 import { setUser } from "../redux/userSlice";
 import axios from "axios";
-import mainLogo from "../assets/mainLogo.png";
+import mainLogo from "../assets/Drivesphere2.png";
 
 const Navbar = ({toggle,setToggle}) => {
   const navigate = useNavigate();
@@ -70,12 +70,13 @@ const Navbar = ({toggle,setToggle}) => {
     <nav className="fixed top-0 left-0 right-0 z-10 bg-custom-gray  p-2 w-[100vw]">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
-        <img
+        {/* <img
           onClick={handleLogoClick}
           alt="Your Company"
           src={mainLogo}
           className="h-10 cursor-pointer"
-        />
+        /> */}
+        <h1 className="text-white text-2xl font-medium cursor-pointer"><span className="text-red-700 ">Drive</span>Sphere<span className="text-red-700 font-bold"> .</span></h1>
 
         <div className="flex items-center gap-5">
           {user && (

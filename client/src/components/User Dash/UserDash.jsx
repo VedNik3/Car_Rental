@@ -8,7 +8,7 @@ import MainPage from './MainPage';
 
 
 const UserDash = () => {
-  const [clickedUserOption, setClickedUserOption] = useState("dashboard");
+  const [clickedUserOption, setClickedUserOption] = useState("profile");
   console.log("--->",clickedUserOption);
   
 
