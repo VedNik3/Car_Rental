@@ -10,6 +10,10 @@ import GetUser from './GetUser';
 
 import AdminBookings from './AdminBookings';
 import AdminReport from './AdminReport';
+import DeleteCars from './DeleteCars';
+// import DeleteCarOwner from '../Owner Dash/DeleteCarOwner';
+import DeleteAdmin from './DeleteAdmin';
+
 
 const AdminDash = () => {
   const clickedOption = useSelector(state => state.admin.clickedOption); 
@@ -23,7 +27,7 @@ const AdminDash = () => {
       case 'Add New Car':
         return <AddCar/>;
       case 'Delete car':
-        return <div>Updating/Deleting Cars</div>;
+        return <DeleteCars/>;
       case 'View All Users':
         return <GetAllUsers/>;
       case 'Get User':
@@ -34,6 +38,8 @@ const AdminDash = () => {
         return <DeleteUser/>;
       case 'View All Bookings':
         return <AdminBookings/>;
+      case 'Deactive Account':
+        return <DeleteAdmin/>;
       default:
         return <AdminReport/>;
     }

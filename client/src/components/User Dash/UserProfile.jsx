@@ -54,7 +54,7 @@ const UserProfile = () => {
     <div className="min-h-screen bg-gradient-to-br from-rose-100 via-red-300 to-red-500">
       <div className="container mx-auto  px-4 py-16 flex flex-col md:flex-row items-center  gap-40">
         {/* Profile Card */}
-        <div className="w-full md:w-1/2 max-w-md ml-52 mt-5">
+        <div className="w-full md:w-1/2 max-w-md ml-80 mt-5">
           <div className="bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl p-8 transform hover:translate-y-[-4px] transition-all duration-300">
             <h2 className="text-3xl font-bold text-gray-800 mb-6 border-b pb-4">
               User Profile

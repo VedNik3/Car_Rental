@@ -38,6 +38,10 @@ const Sidebar = ({ setClickedUserOption, setcliCkedOwnerOption }) => {
     { label: "View All Bookings" },,
   ];
 
+  const settingsDropdownItems = [
+    { label: "Deactive Account" },
+  ];
+
   const profileDropdownItems = [
     { label: "View Profile" },
     { label: "Edit Profile" },
@@ -243,7 +247,7 @@ const Sidebar = ({ setClickedUserOption, setcliCkedOwnerOption }) => {
 
           {/* Settings (for Admin only) */}
           {userRole === "admin" && (
-            <Dropdown title="Settings" items={bookingsDropdownItems} />
+            <Dropdown title="Settings" items={settingsDropdownItems} />
           )}
         </ul>
 
