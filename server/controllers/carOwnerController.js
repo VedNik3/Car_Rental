@@ -273,6 +273,7 @@ export const handleImagesUpload = (req, res) => {
 export const deleteCar = async (req, res) => {
   try {
     const { regNumber } = req.body;
+    // console.log(regNumber);
 
     if (!regNumber) {
       return res.status(400).json({ message: "Registration number is required." });

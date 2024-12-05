@@ -1,0 +1,153 @@
+[{
+  "_id": {
+    "$oid": "66f3fd0707c4b73474dd6f80"
+  },
+  "fullname": "vedant",
+  "email": "vedant@gmail.com",
+  "password": "$2b$10$XQ.yQZesW9K3wXEtYzwWKeqfiyh0VYMC2flJuhSCOIMbWGe6cOYNq",
+  "mobileNo": "6528974122",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2024-09-25T12:07:35.521Z"
+  },
+  "updatedAt": {
+    "$date": "2024-09-25T12:07:35.521Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f3d9db7526f998586e5d5"
+  },
+  "fullname": "vedant Nikam",
+  "email": "vedantN@gmail.com",
+  "password": "$2b$10$O.4/1lB5brPlFm61u5HAkOV/gEc6Ki40IEnKFsuY0T2zgS9Nhcg1O",
+  "mobileNo": "9322228237",
+  "role": "carOwner",
+  "createdAt": {
+    "$date": "2024-12-03T17:19:25.965Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-03T17:19:25.965Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f43fdb4960f9882f06859"
+  },
+  "fullname": "Einstein",
+  "email": "Einstein@gmail.com",
+  "password": "$2b$10$ImDrjs6fTfxP6496TKcOGeosSQzryzS5Mja69cEFa/cGYPpf5Cif.",
+  "mobileNo": "9999999999",
+  "role": "user",
+  "createdAt": {
+    "$date": "2024-12-03T17:46:37.524Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-03T17:46:37.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f442bb4960f9882f0685c"
+  },
+  "fullname": "Isaac",
+  "email": "Isaac@gmail.com",
+  "password": "$2b$10$3RDucMa.vXYAcJYna/fgKOrDanNEdpwlL52pvKl8qiZ4xe1n1WAZW",
+  "mobileNo": "9999999998",
+  "role": "user",
+  "createdAt": {
+    "$date": "2024-12-03T17:47:23.175Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-03T17:47:23.175Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f4f195d62804119770636"
+  },
+  "fullname": "test",
+  "email": "test@gmail.com",
+  "password": "$2b$10$A6JHM3WgBR3WK/8VjfJfwePrm7yJTlHpDTY0z0oKzAkeVdgJ11MMK",
+  "mobileNo": "8120560603",
+  "role": "user",
+  "createdAt": {
+    "$date": "2024-12-03T18:34:01.311Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-03T18:34:01.311Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f580194c012a46eb727f1"
+  },
+  "fullname": "ram",
+  "email": "ram@gmail.com",
+  "password": "$2b$10$HlfUJqVll1Kqnuvc0bDLOeHHFc47/.AMyvyopWcP8SeAXlCB5qJDm",
+  "mobileNo": "1234567891",
+  "role": "user",
+  "createdAt": {
+    "$date": "2024-12-03T19:12:01.451Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-04T08:35:29.333Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f634cca4fa6773d5b6f11"
+  },
+  "fullname": "shyam",
+  "email": "shyam@gmail.com",
+  "password": "$2b$10$7URlmEsfqzbrhytJZko4cOgiD/nnCT5b5Iv5rfvTemRFehxXq3fRa",
+  "mobileNo": "1234567891",
+  "role": "carOwner",
+  "createdAt": {
+    "$date": "2024-12-03T20:00:12.663Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-03T20:00:12.663Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f82d8aa9e927f060afec9"
+  },
+  "fullname": "Akshay",
+  "email": "akshay@gmail.com",
+  "password": "$2b$10$p8CoJy0hhgU7LymI97YJQuogFQ3t7hY3CwjZJzKTFcjTFioOXKRyq",
+  "mobileNo": "9322228237",
+  "role": "carOwner",
+  "createdAt": {
+    "$date": "2024-12-03T22:14:48.119Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-03T22:14:48.119Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f8784aa9e927f060aff2e"
+  },
+  "fullname": "Virat kohli",
+  "email": "virat123@gmail.com",
+  "password": "$2b$10$mJKbQRrbWZEfIJbRKipDseoHkw8/XQWnasm33ECAOd4S1zm3TL2SO",
+  "mobileNo": "9322228237",
+  "role": "carOwner",
+  "createdAt": {
+    "$date": "2024-12-03T22:34:44.301Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-03T22:34:44.301Z"
+  },
+  "__v": 0
+}]

@@ -1,0 +1,406 @@
+[{
+  "_id": {
+    "$oid": "674f4235b7526f998586e63d"
+  },
+  "brand": "Mahindra",
+  "model": "Thar",
+  "year": 2022,
+  "regNumber": "MH19AJ2000",
+  "type": "suv",
+  "color": "Red",
+  "rentalPricePerDay": 5000,
+  "fuelType": "diesel",
+  "transmission": "manual",
+  "seats": 4,
+  "status": "available",
+  "mileage": 12,
+  "description": "Experience adventure with my Mahindra Thar! A rugged yet comfortable SUV, perfect for off-roading or city drives. Well-maintained, spacious, and equipped with modern features to make every journey memorable.",
+  "images": [
+    "/uploads/1733247541816-thar1.webp",
+    "/uploads/1733247541816-thar2.webp",
+    "/uploads/1733247541816-thar3.jpg"
+  ],
+  "currentLocation": "Mumbai",
+  "ownerId": {
+    "$oid": "674f3d9db7526f998586e5d5"
+  },
+  "createdAt": {
+    "$date": "2024-12-03T17:39:01.913Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-04T17:20:11.398Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f4379b7526f998586e64d"
+  },
+  "brand": "Toyota",
+  "model": "Fortuner",
+  "year": 2023,
+  "regNumber": "MH01AJ1111",
+  "type": "suv",
+  "color": "Black",
+  "rentalPricePerDay": 7000,
+  "fuelType": "diesel",
+  "transmission": "manual",
+  "seats": 7,
+  "status": "available",
+  "mileage": 10,
+  "description": "A rugged and premium SUV with a powerful engine, off-road capabilities, bold styling, and spacious interiors for adventure seekers.",
+  "images": [
+    "/uploads/1733247864936-fortuner1.jpg",
+    "/uploads/1733247864938-fortuner2.jpg",
+    "/uploads/1733247864939-fortuner-3.webp"
+  ],
+  "currentLocation": "Mumbai",
+  "ownerId": {
+    "$oid": "674f3d9db7526f998586e5d5"
+  },
+  "createdAt": {
+    "$date": "2024-12-03T17:44:25.036Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-04T17:20:10.010Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f7fe122736935a31f1f68"
+  },
+  "brand": "Hyundai",
+  "model": "Verna",
+  "year": 2020,
+  "regNumber": "MH01AX0001",
+  "type": "sedan",
+  "color": "White",
+  "rentalPricePerDay": 3000,
+  "fuelType": "petrol",
+  "transmission": "manual",
+  "seats": 5,
+  "status": "available",
+  "mileage": 20,
+  "description": " A sleek and stylish sedan offering refined performance, fuel efficiency, advanced features, and a comfortable ride for city and highway driving.",
+  "images": [
+    "/uploads/1733263328800-verna1.jpg",
+    "/uploads/1733263328806-verna2.jpg",
+    "/uploads/1733263328811-verna3.jpeg"
+  ],
+  "currentLocation": "Mumbai",
+  "ownerId": {
+    "$oid": "674f3d9db7526f998586e5d5"
+  },
+  "createdAt": {
+    "$date": "2024-12-03T22:02:09.053Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-04T17:20:22.701Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f8376aa9e927f060afede"
+  },
+  "brand": "Tata",
+  "model": "Nexon",
+  "year": 2022,
+  "regNumber": "DL12TC5252",
+  "type": "sedan",
+  "color": "Blue",
+  "rentalPricePerDay": 4000,
+  "fuelType": "electric",
+  "transmission": "manual",
+  "seats": 5,
+  "status": "booked",
+  "mileage": 20,
+  "description": " A compact SUV featuring a stylish design, advanced safety ratings, efficient powertrains, and a versatile performance suitable for city and highway driving.",
+  "images": [
+    "/uploads/1733264246451-nexon1.webp",
+    "/uploads/1733264246456-nexon2.webp",
+    "/uploads/1733264246457-nexon3.webp"
+  ],
+  "currentLocation": "Delhi",
+  "ownerId": {
+    "$oid": "674f82d8aa9e927f060afec9"
+  },
+  "createdAt": {
+    "$date": "2024-12-03T22:17:26.575Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-04T17:22:34.355Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f8499aa9e927f060afeef"
+  },
+  "brand": "Hyundai",
+  "model": "Venue",
+  "year": 2023,
+  "regNumber": "DL13TC5000",
+  "type": "suv",
+  "color": "Brown",
+  "rentalPricePerDay": 5000,
+  "fuelType": "petrol",
+  "transmission": "manual",
+  "seats": 5,
+  "status": "available",
+  "mileage": 15,
+  "description": "A compact SUV with a sporty design, modern interiors, excellent connectivity features, efficient engine options, and great maneuverability in urban settings.",
+  "images": [
+    "/uploads/1733264536822-venue2.jpg",
+    "/uploads/1733264536824-venue3.jpg",
+    "/uploads/1733264536848-venuenlineshadowgrey.jpeg"
+  ],
+  "currentLocation": "Delhi",
+  "ownerId": {
+    "$oid": "674f82d8aa9e927f060afec9"
+  },
+  "createdAt": {
+    "$date": "2024-12-03T22:22:17.071Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-04T09:51:07.762Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f853daa9e927f060afef7"
+  },
+  "brand": "Mahindra",
+  "model": "Scorpio",
+  "year": 2023,
+  "regNumber": "DL09TC0001",
+  "type": "suv",
+  "color": "Black",
+  "rentalPricePerDay": 7000,
+  "fuelType": "diesel",
+  "transmission": "manual",
+  "seats": 7,
+  "status": "booked",
+  "mileage": 20,
+  "description": "A tough and muscular SUV known for its bold design, reliable performance, off-road readiness, and robust build quality.",
+  "images": [
+    "/uploads/1733264701030-scorpio3.png",
+    "/uploads/1733264701049-scorpio1.jpg",
+    "/uploads/1733264701053-scorpio2.jpg"
+  ],
+  "currentLocation": "Delhi",
+  "ownerId": {
+    "$oid": "674f82d8aa9e927f060afec9"
+  },
+  "createdAt": {
+    "$date": "2024-12-03T22:25:01.154Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-04T17:32:07.981Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f860baa9e927f060aff10"
+  },
+  "brand": "Hyundai",
+  "model": "Creta",
+  "year": 2021,
+  "regNumber": "MH01AK2022",
+  "type": "suv",
+  "color": "Red",
+  "rentalPricePerDay": 4000,
+  "fuelType": "petrol",
+  "transmission": "manual",
+  "seats": 5,
+  "status": "available",
+  "mileage": 20,
+  "description": "A feature-packed mid-size SUV with a bold design, spacious interiors, advanced technology, and reliable performance for families and solo travelers alike.",
+  "images": [
+    "/uploads/1733264907566-creta1.jpg",
+    "/uploads/1733264907569-creta2.jpg",
+    "/uploads/1733264907570-creta3.jpg"
+  ],
+  "currentLocation": "Mumbai",
+  "ownerId": {
+    "$oid": "674f634cca4fa6773d5b6f11"
+  },
+  "createdAt": {
+    "$date": "2024-12-03T22:28:27.692Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-04T05:51:05.432Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f8830aa9e927f060aff43"
+  },
+  "brand": "Toyota",
+  "model": "Land Cruiser",
+  "year": 2023,
+  "regNumber": "DL12TC1010",
+  "type": "suv",
+  "color": "Black",
+  "rentalPricePerDay": 8000,
+  "fuelType": "diesel",
+  "transmission": "manual",
+  "seats": 7,
+  "status": "available",
+  "mileage": 10,
+  "description": "A luxury SUV with legendary off-road capabilities, robust durability, premium interiors, advanced technology, and exceptional performance on all terrains.",
+  "images": [
+    "/uploads/1733265456223-landcruiser1.jpeg",
+    "/uploads/1733265456223-landcruiser2.webp",
+    "/uploads/1733265456224-landcruiser3.jpeg"
+  ],
+  "currentLocation": "Delhi",
+  "ownerId": {
+    "$oid": "674f8784aa9e927f060aff2e"
+  },
+  "createdAt": {
+    "$date": "2024-12-03T22:37:36.345Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-03T22:37:36.345Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f8946aa9e927f060aff4b"
+  },
+  "brand": "Mahindra",
+  "model": "XUV7OO",
+  "year": 2023,
+  "regNumber": "KA01KS4040",
+  "type": "suv",
+  "color": "Orange",
+  "rentalPricePerDay": 6000,
+  "fuelType": "petrol",
+  "transmission": "manual",
+  "seats": 7,
+  "status": "booked",
+  "mileage": 12,
+  "description": "A premium SUV with futuristic features, a powerful engine, spacious cabin, advanced safety systems, and an impressive road presence.",
+  "images": [
+    "/uploads/1733265734337-7001.webp",
+    "/uploads/1733265734341-7002.webp"
+  ],
+  "currentLocation": "Bangalore",
+  "ownerId": {
+    "$oid": "674f8784aa9e927f060aff2e"
+  },
+  "createdAt": {
+    "$date": "2024-12-03T22:42:14.462Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-04T16:01:54.845Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "674f8b15aa9e927f060aff91"
+  },
+  "brand": "Tata",
+  "model": "Harrier",
+  "year": 2023,
+  "regNumber": "TN02LA2121",
+  "type": "suv",
+  "color": "Yellow",
+  "rentalPricePerDay": 3000,
+  "fuelType": "electric",
+  "transmission": "automatic",
+  "seats": 5,
+  "status": "available",
+  "mileage": 20,
+  "description": "A premium SUV with a striking design, powerful engine, feature-rich interiors, and a comfortable ride, ideal for family and long drives.",
+  "images": [
+    "/uploads/1733266197086-tata1.webp",
+    "/uploads/1733266197087-tata2.webp",
+    "/uploads/1733266197087-tata3.webp"
+  ],
+  "currentLocation": "Chennai",
+  "ownerId": {
+    "$oid": "674f634cca4fa6773d5b6f11"
+  },
+  "createdAt": {
+    "$date": "2024-12-03T22:49:57.192Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-03T22:49:57.192Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675068a93cfbffc8e2866c43"
+  },
+  "brand": "Toyota",
+  "model": "Innova",
+  "year": 2022,
+  "regNumber": "TN19AJ2001",
+  "type": "suv",
+  "color": "Silver",
+  "rentalPricePerDay": 5000,
+  "fuelType": "diesel",
+  "transmission": "manual",
+  "seats": 7,
+  "status": "booked",
+  "mileage": 13,
+  "description": "Travel in comfort with my Toyota Innova! A spacious and reliable MPV, ideal for family trips or group outings. Well-maintained, fuel-efficient, and equipped with modern features for a smooth and enjoyable ride.",
+  "images": [
+    "/uploads/1733322921131-innova1.jpeg",
+    "/uploads/1733322921132-innova2.jpg",
+    "/uploads/1733322921138-innova3.jpg"
+  ],
+  "currentLocation": "Chennai",
+  "ownerId": {
+    "$oid": "674f634cca4fa6773d5b6f11"
+  },
+  "createdAt": {
+    "$date": "2024-12-04T14:35:21.250Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-04T15:55:35.573Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "675069583cfbffc8e2866c5c"
+  },
+  "brand": "Tata",
+  "model": "Safari",
+  "year": 2023,
+  "regNumber": "KA01KS4030",
+  "type": "suv",
+  "color": "Gray",
+  "rentalPricePerDay": 6000,
+  "fuelType": "petrol",
+  "transmission": "automatic",
+  "seats": 7,
+  "status": "available",
+  "mileage": 15,
+  "description": "Embark on your journey with my Tata Safari! A powerful and stylish SUV, perfect for long drives and off-road adventures. Spacious, well-maintained, and loaded with modern features for a comfortable and thrilling experience.",
+  "images": [
+    "/uploads/1733323096412-safari2.webp",
+    "/uploads/1733323096412-safari3.webp"
+  ],
+  "currentLocation": "Bangalore",
+  "ownerId": {
+    "$oid": "674f8784aa9e927f060aff2e"
+  },
+  "createdAt": {
+    "$date": "2024-12-04T14:38:16.513Z"
+  },
+  "updatedAt": {
+    "$date": "2024-12-04T14:38:16.513Z"
+  },
+  "__v": 0
+}]
