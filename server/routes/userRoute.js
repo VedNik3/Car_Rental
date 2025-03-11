@@ -13,6 +13,17 @@ router.get("/logout",Logout);
 //usrController.js
 router.get("/profile", authMiddleware, getUserProfile);
 router.get("/userbookingdetails", authMiddleware, UserBookingDetails);
+
+// router.get("/userbookingdetails", authMiddleware, async (req, res, next) => {
+//   try {
+//     throw new Error("Test Error from /complete");
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+
+
 router.put("/update", authMiddleware, updateUserProfile);
 router.delete("/deleteuserbooking/:bookingId", authMiddleware,deleteuserbooking);
 router.put("/updatePassword", authMiddleware, updatePassword);
