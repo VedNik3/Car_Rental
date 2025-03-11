@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
     // add paths to any other directories containing files where Tailwind classes are used
@@ -40,3 +40,4 @@ module.exports = {
   },
   plugins: [],
 };
+

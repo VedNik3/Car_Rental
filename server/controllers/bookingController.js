@@ -21,66 +21,86 @@ import { Booking } from "../models/bookingModel.js";
 import cron  from "node-cron";
 
 export const booked = async (req, res) => {
-    try {
-        const { 
-            regNumber,
-            rentalStartDate,
-            rentalEndDate,
-            totalPrice,
-            paymentStatus,
-            paymentMethod,
-            transactionId, 
-            rentalLocation,
-        } = req.body;
+  try {
+      const { 
+          regNumber,
+          rentalStartDate,
+          rentalEndDate,
+          totalPrice, // Price per day
+          paymentStatus,
+          paymentMethod,
+          transactionId, 
+          rentalLocation,
+      } = req.body;
 
-        const customerId = req.user.id;
+      const customerId = req.user.id;
 
-        if (!regNumber) {
-            return res.status(400).json({ message: "Registration number is required." });
-          }
+      if (!regNumber) {
+          return res.status(400).json({ message: "Registration number is required." });
+      }
 
-          const car = await Car.findOne({ regNumber });
-          console.log("-->",car);
-          
+      // Find the car by registration number
+      const car = await Car.findOne({ regNumber });
+      
+      if (!car) {
+          return res.status(404).json({ message: "Car not found." });
+      }
 
-          if (!car) {
-            return res.status(404).json({ message: "Car not found." });
-        }
+      // Validate car availability
+      if (car.status === "not available" || car.status === "in service") {
+          return res.status(400).json({ message:  `Car is currently ${car.status}. Unable to book at this time.` });
+      }
 
-         // Check if the car is available for booking
-    if (car.status === "not available" || car.status === "in service") {
-      return res.status(400).json({ message: `Car is currently ${car.status}. Unable to book at this time.` });
-    }
+      // Validate rental dates
+      const startDate = new Date(rentalStartDate);
+      const endDate = new Date(rentalEndDate);
+      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime()) || startDate >= endDate) {
+          return res.status(400).json({ message: "Invalid rental dates." });
+      }
 
-          const newBooking = new Booking({
-            user: customerId,
-            car: car._id,
-            regNumber,
-            rentalStartDate,
-            rentalEndDate,
-            totalPrice,
-            paymentStatus,
-            paymentMethod,
-            transactionId,
-            rentalLocation: {
-                pickupLocation: rentalLocation.pickupLocation,
-                dropoffLocation: rentalLocation.dropoffLocation
-            },
-          });
+      // Calculate the total rental days
+      const rentalDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+      
+      // Ensure totalPrice (price per day) is valid
+      if (!totalPrice || typeof totalPrice !== "number" || totalPrice <= 0) {
+          return res.status(400).json({ message: "Invalid total price (price per day)." });
+      }
 
-          await newBooking.save();
+      // Calculate the overall total price
+      const overallTotalPrice = rentalDays * totalPrice;
 
-          car.status = "booked";
-          await car.save();
+      // Create a new booking
+      const newBooking = new Booking({
+          user: customerId,
+          car: car._id,
+          regNumber,
+          rentalStartDate: startDate,
+          rentalEndDate: endDate,
+          totalPrice: overallTotalPrice, // Total cost for the rental period
+          paymentStatus,
+          paymentMethod,
+          transactionId,
+          rentalLocation: {
+              pickupLocation: rentalLocation.pickupLocation,
+              dropoffLocation: rentalLocation.dropoffLocation
+          },
+      });
 
-          return res.status(201).json({
-            message: 'booking added successfully'
-          });
+      await newBooking.save();
 
-    } catch (error) {
-        console.error(error);
-    res.status(500).json({ message: "Server error. Unable to create booking." });
-    }
+      // Update car status to "booked"
+      car.status = "booked";
+      await car.save();
+
+      return res.status(201).json({
+          message: "Booking added successfully",
+          booking: newBooking,
+      });
+
+  } catch (error) {
+      console.error("Error creating booking:", error.message);
+      res.status(500).json({ message: "Server error. Unable to create booking." });
+  }
 };
 
 
@@ -185,5 +205,5 @@ const updateBookingStatuses = async () => {
 };
 
 // Schedule the job to run every hour
-// cron.schedule("* * * * * *", updateCarStatuses); 
-// cron.schedule("* * * * * *", updateBookingStatuses);
+cron.schedule("0 * * * *", updateCarStatuses); 
+cron.schedule("0 * * * * ", updateBookingStatuses);

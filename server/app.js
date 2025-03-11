@@ -25,6 +25,11 @@ const corsOptions = {
   origin: 'http://localhost:5173', 
   credentials: true,
 };
+// const corsOptions = {
+//   origin: 'http://localhost:5173', // Allow requests from this origin
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   credentials: true
+// };
 app.use(cors(corsOptions));
 
 // Routes

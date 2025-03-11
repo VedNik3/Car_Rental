@@ -285,7 +285,7 @@ export const deleteCar = async (req, res) => {
       return res.status(404).json({ message: "Car not found." });
     }
 
-    const deletedBookings = await Booking.deleteMany({ carRegNumber: regNumber });
+    const deletedBookings = await Booking.deleteMany({ regNumber: regNumber });
 
     res.status(200).json({
       message: `Car and ${deletedBookings.deletedCount} associated bookings have been deleted successfully.`,

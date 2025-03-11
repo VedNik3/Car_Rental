@@ -65,7 +65,12 @@ export const deleteUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    const del = await Booking.deleteMany({ user: user._id });
+    
+    console.log(del);
+
     await User.findByIdAndDelete(user._id); 
+
     res.status(200).json({ message: "User has been deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -198,9 +203,15 @@ export const getAllBookings = async (req, res) => {
   try {
     
     
-    const bookings = await Booking.find()
+    const bookings = await Booking.find({})
     .populate('user', 'fullname email') 
     .populate('car', 'brand model regNumber')
+    // const bookings = await Booking.find({});
+
+    console.log(bookings);
+  
+
+    
     
     res.status(200).json(bookings); 
     
