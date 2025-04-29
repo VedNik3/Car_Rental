@@ -16,18 +16,22 @@ dotenv.config({ path: ".env" });
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const app = express();
+app.use("/uploads", express.static("uploads"));
 app.use(helmet());
 
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use("/uploads", express.static("uploads"));
+
 
 // CORS
 const corsOptions = {
   origin: "http://localhost:5173",
   credentials: true,
 };
+
+// app.use(cors(corsOptions));
+
 app.use(cors(corsOptions));
 
 app.use(morgan("dev"));
