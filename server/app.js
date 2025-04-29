@@ -11,6 +11,8 @@ import Stripe from "stripe";
 import errorHandler from "./middlewares/errorMiddleware.js";
 import helmet from "helmet";
 import morgan from "morgan";
+import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 dotenv.config({ path: ".env" });
 
@@ -33,6 +35,45 @@ const corsOptions = {
 // app.use(cors(corsOptions));
 
 app.use(cors(corsOptions));
+
+
+const swaggerOptions = {
+  swaggerDefinition: {
+      openapi: '3.0.0',
+      info: {
+          title: 'DriveSphere',
+          version: '1.0.0',
+          description: 'API documentation for DriveSphere API application',
+          contact: {
+              name: 'Your Name',
+              email: 'your-email@example.com',
+          },
+      },
+      components: {
+          securitySchemes: {
+              BearerAuth: {
+                  type: "http",
+                  scheme: "bearer",
+                  bearerFormat: "JWT",
+              },
+          },
+      },
+      // security: [  // Apply security globally (so all routes require authentication by default)
+      //     {
+      //         BearerAuth: []
+      //     }
+      // ],
+      servers: [
+          {
+              url: `http://localhost:${process.env.PORT}`, // Update with your server's URL
+          },
+      ],
+  },
+  apis: ["./swaggers/*.js"]
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(morgan("dev"));
 // Routes
@@ -99,5 +140,6 @@ connectToDatabase().then(() => {
   const PORT = process.env.PORT || 8000;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    console.log(`Swagger UI at http://localhost:${PORT}/api-docs`);
   });
 });
