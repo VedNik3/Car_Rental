@@ -62,15 +62,6 @@ const carSchema = new mongoose.Schema(
     images: {
       type: [String],
     },
-    // images: {
-    //     type: [String],
-    //     validate: {
-    //       validator: function(arr) {
-    //         return arr.every(url => /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/.test(url)); // Basic URL validation
-    //       },
-    //       message: 'Invalid image URL format.'
-    //     }
-    //   },
 
     currentLocation: {
       type: String,
@@ -84,5 +75,10 @@ const carSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// Indexing
+carSchema.index({ brand: 1 });  
+carSchema.index({ model: 1 });    
+carSchema.index({ fuelType: 1 }); 
 
 export const Car = mongoose.model("Car", carSchema);

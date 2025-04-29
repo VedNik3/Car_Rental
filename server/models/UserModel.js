@@ -5,11 +5,13 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,  
+        index:true
     },
     email: {
         type: String,
         required: true,
-        unique: true,  // Ensures email is unique
+        unique: true,  
+        index: true,
         match: [/.+\@.+\..+/, "Please enter a valid email address"],  
     },
     password: {
@@ -21,10 +23,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 10,
         maxlength: 10,
-        match: /^[0-9]{10}$/, // Ensures the value is exactly 10 digits
+        match: /^[0-9]{10}$/, 
         validate: {
             validator: function(v) {
-                return /^\d{10}$/.test(v); // Ensures only digits are used
+                return /^\d{10}$/.test(v); 
             },
             message: props => `${props.value} is not a valid 10-digit mobile number!`
         }
@@ -32,8 +34,8 @@ const userSchema = new mongoose.Schema({
     
     role: {
         type: String,
-        enum: ['user', 'carOwner', 'admin'],  // Define allowed roles
-        default: 'user',  // Default role is 'user'
+        enum: ['user', 'carOwner', 'admin'],  
+        default: 'user',  
         required: true,
     }
 }, { timestamps: true });
