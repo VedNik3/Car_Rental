@@ -2,11 +2,12 @@ import { User } from "../models/UserModel.js";
 import { Car } from "../models/carModel.js";
 import { Booking } from "../models/bookingModel.js";
 import bcrypt from "bcrypt";
+import { redisClient } from "../app.js";
 
 //GET THE USER PROFILE :
 export const getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password"); 
+    const user = await User.findById(req.user.id).select("-password");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -17,7 +18,6 @@ export const getUserProfile = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
-
 
 //UPDATE USER PROFILE
 // export const updateUserProfile = async (req, res) => {
@@ -54,14 +54,13 @@ export const getUserProfile = async (req, res) => {
 //   }
 // };
 
-
 export const updateUserProfile = async (req, res) => {
   try {
     const ownerId = req.user.id; // Get the logged-in user's ID
     const { fullname } = req.body;
 
     // Validate the new name
-    if (!fullname || fullname.trim() === '') {
+    if (!fullname || fullname.trim() === "") {
       return res.status(400).json({ message: "Name is required." });
     }
 
@@ -88,25 +87,26 @@ export const UserBookingDetails = async (req, res) => {
     const user = req.user.id; // Extract user ID from the authenticated user
 
     // Find bookings for the logged-in user
-    const bookings = await Booking.find({ user }).populate('car'); // Populate with car details
+    const bookings = await Booking.find({ user }).populate("car"); // Populate with car details
 
     // If no bookings are found
     if (!bookings || bookings.length === 0) {
-      return res.status(404).json({ message: 'No bookings found for this user' });
+      return res
+        .status(404)
+        .json({ message: "No bookings found for this user" });
     }
 
     // Return the bookings
     // res.status(200).json(bookings);
     return res.status(200).json({
-      message: 'Bookings retrieved successfully',
-      bookings
+      message: "Bookings retrieved successfully",
+      bookings,
     });
-    
   } catch (error) {
-    console.error('Error fetching bookings:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error("Error fetching bookings:", error);
+    res.status(500).json({ error: "Server error" });
   }
-}
+};
 
 export const deleteuserbooking = async (req, res) => {
   try {
@@ -123,13 +123,16 @@ export const deleteuserbooking = async (req, res) => {
     const carId = deletedBooking.car; // Assuming 'car' is a reference to the car's ID in the Booking schema
     await Car.findByIdAndUpdate(carId, { status: "available" });
 
-    res.status(200).json({ message: "Booking deleted and car marked as available." });
+    res
+      .status(200)
+      .json({ message: "Booking deleted and car marked as available." });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error. Unable to delete booking." });
+    res
+      .status(500)
+      .json({ message: "Server error. Unable to delete booking." });
   }
 };
-
 
 //UPDATE USER PASSWORD
 export const updatePassword = async (req, res) => {
@@ -168,7 +171,9 @@ export const deleteUserAccount = async (req, res) => {
     // Delete the user account
     await User.findByIdAndDelete(req.user.id);
 
-    res.json({ message: "User account and associated bookings deleted successfully" });
+    res.json({
+      message: "User account and associated bookings deleted successfully",
+    });
   } catch (error) {
     console.error("Error deleting user account:", error);
     res.status(500).json({ message: "Server Error", error: error.message });
@@ -177,12 +182,23 @@ export const deleteUserAccount = async (req, res) => {
 
 export const getAllCars = async (req, res) => {
   try {
-    const cars = await Car.find();
+    let cars = null;
+    const key = "cars";
+    const value = await redisClient.get(key);
+
+    if (value) {
+      cars = JSON.parse(value);
+      console.log("cache hit");
+    } else {
+      cars = await Car.find();
+      await redisClient.setEx(key, 60, JSON.stringify(cars));
+    }
+
     res.status(200).json(cars);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-}
+};
 
 // export const cancelBooking = async (req, res) => {
 //   const { id } = req.params; // Get booking ID from params
@@ -221,43 +237,42 @@ export const cancelBooking = async (req, res) => {
   const { id } = req.params; // Get booking ID from params
 
   try {
-      // Find the booking by ID
-      const booking = await Booking.findById(id).populate('car'); // Populate car to get its details
-      console.log(id);
+    // Find the booking by ID
+    const booking = await Booking.findById(id).populate("car"); // Populate car to get its details
+    console.log(id);
 
-      if (!booking) {
-          return res.status(404).json({ message: "Booking not found" });
-      }
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
 
-      // Check if the booking is already canceled
-      if (booking.status === "canceled") {
-          return res.status(400).json({ message: "Booking is already canceled" });
-      }
+    // Check if the booking is already canceled
+    if (booking.status === "canceled") {
+      return res.status(400).json({ message: "Booking is already canceled" });
+    }
 
-      // Update the status of the booking to "canceled"
-      booking.status = "canceled";
-      await booking.save();
+    // Update the status of the booking to "canceled"
+    booking.status = "canceled";
+    await booking.save();
 
-      // Update the car status to "available"
-      const car = booking.car;
-      if (car) {
-          car.status = "available";
-          await car.save();
-      }
+    // Update the car status to "available"
+    const car = booking.car;
+    if (car) {
+      car.status = "available";
+      await car.save();
+    }
 
-      return res.status(200).json({
-          message: "Booking canceled successfully and car status updated to available",
-          booking,
-      });
+    return res.status(200).json({
+      message:
+        "Booking canceled successfully and car status updated to available",
+      booking,
+    });
   } catch (error) {
-      console.error("Error canceling booking:", error);
-      return res.status(500).json({
-          message: "Internal server error while canceling the booking",
-      });
+    console.error("Error canceling booking:", error);
+    return res.status(500).json({
+      message: "Internal server error while canceling the booking",
+    });
   }
 };
-
-
 
 //View Booking History (GET /api/users/:id/bookings)
 
@@ -268,6 +283,6 @@ export const cancelBooking = async (req, res) => {
 //Forgot Password (POST /api/users/forgot-password)
 
 //Reset Password (PUT /api/users/reset-password/:token)
-  // Enables the consumer to reset their password using the token sent to their email after the "forgot password" request.
+// Enables the consumer to reset their password using the token sent to their email after the "forgot password" request.
 
 //Leave a Review (POST /api/cars/:carId/reviews)

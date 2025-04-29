@@ -112,7 +112,7 @@ const HomeForm = () => {
                   Pickup Address
                 </label>
                 <select
-                  className="w-full p-1 border bg-transparent text-white border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-1 border text-black  border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   id="pickup-address"
                   defaultValue=""
                   onChange={handleLocationChange}
@@ -138,7 +138,7 @@ const HomeForm = () => {
                   Start Date & Time
                 </label>
                 <input
-                  className="w-full p-1 border bg-transparent border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-1 border text-black border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   type="datetime-local"
                   id="start-date-time"
                   value={startDate}
@@ -157,7 +157,7 @@ const HomeForm = () => {
                   Drop-off Date & Time
                 </label>
                 <input
-                  className="w-full p-1 border bg-transparent border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-1 border text-black border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                   type="datetime-local"
                   id="drop-date-time"
                   value={dropDate}
@@ -175,7 +175,7 @@ const HomeForm = () => {
 
               {/* Submit Button */}
               <button className="w-full bg-blue-500 text-white p-1.5 rounded hover:bg-blue-600 transition duration-300">
-                Book Now
+                Search Car
               </button>
               <button
                 className="absolute top-2 right-2 text-2xl"
