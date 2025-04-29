@@ -13,25 +13,33 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
-import redis from "redis";
+// import redis from "redis";
+import { Redis } from '@upstash/redis'
 import swaggerJsDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
-export const redisClient = redis.createClient();
+// export const redisClient = redis.createClient({
+//   url:'maximum-wolf-21246.upstash.io:6379'
+// });
 
-(async () => {
-  redisClient.on("error", (err) => {
-    console.error("Redis client error", err);
-  });
+// (async () => {
+//   redisClient.on("error", (err) => {
+//     console.error("Redis client error", err);
+//   });
 
-  redisClient.on("ready", () => {
-    console.error("Redis client started"); 
-  });
+//   redisClient.on("ready", () => {
+//     console.error("Redis client started"); 
+//   });
 
-  await redisClient.connect();
-  await redisClient.ping();
+//   await redisClient.connect();
+//   await redisClient.ping();
    
-})();
+// })();
+
+export const redisClient = new Redis({
+  url: 'https://maximum-wolf-21246.upstash.io',
+  token: 'AVL-AAIjcDFhOWQzYWIzNzllYjQ0YzJlYWEzODk2M2NmOTY1MGNjY3AxMA',
+})
 
 // Get __dirname in ES module
 const __filename = fileURLToPath(import.meta.url);

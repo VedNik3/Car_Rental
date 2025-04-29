@@ -211,13 +211,14 @@ export const getAllBookings = async (req, res) => {
     const value = await redisClient.get(key);
 
     if (value) {
-      bookings = JSON.parse(value);
+      // bookings = JSON.parse(value);
+      bookings = value;
       console.log("cache hit");
     } else {
       bookings = await Booking.find({})
         .populate("user", "fullname email")
         .populate("car", "brand model regNumber");
-      await redisClient.setEx(key, 60, JSON.stringify(bookings));
+      await redisClient.set(key, JSON.stringify(bookings), { ex: 1 });
     }
 
     // const bookings = await Booking.find({});

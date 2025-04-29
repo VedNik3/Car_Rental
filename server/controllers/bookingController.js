@@ -123,11 +123,12 @@ export const getAvailableCars = async (req, res) => {
     const value = await redisClient.get(key);
 
     if (value) {
-      availableCars = JSON.parse(value);
+      // availableCars = JSON.parse(value);
+      availableCars = value;
       console.log("cache hit");
     } else {
       availableCars = await Car.find({ status: "available" });
-      await redisClient.setEx(key, 60, JSON.stringify(availableCars));
+      await redisClient.set(key, JSON.stringify(availableCars), { ex: 1 });
     }
 
     res.json(availableCars);

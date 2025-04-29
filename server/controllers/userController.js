@@ -187,15 +187,20 @@ export const getAllCars = async (req, res) => {
     const value = await redisClient.get(key);
 
     if (value) {
-      cars = JSON.parse(value);
+      // console.log(value);
+      // cars = JSON.parse(value);
+      cars = value;
+
       console.log("cache hit");
+      
     } else {
       cars = await Car.find();
-      await redisClient.setEx(key, 60, JSON.stringify(cars));
+      await redisClient.set(key, JSON.stringify(cars), { ex: 60 });
     }
-
+    // console.log(cars);
     res.status(200).json(cars);
   } catch (error) {
+    // console.log(error);
     res.status(500).json({ message: error.message });
   }
 };
