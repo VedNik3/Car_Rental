@@ -11,17 +11,40 @@ import Stripe from "stripe";
 import errorHandler from "./middlewares/errorMiddleware.js";
 import helmet from "helmet";
 import morgan from "morgan";
+import path from "path";
+import { fileURLToPath } from "url";
+import redis from "redis";
+
+export const redisClient = redis.createClient();
+
+(async () => {
+  redisClient.on("error", (err) => {
+    console.error("Redis client error", err);
+  });
+
+  redisClient.on("ready", () => {
+    console.error("Redis client started"); 
+  });
+
+  await redisClient.connect();
+  await redisClient.ping();
+   
+})();
+
+// Get __dirname in ES module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: ".env" });
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const app = express();
-app.use(helmet());
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // Middleware
+app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
-app.use("/uploads", express.static("uploads"));
 
 // CORS
 const corsOptions = {
@@ -29,8 +52,10 @@ const corsOptions = {
   credentials: true,
 };
 app.use(cors(corsOptions));
-
 app.use(morgan("dev"));
+
+// app.use("/uploads", express.static("uploads"));
+
 // Routes
 app.use("/api/user", userRoute);
 app.use("/api/admin", adminRoute);

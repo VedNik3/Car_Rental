@@ -18,6 +18,7 @@ router.get('/getcar', authMiddleware,checkRoleMiddleware(["admin"]), getCar);
 router.post('/addcar', authMiddleware,checkRoleMiddleware(["admin"]), addCar);
 router.delete('/deletecar', authMiddleware,checkRoleMiddleware(["admin"]), deleteCar);
 router.get('/allbookings', authMiddleware,checkRoleMiddleware(["admin"]), getAllBookings);
+// router.get('/allbookings', getAllBookings);
 router.get('/recent-bookings', authMiddleware,checkRoleMiddleware(["admin"]), recentBookings);
 
 

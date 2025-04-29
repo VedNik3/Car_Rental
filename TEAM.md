@@ -1,6 +1,7 @@
 user 
 normal users : 
 ram@gmail.com  Ram@123
+user@gmail.com  User@123
 
 car owners : 
 vedantN@gmail.com   Vedant@123 - mumbai
