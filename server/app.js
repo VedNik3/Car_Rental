@@ -14,6 +14,8 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import redis from "redis";
+import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 export const redisClient = redis.createClient();
 
@@ -34,8 +36,7 @@ export const redisClient = redis.createClient();
 // Get __dirname in ES module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-import swaggerJsDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+
 
 dotenv.config({ path: ".env" });
 
