@@ -67,13 +67,20 @@ app.use(cookieParser());
 
 // app.use(cors(corsOptions));
 
+// const corsOptions = {
+//   origin: [
+//    'car-rental-git-vedant-vedant-nikams-projects.vercel.app', 
+//    'http://localhost:5173'  // Keep local development URL
+//  ], 
+//  credentials: true,
+// };
+// app.use(cors(corsOptions));
+
 const corsOptions = {
-  origin: [
-   'car-rental-git-vedant-vedant-nikams-projects.vercel.app', 
-   'http://localhost:5173'  // Keep local development URL
- ], 
- credentials: true,
+  origin: true, // Reflects the request origin, which is safest for Swagger UI
+  credentials: true,
 };
+
 app.use(cors(corsOptions));
 
 
@@ -105,7 +112,7 @@ const swaggerOptions = {
       // ],
       servers: [
           {
-              url: `http://localhost:${process.env.PORT}`, // Update with your server's URL
+              url: "http://localhost:8000", // Update with your server's URL
           },
       ],
   },
