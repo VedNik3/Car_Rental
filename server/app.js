@@ -67,21 +67,21 @@ app.use(cookieParser());
 
 // app.use(cors(corsOptions));
 
-// const corsOptions = {
-//   origin: [
-//    'car-rental-git-vedant-vedant-nikams-projects.vercel.app', 
-//    'http://localhost:5173'  // Keep local development URL
-//  ], 
-//  credentials: true,
-// };
-// app.use(cors(corsOptions));
-
 const corsOptions = {
-  origin: true, // Reflects the request origin, which is safest for Swagger UI
-  credentials: true,
+  origin: [
+   'https://drivesphere.vercel.app', 
+   'http://localhost:5173'  // Keep local development URL
+ ], 
+ credentials: true,
 };
-
 app.use(cors(corsOptions));
+
+// const corsOptions = {
+//   origin: true, // Reflects the request origin, which is safest for Swagger UI
+//   credentials: true,
+// };
+
+// app.use(cors(corsOptions));
 
 
 const swaggerOptions = {

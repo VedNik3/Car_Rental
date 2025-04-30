@@ -38,7 +38,7 @@ export const Login = () => {
       : { fullname, email, password, role: selectedRole, mobileNo };
 
     const url = `${API_END_POINT}/${isLogin ? "login" : "register"}`;
-
+  
     const successMessage = isLogin
       ? "Login successful!"
       : "Registration successful!";
