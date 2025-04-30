@@ -6,6 +6,7 @@ import { GiMoneyStack } from "react-icons/gi";
 import Chart from "./Chart";
 import Graph from "./Graph";
 import { CgProfile } from "react-icons/cg";
+import { API_END_POINT_admin, API_END_POINT_CarOwner } from "../../utils/constants";
 // import '../styles/AdminReport.css'
 
 const AdminReport = () => {
@@ -45,7 +46,7 @@ const AdminReport = () => {
   const getCars = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/admin/getallcars",
+        `${API_END_POINT_admin}/getallcars`,
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -60,7 +61,7 @@ const AdminReport = () => {
   const getUsers = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/admin/getallusers",
+        `${API_END_POINT_admin}/getallusers`,
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -76,7 +77,7 @@ const AdminReport = () => {
   const getBookings = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/admin/allbookings",
+        `${API_END_POINT_admin}/allbookings`,
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -93,7 +94,7 @@ const AdminReport = () => {
   const getOwnedCars = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/carOwner/getallownedcars",
+        `${API_END_POINT_CarOwner}/getallownedcars`,
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -109,7 +110,7 @@ const AdminReport = () => {
   const getCarOwnerBookings = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/carOwner/CarOwnerBookingDetails",
+        `${API_END_POINT_CarOwner}/CarOwnerBookingDetails`,
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
@@ -132,7 +133,7 @@ const AdminReport = () => {
       let res;
       if (userRole === "admin") {
         res = await axios.get(
-          "http://localhost:8000/api/admin/recent-bookings",
+          `${API_END_POINT_admin}/recent-bookings`,
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,
@@ -140,7 +141,7 @@ const AdminReport = () => {
         );
       } else if (userRole === "carOwner") {
         res = await axios.get(
-          "http://localhost:8000/api/carOwner/recent-bookings",
+          `${API_END_POINT_CarOwner}/recent-bookings`,
           {
             headers: { "Content-Type": "application/json" },
             withCredentials: true,

@@ -14,6 +14,8 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 import redis from "redis";
+import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 export const redisClient = redis.createClient();
 
@@ -35,6 +37,7 @@ export const redisClient = redis.createClient();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
 dotenv.config({ path: ".env" });
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -47,14 +50,63 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS
-const corsOptions = {
-  origin: "http://localhost:5173",
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: "http://localhost:5173",
+//   credentials: true,
+// };
+
+// // app.use(cors(corsOptions));
 
 // app.use(cors(corsOptions));
 
+const corsOptions = {
+  origin: [
+   'car-rental-git-vedant-vedant-nikams-projects.vercel.app', 
+   'http://localhost:5173'  // Keep local development URL
+ ], 
+ credentials: true,
+};
 app.use(cors(corsOptions));
+
+
+const swaggerOptions = {
+  swaggerDefinition: {
+      openapi: '3.0.0',
+      info: {
+          title: 'DriveSphere',
+          version: '1.0.0',
+          description: 'API documentation for DriveSphere API application',
+          contact: {
+              name: 'Your Name',
+              email: 'your-email@example.com',
+          },
+      },
+      components: {
+          securitySchemes: {
+              BearerAuth: {
+                  type: "http",
+                  scheme: "bearer",
+                  bearerFormat: "JWT",
+              },
+          },
+      },
+      // security: [  // Apply security globally (so all routes require authentication by default)
+      //     {
+      //         BearerAuth: []
+      //     }
+      // ],
+      servers: [
+          {
+              url: `http://localhost:${process.env.PORT}`, // Update with your server's URL
+          },
+      ],
+  },
+  apis: ["./swaggers/*.js"]
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 app.use(morgan("dev"));
 
 // app.use("/uploads", express.static("uploads"));
@@ -123,5 +175,6 @@ connectToDatabase().then(() => {
   const PORT = process.env.PORT || 8000;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
+    console.log(`Swagger UI at http://localhost:${PORT}/api-docs`);
   });
 });

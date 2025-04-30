@@ -24,7 +24,7 @@ const DeleteCarOwner = () => {
 
         try {
             // Send DELETE request to the backend to delete the user
-            await axios.delete("http://localhost:8000/api/carOwner/deletecarowner", {
+            await axios.delete(`${API_END_POINT_CarOwner}/deletecarowner`, {
                 headers: {
                     "Content-Type": "application/json",
                 },
