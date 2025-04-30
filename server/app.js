@@ -58,13 +58,22 @@ app.use(express.json());
 app.use(cookieParser());
 
 // CORS
-const corsOptions = {
-  origin: "http://localhost:5173",
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: "http://localhost:5173",
+//   credentials: true,
+// };
+
+// // app.use(cors(corsOptions));
 
 // app.use(cors(corsOptions));
 
+const corsOptions = {
+  origin: [
+   'https://car-rental-sooty-three.vercel.app', 
+   'http://localhost:5173'  // Keep local development URL
+ ], 
+ credentials: true,
+};
 app.use(cors(corsOptions));
 
 
