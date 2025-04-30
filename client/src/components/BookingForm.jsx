@@ -67,7 +67,7 @@ const BookingForm = () => {
       const duration = durationFunc(formData.rentalStartDate, formData.rentalEndDate);
       const totalPrice = formData.totalPrice * duration;
 
-      const response = await axios.post("http://localhost:8000/checkout", {
+      const response = await axios.post("https://car-rental-ufci.onrender.com/checkout", {
         carName: car?.model,
         totalPrice: totalPrice,
       });
