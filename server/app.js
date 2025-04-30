@@ -112,7 +112,7 @@ const swaggerOptions = {
       // ],
       servers: [
           {
-              url: "http://localhost:8000", // Update with your server's URL
+              url: "https://car-rental-ufci.onrender.com", // Update with your server's URL
           },
       ],
   },
