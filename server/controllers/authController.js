@@ -41,7 +41,7 @@ export const Register = async (req, res) => {
       email,
       password: hashedPassword,
       mobileNo,
-      role, 
+      role,
     });
 
     return res.status(200).json({
@@ -97,7 +97,7 @@ export const Login = async (req, res) => {
       .cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // set secure only in production
-        sameSite: "Strict",
+        // sameSite: "Strict",
         maxAge: 3600000, // 1 hour
       })
       .json({
