@@ -69,7 +69,7 @@ app.use(cookieParser());
 
 const corsOptions = {
   origin: [
-   'https://car-rental-sooty-three.vercel.app', 
+   'car-rental-git-vedant-vedant-nikams-projects.vercel.app', 
    'http://localhost:5173'  // Keep local development URL
  ], 
  credentials: true,
