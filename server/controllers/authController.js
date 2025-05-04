@@ -9,7 +9,7 @@ const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}$/;
 export const Register = async (req, res) => {
   try {
     const { fullname, email, password, mobileNo, role } = req.body;
-    
+
     if (!fullname || !email || !password || !role || !mobileNo) {
       return res.status(400).json({
         message: "Please provide all required fields",
@@ -45,15 +45,15 @@ export const Register = async (req, res) => {
 
     const token = jwt.sign(
       { id: newUser._id, role: newUser.role },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET_KEY,
       { expiresIn: "1d" }
     );
 
     return res.status(201).json({
       message: "Account created successfully.",
       success: true,
-      token,                  
-      data: newUser,          
+      token,
+      data: newUser,
     });
   } catch (error) {
     console.error("Error during registration:", error);
