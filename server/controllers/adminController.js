@@ -203,6 +203,47 @@ export const deleteCar = async (req, res) => {
   }
 };
 
+// import solr from 'solr-client';
+
+// // Create a Solr client instance
+// const client = solr.createClient({
+//   host: 'localhost',   // Your Solr host
+//   port: '8983',        // Your Solr port
+//   core: 'cars',        // The core you're using (replace 'cars' with your core name)
+// });
+
+// export const deleteCar = async (req, res) => {
+//   try {
+//     const { regNumber } = req.body;
+
+//     if (!regNumber) {
+//       return res.status(400).json({ message: "Registration number is required." });
+//     }
+
+//     // Create a Solr delete query using regNumber
+//     const deleteQuery = client.delete().where(`regNumber:"${regNumber}"`);
+
+//     // Execute the delete query
+//     deleteQuery.commit((err, obj) => {
+//       if (err) {
+//         console.error(err);
+//         return res.status(500).json({ message: "Server error. Unable to delete the car." });
+//       }
+
+//       if (obj.response.numFound === 0) {
+//         return res.status(404).json({ message: "Car not found." });
+//       }
+
+//       res.status(200).json({ message: "Car has been deleted successfully." });
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Server error. Unable to delete the car." });
+//   }
+// };
+
+
+
 // Get all bookings:
 export const getAllBookings = async (req, res) => {
   try {

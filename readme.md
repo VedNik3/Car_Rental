@@ -1,4 +1,5 @@
 # DriveSphere - Car Rental Website
+Website link : https://drivesphere.vercel.app/
 
 ## Group - 36
 
@@ -13,6 +14,8 @@
 | Vivek Varthya  | S20220010234    |
 
 ---
+
+### Redis Results
 
 | Metric            | Without Cache | With Cache (Final) | Improvement         |
 | ----------------- | ------------- | ------------------ | ------------------- |
@@ -50,6 +53,8 @@ The platform aims to provide a seamless experience for all users with a focus on
 - **Frontend**: React, Tailwind CSS
 - **Backend**: Node.js, Express.js
 - **Database**: MongoDB
+- **DevOps & Performance** : Redis, Docker
+- **Documentation** : Swagger (https://car-rental-ufci.onrender.com/api-docs/)
 
 ---
 
