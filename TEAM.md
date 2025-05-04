@@ -1,6 +1,6 @@
 user 
 normal users : 
-ram@gmail.com  Ram@123
+rohit@gmail.com Rohit@123
 user@gmail.com  User@123
 
 car owners : 
