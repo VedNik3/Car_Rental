@@ -14,9 +14,9 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 // import redis from "redis";
-import { Redis } from '@upstash/redis'
-import swaggerJsDoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
+import { Redis } from "@upstash/redis";
+import swaggerJsDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 
 // export const redisClient = redis.createClient({
 //   url:'maximum-wolf-21246.upstash.io:6379'
@@ -28,23 +28,22 @@ import swaggerUi from 'swagger-ui-express';
 //   });
 
 //   redisClient.on("ready", () => {
-//     console.error("Redis client started"); 
+//     console.error("Redis client started");
 //   });
 
 //   await redisClient.connect();
 //   await redisClient.ping();
-   
+
 // })();
 
 export const redisClient = new Redis({
-  url: 'https://maximum-wolf-21246.upstash.io',
-  token: 'AVL-AAIjcDFhOWQzYWIzNzllYjQ0YzJlYWEzODk2M2NmOTY1MGNjY3AxMA',
-})
+  url: "https://maximum-wolf-21246.upstash.io",
+  token: "AVL-AAIjcDFhOWQzYWIzNzllYjQ0YzJlYWEzODk2M2NmOTY1MGNjY3AxMA",
+});
 
 // Get __dirname in ES module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 
 dotenv.config({ path: ".env" });
 
@@ -69,9 +68,9 @@ app.use(cookieParser());
 
 // const corsOptions = {
 //   origin: [
-//    'car-rental-git-vedant-vedant-nikams-projects.vercel.app', 
+//    'car-rental-git-vedant-vedant-nikams-projects.vercel.app',
 //    'http://localhost:5173'  // Keep local development URL
-//  ], 
+//  ],
 //  credentials: true,
 // };
 // app.use(cors(corsOptions));
@@ -83,44 +82,43 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
 const swaggerOptions = {
   swaggerDefinition: {
-      openapi: '3.0.0',
-      info: {
-          title: 'DriveSphere',
-          version: '1.0.0',
-          description: 'API documentation for DriveSphere API application',
-          contact: {
-              name: 'Your Name',
-              email: 'your-email@example.com',
-          },
+    openapi: "3.0.0",
+    info: {
+      title: "DriveSphere",
+      version: "1.0.0",
+      description: "API documentation for DriveSphere API application",
+      contact: {
+        name: "Your Name",
+        email: "your-email@example.com",
       },
-      components: {
-          securitySchemes: {
-              BearerAuth: {
-                  type: "http",
-                  scheme: "bearer",
-                  bearerFormat: "JWT",
-              },
-          },
+    },
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
       },
-      // security: [  // Apply security globally (so all routes require authentication by default)
-      //     {
-      //         BearerAuth: []
-      //     }
-      // ],
-      servers: [
-          {
-              url: "https://car-rental-ufci.onrender.com", // Update with your server's URL
-          },
-      ],
+    },
+    // security: [  // Apply security globally (so all routes require authentication by default)
+    //     {
+    //         BearerAuth: []
+    //     }
+    // ],
+    servers: [
+      {
+        url: "https://car-rental-ufci.onrender.com", // Update with your server's URL
+      },
+    ],
   },
-  apis: ["./swaggers/*.js"]
+  apis: ["./swaggers/*.js"],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(morgan("dev"));
 
@@ -175,9 +173,10 @@ app.use((req, res, next) => {
 app.use(errorHandler);
 
 // Database Connection
-const connectToDatabase = async () => {
+export const connectToDatabase = async (MONGO_URI) => {
   try {
-    await mongoose.connect(process.env.MONGO_URL);
+    const URI = MONGO_URI || process.env.MONGO_URL;
+    await mongoose.connect(URI);
     console.log("MongoDB connected successfully");
   } catch (error) {
     console.error("Failed to connect to MongoDB", error);
@@ -185,11 +184,4 @@ const connectToDatabase = async () => {
   }
 };
 
-// Start Server
-connectToDatabase().then(() => {
-  const PORT = process.env.PORT || 8000;
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Swagger UI at http://localhost:${PORT}/api-docs`);
-  });
-});
+export default app;
