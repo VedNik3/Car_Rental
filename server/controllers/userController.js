@@ -1,7 +1,7 @@
 import { User } from "../models/UserModel.js";
 import { Car } from "../models/carModel.js";
 import { Booking } from "../models/bookingModel.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { redisClient } from "../app.js";
 
 //GET THE USER PROFILE :
@@ -192,7 +192,7 @@ export const getAllCars = async (req, res) => {
       cars = value;
 
       console.log("cache hit");
-      
+
     } else {
       cars = await Car.find();
       await redisClient.set(key, JSON.stringify(cars), { ex: 60 });

@@ -1,0 +1,46 @@
+services:
+  app:
+    build:
+      context: .
+    container_name: drivesphere-server
+    ports:
+      - 8000:8000
+    environment:
+      PORT: ${PORT}
+      MONGO_URL: ${MONGO_URL}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      BASE_URL: ${BASE_URL}
+    env_file:
+      - ./.env
+    depends_on:
+      - mongodb
+    networks:
+      - drivesphere-network
+
+  mongodb:
+    image: mongo
+    restart: always
+    container_name: drivesphere-db
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - drivesphere-network
+
+  redis:
+    image: redis/redis-stack
+    restart: always
+    container_name: drivesphere-redis
+    ports:
+      - 6379:6379
+      - 8001:8001
+    networks:
+      - drivesphere-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  drivesphere-network:
