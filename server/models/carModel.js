@@ -77,6 +77,7 @@ const carSchema = new mongoose.Schema(
 );
 
 // Indexing
+carSchema.index({ regNumber: 1 });
 carSchema.index({ brand: 1 });  
 carSchema.index({ model: 1 });    
 carSchema.index({ fuelType: 1 }); 
