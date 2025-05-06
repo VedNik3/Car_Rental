@@ -41,7 +41,7 @@ The platform aims to provide a seamless experience for all users with a focus on
 - **Three Dashboards**: Separate dashboards for each user type (User, Admin, Car Owner) to cater to their specific needs.
 - **Car Management**: Car Owners can add and update car listings.
 - **Booking System**: Users can search for cars, view availability, and book them.
-- **Admin Control**: Admins can manage user roles, bookings, and the overall system.
+- **Admin Control**: Admins can manage user roles, bookings, and the overall systems.
 
 ---
 
