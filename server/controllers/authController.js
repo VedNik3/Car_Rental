@@ -1,6 +1,9 @@
 import { User } from "../models/UserModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+
+dotenv.config({ path: ".env" });
 
 // Password Validation Regex
 const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}$/;
@@ -98,6 +101,8 @@ export const Login = async (req, res) => {
     const decoded = jwt.decode(token);
     const tokenExpiry = decoded.exp;
 
+    const isDev = process.env.NODE_ENV !== "production";
+
     return res
       .status(200)
       .cookie("token", token, {
@@ -109,6 +114,10 @@ export const Login = async (req, res) => {
         secure: true, // required for cross-origin on HTTPS
         sameSite: "None", // required for cross-origin
         maxAge: 3600000,
+        // httpOnly: true,
+        // secure: !isDev,          // only secure in production
+        // sameSite: isDev ? "Lax" : "None", // "Lax" works locally without HTTPS
+        // maxAge: 3600000,
       })
       .json({
         message: `Welcome back, ${user.fullname}!`,

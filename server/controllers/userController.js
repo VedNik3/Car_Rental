@@ -189,7 +189,8 @@ export const getAllCars = async (req, res) => {
     try {
           const value = await redisClient.get(key);
           if (value) {
-            cars = JSON.parse(value); 
+            // cars = JSON.parse(value); 
+            cars = value; 
             console.log("Cache hit");
           }
         } catch (err) {
