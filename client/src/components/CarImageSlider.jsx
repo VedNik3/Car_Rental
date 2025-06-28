@@ -20,7 +20,7 @@ const CarImageSlider = ({ car, height = "200px" }) => {
     <div className="relative w-full">
       {/* Image Display */}
       <img
-        src={`http://localhost:8000${car.images[currentImageIndex]}`}
+        src={`https://car-rental-ufci.onrender.com${car.images[currentImageIndex]}`}
         alt={`${car.brand} ${car.model}`}
         style={{ height }} // Dynamically apply height
         className="w-full object-cover rounded-lg mb-4"

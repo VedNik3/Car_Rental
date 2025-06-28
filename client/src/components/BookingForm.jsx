@@ -4,6 +4,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { setFormData } from "../redux/bookingSlice";
 import CarImageSlider from "./CarImageSlider";
+import { API_END_POINT_checkout } from "../utils/constants";
 
 const BookingForm = () => {
   const location = useLocation();
@@ -67,9 +68,14 @@ const BookingForm = () => {
       const duration = durationFunc(formData.rentalStartDate, formData.rentalEndDate);
       const totalPrice = formData.totalPrice * duration;
 
-      const response = await axios.post("http://localhost:8000/checkout", {
+      const response = await axios.post(`${API_END_POINT_checkout}/checkout`, {
         carName: car?.model,
         totalPrice: totalPrice,
+      },{
+        // headers: {
+        //         "Content-Type": "application/json",
+        //     },
+            withCredentials: true,
       });
 
       // Redirect to Stripe payment page

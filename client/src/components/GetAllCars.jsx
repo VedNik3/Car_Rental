@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_END_POINT_admin } from "../utils/constants";
 
 const GetAllCars = () => {
   const [cars, setCars] = useState([]);
@@ -11,7 +12,7 @@ const GetAllCars = () => {
   useEffect(() => {
     const fetchCars = async () => {
       try {
-        const res = await axios.get("http://localhost:8000/api/admin/getallcars", {
+        const res = await axios.get(`${API_END_POINT_admin}/getallcars`, {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         });

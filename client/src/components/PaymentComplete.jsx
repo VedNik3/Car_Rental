@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { API_END_POINT_booking } from "../utils/constants";
 
 const PaymentComplete = () => {
   const location = useLocation();
@@ -24,7 +25,7 @@ const PaymentComplete = () => {
 
       try {
         const bookingResponse = await axios.post(
-          `http://localhost:8000/api/booking/booked`,
+          `${API_END_POINT_booking}/booked`,
           {
             ...formData,
             rentalLocation: {
