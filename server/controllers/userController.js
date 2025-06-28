@@ -184,21 +184,39 @@ export const getAllCars = async (req, res) => {
   try {
     let cars = null;
     const key = "cars";
-    const value = await redisClient.get(key);
+    // const value = await redisClient.get(key);
 
-    if (value) {
-      // console.log(value);
-      // cars = JSON.parse(value);
-      cars = value;
+    try {
+          const value = await redisClient.get(key);
+          if (value) {
+            cars = JSON.parse(value); 
+            console.log("Cache hit");
+          }
+        } catch (err) {
+          console.error("Redis GET error:", err);
+        }
 
-      console.log("cache hit");
+    // if (value) {
+    //   // console.log(value);
+    //   // cars = JSON.parse(value);
+    //   cars = value;
 
-    } else {
-      cars = await Car.find();
-      await redisClient.set(key, JSON.stringify(cars), { ex: 60 });
+    //   console.log("cache hit");
+
+    // } else {
+    if(!cars){
+          cars = await Car.find();
+          try {
+        await redisClient.set(key, JSON.stringify(cars), { ex: 60 });
+      } catch (err) {
+        console.error("Redis SET error:", err);
+      }
     }
+     
+      // await redisClient.set(key, JSON.stringify(cars), { ex: 60 });
+      res.status(200).json(cars);
+    // }
     // console.log(cars);
-    res.status(200).json(cars);
   } catch (error) {
     // console.log(error);
     res.status(500).json({ message: error.message });

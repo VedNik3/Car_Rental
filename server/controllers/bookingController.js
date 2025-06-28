@@ -120,15 +120,34 @@ export const getAvailableCars = async (req, res) => {
   try {
     let availableCars = null;
     const key = "availablecars";
-    const value = await redisClient.get(key);
+    // const value = await redisClient.get(key);
+    try {
+              const value = await redisClient.get(key);
+              if (value) {
+                // availableCars = JSON.parse(value); 
+                availableCars = value; 
+                console.log("Cache hit");
+              }
+            } catch (err) {
+              console.error("Redis GET error:", err);
+            }
 
-    if (value) {
-      // availableCars = JSON.parse(value);
-      availableCars = value;
-      console.log("cache hit");
-    } else {
+
+    // if (value) {
+    //   // availableCars = JSON.parse(value);
+    //   availableCars = value;
+    //   console.log("cache hit");
+    // } else {
+    //   availableCars = await Car.find({ status: "available" });
+    //   await redisClient.set(key, JSON.stringify(availableCars), { ex: 1 });
+    // }
+    if(!availableCars){
       availableCars = await Car.find({ status: "available" });
-      await redisClient.set(key, JSON.stringify(availableCars), { ex: 1 });
+      try {
+        await redisClient.set(key, JSON.stringify(availableCars), { ex: 60 });
+      } catch (err) {
+        console.error("Redis SET error:", err);
+      }
     }
 
     res.json(availableCars);

@@ -37,8 +37,8 @@ import swaggerUi from "swagger-ui-express";
 // })();
 
 export const redisClient = new Redis({
-  url: "https://maximum-wolf-21246.upstash.io",
-  token: "AVL-AAIjcDFhOWQzYWIzNzllYjQ0YzJlYWEzODk2M2NmOTY1MGNjY3AxMA",
+  url: "https://electric-impala-12121.upstash.io",
+  token: "AS9ZAAIjcDExNGM3NTdiY2NkMTE0MDIyOWE3NDQwN2VkNDEzMGQ2YnAxMA",
 });
 
 // Get __dirname in ES module

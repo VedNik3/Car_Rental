@@ -204,32 +204,68 @@ export const deleteCar = async (req, res) => {
 };
 
 // Get all bookings:
+// export const getAllBookings = async (req, res) => {
+//   try {
+//     let bookings = null;
+//     const key = "bookings";
+//     const value = await redisClient.get(key);
+
+//     if (value) {
+//       // bookings = JSON.parse(value);
+//       bookings = value;
+//       console.log("cache hit");
+//     } else {
+//       bookings = await Booking.find({})
+//         .populate("user", "fullname email")
+//         .populate("car", "brand model regNumber");
+//       await redisClient.set(key, JSON.stringify(bookings), { ex: 1 });
+//     }
+
+//     // const bookings = await Booking.find({});
+
+//     res.status(200).json(bookings);
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ message: "Server error. Unable to fetch bookings." });
+//   }
+// };
+
 export const getAllBookings = async (req, res) => {
   try {
     let bookings = null;
     const key = "bookings";
-    const value = await redisClient.get(key);
 
-    if (value) {
-      // bookings = JSON.parse(value);
-      bookings = value;
-      console.log("cache hit");
-    } else {
+    try {
+      const value = await redisClient.get(key);
+      if (value) {
+        // bookings = JSON.parse(value);  // ✅ FIXED
+        bookings = value;  // ✅ FIXED
+        console.log("Cache hit");
+      }
+    } catch (err) {
+      console.error("Redis GET error:", err);
+    }
+
+    if (!bookings) {
       bookings = await Booking.find({})
         .populate("user", "fullname email")
         .populate("car", "brand model regNumber");
-      await redisClient.set(key, JSON.stringify(bookings), { ex: 1 });
-    }
 
-    // const bookings = await Booking.find({});
+      try {
+        await redisClient.set(key, JSON.stringify(bookings), { ex: 60 });
+      } catch (err) {
+        console.error("Redis SET error:", err);
+      }
+    }
 
     res.status(200).json(bookings);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Server error. Unable to fetch bookings." });
+    console.error("Server error:", error);
+    res.status(500).json({ message: "Server error. Unable to fetch bookings." });
   }
 };
+
 
 export const recentBookings = async (req, res) => {
   try {
