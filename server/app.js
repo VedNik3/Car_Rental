@@ -83,6 +83,7 @@ const corsOptions = {
  credentials: true,
 };
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
 // const corsOptions = {
 //   origin: true, // Reflects the request origin, which is safest for Swagger UI
